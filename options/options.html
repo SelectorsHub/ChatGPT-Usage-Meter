@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChatGPT Usage Meter — Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="../icons/icon48.png" alt="" width="32" height="32" />
+      <div>
+        <h1>ChatGPT Usage Meter</h1>
+        <p class="dim">Settings · by <a id="about" target="_blank" rel="noopener">SelectorsHub</a></p>
+      </div>
+      <span class="saved" id="saved">Saved</span>
+    </header>
+
+    <section>
+      <h2>Polling</h2>
+      <label class="row">
+        <span>Check usage every</span>
+        <select id="pollMinutes">
+          <option value="1">1 minute</option>
+          <option value="2">2 minutes</option>
+          <option value="5">5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="15">15 minutes</option>
+        </select>
+      </label>
+      <p class="note">Usage is also refreshed a few seconds after every reply, and whenever you open the toolbar popup.</p>
+    </section>
+
+    <section>
+      <h2>Alerts</h2>
+      <label class="row"><input type="checkbox" id="notify" /> <span>Desktop notifications</span></label>
+      <label class="row">
+        <span>Alert when usage crosses</span>
+        <input type="text" id="thresholds" placeholder="75, 90, 100" class="short" />
+        <span class="dim">%</span>
+      </label>
+      <label class="row"><input type="checkbox" id="badge" /> <span>Show 5-hour % on the toolbar icon</span></label>
+    </section>
+
+    <section>
+      <h2>Usage strip</h2>
+      <label class="row"><input type="checkbox" id="strip" /> <span>Show the strip above ChatGPT's chat box</span></label>
+      <label class="row"><input type="checkbox" id="collapsed" /> <span>Start collapsed</span></label>
+      <div class="grid" id="fields"></div>
+    </section>
+
+    <section>
+      <h2>My model caps</h2>
+      <p class="note">
+        ChatGPT doesn't report a remaining count for every model. If your plan has a fixed cap
+        (for example a weekly limit on a Pro model), add it here and the meter counts your messages
+        to that model in this browser against it. Use the exact model slug — the ones you've used are suggested —
+        or end it with <code>*</code> to match a family (e.g. <code>gpt-6*</code>).
+      </p>
+      <table class="caps">
+        <thead><tr><th>Model</th><th>Limit</th><th>Per</th><th></th></tr></thead>
+        <tbody id="caps"></tbody>
+      </table>
+      <datalist id="models"></datalist>
+      <button id="add-cap" class="btn">+ Add cap</button>
+    </section>
+
+    <section>
+      <h2>Data</h2>
+      <p class="note">Everything stays in this browser. Usage is read from chatgpt.com with your own signed-in session; nothing is sent anywhere else.</p>
+      <button id="clear-log" class="btn ghost">Clear message counts</button>
+      <button id="reset-hidden" class="btn ghost">Un-hide strip</button>
+    </section>
+
+    <footer class="dim">Not affiliated with or endorsed by OpenAI. ChatGPT is a trademark of OpenAI.</footer>
+  </div>
+  <script src="../shared/config.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

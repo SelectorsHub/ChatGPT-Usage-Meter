@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Usage Meter",
+  "version": "1.0.0",
+  "description": "See your ChatGPT limits, reset times and chat size live, right above the chat box. Get alerted before you run out.",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "cookies",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "ChatGPT Usage Meter",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["shared/config.js", "shared/tokens.js", "content-script.js"],
+      "css": ["overlay.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["page-injector.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/tools/*.png", "icons/logo64.png"],
+      "matches": ["https://chatgpt.com/*"]
+    }
+  ]
+}

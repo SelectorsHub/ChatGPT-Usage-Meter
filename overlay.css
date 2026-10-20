@@ -1,0 +1,227 @@
+/* overlay.css — usage strip above ChatGPT's composer, plus its menus.
+   Everything is scoped under #chatgpt-usage-overlay or .cgum-menu so none
+   of it can leak into ChatGPT's own UI. Theme classes (cgum-dark /
+   cgum-light) follow ChatGPT's own theme; the media query only covers the
+   first paint. */
+
+#chatgpt-usage-overlay {
+  --cg-bg: #f7f7f8;
+  --cg-border: rgba(0, 0, 0, 0.08);
+  --cg-text: #2f2f2f;
+  --cg-dim: #6e6e80;
+  --cg-sep: rgba(0, 0, 0, 0.12);
+  --cg-hover: rgba(0, 0, 0, 0.06);
+  --cg-track: rgba(0, 0, 0, 0.10);
+  --cg-green: #0e8f6f;
+  --cg-amber: #b7791f;
+  --cg-orange: #dd6b20;
+  --cg-red: #d92d20;
+  --cg-chip-amber: rgba(183, 121, 31, 0.12);
+  --cg-chip-orange: rgba(221, 107, 32, 0.13);
+  --cg-chip-red: rgba(217, 45, 32, 0.12);
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 2px 6px;
+  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--cg-text);
+  container-type: inline-size;
+  min-width: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  #chatgpt-usage-overlay:not(.cgum-light) {
+    --cg-bg: #2a2a2a; --cg-border: rgba(255,255,255,0.08); --cg-text: #ececec; --cg-dim: #a3a3ad;
+    --cg-sep: rgba(255,255,255,0.14); --cg-hover: rgba(255,255,255,0.08); --cg-track: rgba(255,255,255,0.14);
+    --cg-green: #34d399; --cg-amber: #fbbf24; --cg-orange: #fb923c; --cg-red: #f87171;
+    --cg-chip-amber: rgba(251,191,36,0.14); --cg-chip-orange: rgba(251,146,60,0.15); --cg-chip-red: rgba(248,113,113,0.15);
+  }
+}
+#chatgpt-usage-overlay.cgum-dark {
+  --cg-bg: #2a2a2a; --cg-border: rgba(255,255,255,0.08); --cg-text: #ececec; --cg-dim: #a3a3ad;
+  --cg-sep: rgba(255,255,255,0.14); --cg-hover: rgba(255,255,255,0.08); --cg-track: rgba(255,255,255,0.14);
+  --cg-green: #34d399; --cg-amber: #fbbf24; --cg-orange: #fb923c; --cg-red: #f87171;
+  --cg-chip-amber: rgba(251,191,36,0.14); --cg-chip-orange: rgba(251,146,60,0.15); --cg-chip-red: rgba(248,113,113,0.15);
+}
+
+#chatgpt-usage-overlay *, .cgum-menu * { box-sizing: border-box; }
+
+#chatgpt-usage-overlay .cgum-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 8px;
+  border-radius: 999px;
+  background: var(--cg-bg);
+  border: 1px solid var(--cg-border);
+  max-width: 100%;
+  min-width: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  user-select: none;
+}
+#chatgpt-usage-overlay .cgum-strip::-webkit-scrollbar { display: none; }
+
+#chatgpt-usage-overlay .cgum-sep {
+  width: 1px; height: 14px; background: var(--cg-sep); flex: 0 0 auto;
+}
+#chatgpt-usage-overlay .cgum-seg {
+  display: inline-flex; align-items: center; gap: 5px; flex: 0 0 auto; cursor: default;
+}
+#chatgpt-usage-overlay .cgum-lbl { color: var(--cg-dim); position: relative; }
+#chatgpt-usage-overlay .cgum-lbl.cgum-has-bar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, currentColor 0 var(--p, 0%), var(--cg-track) var(--p, 0%) 100%);
+  opacity: 0.85;
+}
+#chatgpt-usage-overlay .cgum-meter .cgum-lbl.cgum-has-bar::after { color: var(--cg-green); }
+#chatgpt-usage-overlay .cgum-pct, #chatgpt-usage-overlay .cgum-val { font-weight: 650; font-variant-numeric: tabular-nums; }
+#chatgpt-usage-overlay .cgum-reset { color: var(--cg-text); }
+#chatgpt-usage-overlay .cgum-reset b { font-weight: 650; }
+#chatgpt-usage-overlay .cgum-dot { color: var(--cg-dim); }
+
+#chatgpt-usage-overlay .cgum-green  { color: var(--cg-green); }
+#chatgpt-usage-overlay .cgum-amber  { color: var(--cg-amber); }
+#chatgpt-usage-overlay .cgum-orange { color: var(--cg-orange); }
+#chatgpt-usage-overlay .cgum-red    { color: var(--cg-red); }
+#chatgpt-usage-overlay .cgum-neutral { color: var(--cg-text); }
+
+#chatgpt-usage-overlay .cgum-chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 999px; font-weight: 650;
+}
+#chatgpt-usage-overlay .cgum-chip-amber  { color: var(--cg-amber);  background: var(--cg-chip-amber); }
+#chatgpt-usage-overlay .cgum-chip-orange { color: var(--cg-orange); background: var(--cg-chip-orange); }
+#chatgpt-usage-overlay .cgum-chip-red    { color: var(--cg-red);    background: var(--cg-chip-red); }
+
+#chatgpt-usage-overlay .cgum-hit {
+  color: var(--cg-red); background: var(--cg-chip-red); padding: 2px 8px; border-radius: 999px; font-weight: 600;
+}
+#chatgpt-usage-overlay .cgum-muted { color: var(--cg-dim); }
+
+#chatgpt-usage-overlay .cgum-short { display: none; }
+#chatgpt-usage-overlay .cgum-ic { display: none; align-items: center; color: var(--cg-dim); }
+
+/* logo */
+#chatgpt-usage-overlay .cgum-logo {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--cg-text); text-decoration: none;
+  padding: 2px 4px; margin-left: -2px; border-radius: 999px; flex: 0 0 auto; cursor: pointer;
+}
+#chatgpt-usage-overlay .cgum-logo:hover { background: var(--cg-hover); }
+#chatgpt-usage-overlay .cgum-logo-svg { display: block; }
+#chatgpt-usage-overlay .cgum-byline { color: var(--cg-dim); font-size: 11.5px; }
+
+/* controls */
+#chatgpt-usage-overlay .cgum-ctrls { display: inline-flex; align-items: center; gap: 1px; flex: 0 0 auto; }
+#chatgpt-usage-overlay .cgum-icon-btn {
+  all: unset; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 22px;
+  border-radius: 999px; color: var(--cg-dim); cursor: pointer;
+}
+#chatgpt-usage-overlay .cgum-icon-btn:hover { background: var(--cg-hover); color: var(--cg-text); }
+#chatgpt-usage-overlay .cgum-icon-btn:focus-visible { outline: 2px solid var(--cg-green); outline-offset: 1px; }
+#chatgpt-usage-overlay .cgum-rate {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 6px; border-radius: 999px;
+  color: var(--cg-text); text-decoration: none; font-weight: 600;
+}
+#chatgpt-usage-overlay .cgum-rate:hover { background: var(--cg-hover); }
+
+/* limit promo */
+#chatgpt-usage-overlay .cgum-promo a { color: var(--cg-green); text-decoration: none; font-weight: 600; }
+#chatgpt-usage-overlay .cgum-promo a:hover { text-decoration: underline; }
+#chatgpt-usage-overlay .cgum-promo-x { width: 18px; height: 18px; }
+
+/* collapsed */
+#chatgpt-usage-overlay .cgum-summary { gap: 10px; }
+#chatgpt-usage-overlay .cgum-mini { display: inline-flex; align-items: center; gap: 4px; }
+#chatgpt-usage-overlay .cgum-mini-lbl { color: var(--cg-dim); }
+#chatgpt-usage-overlay .cgum-collapsed .cgum-byline { display: none; }
+#chatgpt-usage-overlay .cgum-mini.cgum-hit { padding: 2px 6px; }
+
+/* progressive shedding — set by fitStrip(). Each level includes the ones
+   before it. Order: decoration → secondary detail → labels → whole segments. */
+#chatgpt-usage-overlay :is(.cgum-fit-1, .cgum-fit-2, .cgum-fit-3, .cgum-fit-4) :is(.cgum-byline, .cgum-tok-word, .cgum-rate-txt) { display: none; }
+
+/* 2: extra limits / feature quotas go short, weekly reset goes */
+#chatgpt-usage-overlay :is(.cgum-fit-2, .cgum-fit-3, .cgum-fit-4) :is(.cgum-extra, .cgum-feature, .cgum-cap) .cgum-long,
+#chatgpt-usage-overlay :is(.cgum-fit-2, .cgum-fit-3, .cgum-fit-4) .cgum-reset-s { display: none; }
+#chatgpt-usage-overlay :is(.cgum-fit-2, .cgum-fit-3, .cgum-fit-4) :is(.cgum-extra, .cgum-feature, .cgum-cap) .cgum-short { display: inline; }
+
+/* 3: every label short, all resets go */
+#chatgpt-usage-overlay :is(.cgum-fit-3, .cgum-fit-4) :is(.cgum-reset, .cgum-long) { display: none; }
+#chatgpt-usage-overlay :is(.cgum-fit-3, .cgum-fit-4) .cgum-short { display: inline; }
+#chatgpt-usage-overlay :is(.cgum-fit-3, .cgum-fit-4) .cgum-ic { display: inline-flex; }
+
+/* 4: optional segments go */
+#chatgpt-usage-overlay .cgum-fit-4 :is(.cgum-rate, .cgum-feature, .cgum-credits, .cgum-extra, .cgum-promo, .cgum-chip span) { display: none; }
+#chatgpt-usage-overlay .cgum-fit-4 .cgum-sep:has(+ :is(.cgum-feature, .cgum-credits, .cgum-extra, .cgum-promo)) { display: none; }
+
+/* ---------------- menus (portaled to <body>) ---------------- */
+.cgum-menu {
+  --m-bg: #ffffff; --m-text: #202123; --m-dim: #6e6e80; --m-line: rgba(0,0,0,0.08); --m-hover: rgba(0,0,0,0.05); --m-accent: #0e8f6f;
+  position: fixed; z-index: 2147483000; min-width: 240px; max-width: min(380px, calc(100vw - 16px));
+  max-height: min(70vh, 560px); overflow-y: auto;
+  background: var(--m-bg); color: var(--m-text); border: 1px solid var(--m-line); border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.08);
+  padding: 6px; font: 13px/1.35 ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+.cgum-menu.cgum-dark {
+  --m-bg: #2f2f2f; --m-text: #ececec; --m-dim: #a3a3ad; --m-line: rgba(255,255,255,0.10); --m-hover: rgba(255,255,255,0.07); --m-accent: #34d399;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+}
+.cgum-menu .cgum-mhead { font-size: 11.5px; font-weight: 600; color: var(--m-dim); padding: 6px 8px 4px; text-transform: none; }
+.cgum-menu .cgum-mrow {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer;
+}
+.cgum-menu .cgum-mrow:hover { background: var(--m-hover); }
+.cgum-menu .cgum-mrow input { accent-color: var(--m-accent); margin: 0; width: 14px; height: 14px; }
+.cgum-menu .cgum-mnote { margin-left: auto; color: var(--m-dim); font-size: 11.5px; padding-left: 10px; }
+.cgum-menu .cgum-msep { height: 1px; background: var(--m-line); margin: 5px 4px; }
+.cgum-menu .cgum-mlink {
+  all: unset; display: block; padding: 7px 8px; border-radius: 8px; cursor: pointer; color: var(--m-text); font-weight: 500;
+}
+.cgum-menu .cgum-mlink:hover { background: var(--m-hover); }
+.cgum-menu .cgum-mfoot { font-size: 11px; color: var(--m-dim); padding: 4px 8px 2px; }
+.cgum-menu .cgum-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.cgum-menu .cgum-tool {
+  display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 8px; color: var(--m-text); text-decoration: none; min-width: 0;
+}
+.cgum-menu .cgum-tool:hover { background: var(--m-hover); }
+.cgum-menu .cgum-tool-ic { width: 20px; height: 20px; border-radius: 5px; flex: 0 0 auto; object-fit: contain; }
+.cgum-menu .cgum-tool-txt { display: flex; flex-direction: column; min-width: 0; }
+.cgum-menu .cgum-tool-name { font-weight: 600; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cgum-menu .cgum-tool-desc { font-size: 11px; color: var(--m-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cgum-menu.cgum-logo-menu { width: 400px; }
+@media (max-width: 480px) { .cgum-menu .cgum-tools { grid-template-columns: 1fr; } }
+
+/* Custom-drawn checkbox: chatgpt.com's own CSS resets native checkboxes to
+   appearance:none with no box, so the menu draws its own. */
+.cgum-menu input.cgum-cb {
+  -webkit-appearance: none !important; appearance: none !important;
+  display: inline-grid !important; place-content: center !important;
+  width: 16px !important; height: 16px !important; min-width: 16px !important;
+  margin: 0 !important; padding: 0 !important;
+  border: 1.5px solid var(--m-dim) !important; border-radius: 4px !important;
+  background: transparent !important; cursor: pointer !important;
+  opacity: 1 !important; position: static !important; visibility: visible !important;
+  transition: background .12s, border-color .12s;
+}
+.cgum-menu input.cgum-cb::before {
+  content: "" !important; width: 9px; height: 5px;
+  border: solid #fff; border-width: 0 0 2px 2px;
+  transform: translateY(-1px) rotate(-45deg) scale(0); transition: transform .12s;
+}
+.cgum-menu input.cgum-cb:checked {
+  background: var(--m-accent) !important; border-color: var(--m-accent) !important;
+}
+.cgum-menu input.cgum-cb:checked::before { transform: translateY(-1px) rotate(-45deg) scale(1); }
+.cgum-menu.cgum-dark input.cgum-cb:checked::before { border-color: #1a1a1a; }
+.cgum-menu input.cgum-cb:focus-visible { outline: 2px solid var(--m-accent) !important; outline-offset: 2px !important; }
+#chatgpt-usage-overlay .cgum-thinking .cgum-val { font-weight: 650; }
+
+/* Brand logo: the artwork carries its own white rounded tile, so it reads on
+   both themes without any filter. */
+#chatgpt-usage-overlay .cgum-logo-img { width: 18px; height: 18px; display: block; flex: 0 0 auto; border-radius: 4px; }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatGPT Usage</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="hdr">
+    <div class="hdr-left">
+      <img class="brand-logo" id="brand-logo" src="../icons/icon48.png" alt="" />
+      <h1>ChatGPT Usage Meter</h1>
+      <span class="plan hidden" id="plan"></span>
+    </div>
+    <div class="hdr-right">
+      <button id="refresh-btn" class="icon-btn" title="Refresh now" aria-label="Refresh">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+      </button>
+      <button id="open-options" class="icon-btn" title="Settings" aria-label="Settings">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div id="error-banner" class="banner banner-err hidden"></div>
+    <div id="hit-banner" class="banner banner-hit hidden"></div>
+
+    <div class="toggle-row">
+      <div class="toggle-text">
+        <label for="show-strip" class="toggle-lbl">Show usage strip above chat</label>
+        <div class="toggle-sub" id="strip-sub">&nbsp;</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="show-strip" role="switch" />
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+      </label>
+    </div>
+
+    <div id="windows"></div>
+    <div id="extra"></div>
+
+    <section class="card hidden" id="credits-card">
+      <div class="row"><span class="lbl">Credits</span><span class="pct" id="credits-val">—</span></div>
+      <div class="sub">Used once plan limits run out.</div>
+    </section>
+
+    <section class="list-card hidden" id="features-card">
+      <div class="list-head">Feature quotas <span class="list-note">reported by ChatGPT</span></div>
+      <div id="features"></div>
+    </section>
+
+    <section class="list-card hidden" id="caps-card">
+      <div class="list-head">My model caps <span class="list-note">counted in this browser</span></div>
+      <div id="caps"></div>
+    </section>
+
+    <section class="list-card" id="msgs-card">
+      <div class="list-head">
+        Messages sent from this browser
+        <span class="seg-ctl" id="msgs-range">
+          <button data-ms="18000000">5h</button><button data-ms="86400000" class="on">24h</button><button data-ms="604800000">7d</button>
+        </span>
+      </div>
+      <div id="msgs"></div>
+      <button class="link-btn" id="add-cap">+ Set a cap for a model</button>
+    </section>
+
+    <div id="empty-hint" class="hint hidden"></div>
+
+    <div class="updated" id="updated"></div>
+
+    <button id="tools-toggle" class="drawer-toggle" aria-expanded="false">
+      <span>More free tools from SelectorsHub</span>
+      <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div id="tools" class="tools hidden"></div>
+  </main>
+
+  <footer class="ftr">
+    <a id="rate-link" class="ftr-rate hidden" target="_blank" rel="noopener">★ Rate us</a>
+    <a id="about-link" target="_blank" rel="noopener">by SelectorsHub</a>
+    <span class="ftr-dim">Not affiliated with OpenAI</span>
+  </footer>
+
+  <script src="../shared/config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
