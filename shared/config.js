@@ -21,7 +21,7 @@ var CUM_CONFIG = {
   },
   // Landing pages; "" opens nothing. The uninstall page gets ?v=&b=&d= appended.
   INSTALL_URL: "https://www.selectorshub.com/chatgpt-usage-meter-installed/",
-  UNINSTALL_URL: "https://www.selectorshub.com/chatgpt-user-meter-uninstalled/",
+  UNINSTALL_URL: "https://www.selectorshub.com/chatgpt-usage-meter-uninstalled/",
 
   ORIGIN: "https://chatgpt.com",
 
