@@ -195,8 +195,25 @@
     $("tools-toggle").setAttribute("aria-expanded", String(open));
     await chrome.storage.local.set({ popupToolsOpen: open });
   });
-  const store = cumStoreUrl();
-  if (store) { $("rate-link").href = cumUtm(store, "popup", "rate"); $("rate-link").classList.remove("hidden"); }
+  // Rate us: shown until the user clicks it once (here, in the strip or on the
+  // rating card), then hidden forever. Same as Claude Usage Meter.
+  async function refreshRateButton() {
+    let rated = false;
+    try { rated = !!(await chrome.storage.local.get("rate_us_clicked")).rate_us_clicked; } catch (_) {}
+    $("rate-btn").classList.toggle("hidden", rated || !cumStoreUrl());
+  }
+  $("rate-btn").addEventListener("click", async () => {
+    $("rate-btn").classList.add("hidden");
+    try {
+      const patch = { rate_us_clicked: true };
+      const { rate_us_clicked_at } = await chrome.storage.local.get("rate_us_clicked_at");
+      if (!rate_us_clicked_at) patch.rate_us_clicked_at = Date.now();
+      await chrome.storage.local.set(patch);
+      await chrome.tabs.create({ url: cumStoreUrl() });
+    } catch (_) {}
+    window.close();
+  });
+  refreshRateButton();
   $("about-link").href = cumUtm(C.PRODUCT_URL, "popup", "about");
 
   chrome.storage.onChanged.addListener((ch, area) => {

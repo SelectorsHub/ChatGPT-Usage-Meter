@@ -15,15 +15,20 @@ var CUM_CONFIG = {
 
   // TODO(Sanjay): paste the store review URLs after publishing.
   STORE_URLS: {
-    chrome: "",   // e.g. https://chromewebstore.google.com/detail/<id>/reviews
+    chrome: "https://chromewebstore.google.com/detail/chatgpt-usage-meter/kfpajilghdinlikficodoffkbdmlbmab/reviews",
     edge: "",
     firefox: ""
   },
-  // TODO(Sanjay): optional landing pages; leave "" to open nothing.
-  INSTALL_URL: "",
-  UNINSTALL_URL: "",
+  // Landing pages; "" opens nothing. The uninstall page gets ?v=&b=&d= appended.
+  INSTALL_URL: "https://www.selectorshub.com/chatgpt-usage-meter-installed/",
+  UNINSTALL_URL: "https://www.selectorshub.com/chatgpt-user-meter-uninstalled/",
 
   ORIGIN: "https://chatgpt.com",
+
+  // ██ TEST BUILD SWITCH — must be false in the store build ██
+  // true = the Rate us button shows at once and the rating card pops 3s after
+  // load, then again every 60s after "Maybe later" (production: 2d / 3d / 2d).
+  RATE_TEST: false,
 
   TOOLS: [
     { icon: "screenshot-with-url", name: "Screenshot with URL", desc: "Screenshots with the URL bar",   url: "https://selectorshub.com/screenshot-with-url/" },

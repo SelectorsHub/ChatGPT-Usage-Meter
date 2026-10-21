@@ -156,7 +156,7 @@
 #chatgpt-usage-overlay :is(.cgum-fit-3, .cgum-fit-4) .cgum-ic { display: inline-flex; }
 
 /* 4: optional segments go */
-#chatgpt-usage-overlay .cgum-fit-4 :is(.cgum-rate, .cgum-feature, .cgum-credits, .cgum-extra, .cgum-promo, .cgum-chip span) { display: none; }
+#chatgpt-usage-overlay .cgum-fit-4 :is(.cgum-feature, .cgum-credits, .cgum-extra, .cgum-promo, .cgum-chip span) { display: none; }
 #chatgpt-usage-overlay .cgum-fit-4 .cgum-sep:has(+ :is(.cgum-feature, .cgum-credits, .cgum-extra, .cgum-promo)) { display: none; }
 
 /* ---------------- menus (portaled to <body>) ---------------- */
@@ -225,3 +225,75 @@
 /* Brand logo: the artwork carries its own white rounded tile, so it reads on
    both themes without any filter. */
 #chatgpt-usage-overlay .cgum-logo-img { width: 18px; height: 18px; display: block; flex: 0 0 auto; border-radius: 4px; }
+
+/* ---------------- Rate us button + rating card (same flow as Claude Usage Meter) ---------------- */
+#chatgpt-usage-overlay .cgum-rate {
+  all: unset; display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px 3px 6px; border-radius: 999px;
+  color: var(--cg-text); font-weight: 600; font-size: 12px; cursor: pointer; white-space: nowrap;
+  transition: background .15s, transform .15s;
+}
+#chatgpt-usage-overlay .cgum-rate:hover { background: var(--cg-hover); transform: translateY(-0.5px); }
+#chatgpt-usage-overlay .cgum-rate:focus-visible { outline: 2px solid var(--cg-text); outline-offset: 1px; }
+#chatgpt-usage-overlay .cgum-rate-star { font-size: 12px; line-height: 1; }
+#chatgpt-usage-overlay .cgum-collapsed .cgum-rate-txt { display: none; }
+#chatgpt-usage-overlay .cgum-rate.cgum-rate-pulse {
+  background: rgba(245, 166, 35, 0.22);
+  animation: cgum-rate-pulse 1.7s ease-in-out infinite;
+}
+@keyframes cgum-rate-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.55); }
+  50%      { box-shadow: 0 0 0 5px rgba(245, 166, 35, 0); }
+}
+
+.cgum-nudge {
+  position: fixed; z-index: 2147483647; box-sizing: border-box; width: 308px; padding: 13px 14px 12px;
+  background: #0d0d0d; color: #f4f4f4; border-radius: 12px;
+  box-shadow: 0 12px 38px rgba(0,0,0,0.42), 0 1px 3px rgba(0,0,0,0.25);
+  font: 500 12px/1.45 ui-sans-serif, -apple-system, system-ui, "Segoe UI", sans-serif; text-align: left;
+  opacity: 0; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease;
+}
+.cgum-nudge * { box-sizing: border-box; }
+.cgum-nudge.cgum-nudge-in { opacity: 1; transform: none; }
+.cgum-nudge::after {
+  content: ""; position: absolute; top: 100%; left: var(--cgum-arrow-x, 50%); transform: translateX(-50%);
+  border: 7px solid transparent; border-top-color: #0d0d0d;
+}
+.cgum-nudge.cgum-nudge-below::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #0d0d0d; }
+/* ChatGPT dark theme -> light card */
+.cgum-nudge.cgum-nudge-dark { background: #ffffff; color: #0d0d0d; box-shadow: 0 12px 38px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.12); }
+.cgum-nudge.cgum-nudge-dark::after { border-top-color: #ffffff; }
+.cgum-nudge.cgum-nudge-dark.cgum-nudge-below::after { border-top-color: transparent; border-bottom-color: #ffffff; }
+
+.cgum-nudge .cgum-nudge-x {
+  all: unset; position: absolute; top: 7px; right: 9px; font-size: 15px; line-height: 1; padding: 2px 4px;
+  border-radius: 5px; opacity: .45; cursor: pointer; color: inherit;
+}
+.cgum-nudge .cgum-nudge-x:hover { opacity: .9; }
+.cgum-nudge .cgum-nudge-title { font-size: 13px; font-weight: 700; letter-spacing: .01em; padding-right: 18px; white-space: nowrap; }
+.cgum-nudge .cgum-nudge-stars { display: flex; gap: 2px; margin: 7px 0 6px; font-size: 17px; line-height: 1; color: #f5a623; cursor: pointer; width: max-content; }
+.cgum-nudge .cgum-nudge-stars span { opacity: 0; transform: scale(.5); animation: cgum-nudge-star .32s cubic-bezier(.34,1.56,.64,1) forwards; }
+.cgum-nudge .cgum-nudge-stars span:nth-child(1) { animation-delay: .10s; }
+.cgum-nudge .cgum-nudge-stars span:nth-child(2) { animation-delay: .18s; }
+.cgum-nudge .cgum-nudge-stars span:nth-child(3) { animation-delay: .26s; }
+.cgum-nudge .cgum-nudge-stars span:nth-child(4) { animation-delay: .34s; }
+.cgum-nudge .cgum-nudge-stars span:nth-child(5) { animation-delay: .42s; }
+.cgum-nudge .cgum-nudge-stars:hover span { color: #ffb733; }
+@keyframes cgum-nudge-star { from { opacity: 0; transform: scale(.5) rotate(-25deg); } to { opacity: 1; transform: none; } }
+.cgum-nudge .cgum-nudge-body { font-size: 11.5px; line-height: 1.5; opacity: .8; margin-bottom: 10px; text-wrap: pretty; }
+.cgum-nudge .cgum-nudge-by { display: block; margin-top: 6px; font-style: italic; font-size: 10.5px; }
+.cgum-nudge .cgum-nudge-by a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.cgum-nudge .cgum-nudge-actions { display: flex; align-items: center; gap: 6px; }
+.cgum-nudge .cgum-nudge-cta {
+  all: unset; background: #ffffff; color: #0d0d0d; font-size: 11.5px; font-weight: 700; line-height: 1;
+  padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: background .15s, transform .15s;
+}
+.cgum-nudge .cgum-nudge-cta:hover { background: #e9e9e9; transform: translateY(-0.5px); }
+.cgum-nudge.cgum-nudge-dark .cgum-nudge-cta { background: #0d0d0d; color: #ffffff; }
+.cgum-nudge.cgum-nudge-dark .cgum-nudge-cta:hover { background: #2b2b2b; }
+.cgum-nudge .cgum-nudge-later { all: unset; font-size: 11px; line-height: 1; opacity: .55; padding: 8px 6px; border-radius: 8px; cursor: pointer; color: inherit; }
+.cgum-nudge .cgum-nudge-later:hover { opacity: .9; }
+@media (prefers-reduced-motion: reduce) {
+  .cgum-nudge { transition: none; }
+  .cgum-nudge .cgum-nudge-stars span { opacity: 1; transform: none; animation: none; }
+  #chatgpt-usage-overlay .cgum-rate.cgum-rate-pulse { animation: none; }
+}

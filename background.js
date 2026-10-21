@@ -540,22 +540,52 @@ async function schedulePolling() {
   await chrome.alarms.create(POLL_ALARM, { periodInMinutes: Math.max(1, Number(s.pollMinutes) || 1), delayInMinutes: 0.1 });
 }
 
+// Uninstall page gets ?v=<version>&b=<browser>&d=<days installed> so feedback
+// can be read in context. Nothing else about the user is sent. Days change, so
+// the URL is refreshed on startup and once a day from the poll alarm.
+function browserName() {
+  const ua = (self.navigator && navigator.userAgent) || "";
+  if (/Edg\//.test(ua)) return "edge";
+  if (/OPR\//.test(ua)) return "opera";
+  if (self.navigator && navigator.brave) return "brave";
+  if (/Firefox\//.test(ua)) return "firefox";
+  return "chrome";
+}
+
+let uninstallUrlSetAt = 0;
+async function updateUninstallUrl() {
+  if (!CUM_CONFIG.UNINSTALL_URL) return;
+  try {
+    let { installedAt } = await chrome.storage.local.get("installedAt");
+    if (!installedAt) { installedAt = Date.now(); await chrome.storage.local.set({ installedAt }); }
+    const days = Math.max(0, Math.floor((Date.now() - installedAt) / 86400e3));
+    const base = cumUtm(CUM_CONFIG.UNINSTALL_URL, "uninstall", "feedback");
+    const url = base + "&v=" + encodeURIComponent(chrome.runtime.getManifest().version) +
+      "&b=" + encodeURIComponent(browserName()) + "&d=" + days;
+    await chrome.runtime.setUninstallURL(url);
+    uninstallUrlSetAt = Date.now();
+  } catch (_) {}
+}
+
 chrome.runtime.onInstalled.addListener(async (details) => {
   const { settings } = await chrome.storage.local.get("settings");
   await chrome.storage.local.set({ settings: mergeDefaults(settings) });
+  if (details.reason === "install") await chrome.storage.local.set({ installedAt: Date.now() });
   await schedulePolling();
   if (details.reason === "install" && CUM_CONFIG.INSTALL_URL) {
     chrome.tabs.create({ url: cumUtm(CUM_CONFIG.INSTALL_URL, "install", "onboarding") });
   }
-  if (CUM_CONFIG.UNINSTALL_URL) {
-    try { chrome.runtime.setUninstallURL(cumUtm(CUM_CONFIG.UNINSTALL_URL, "uninstall", "feedback")); } catch (_) {}
-  }
+  await updateUninstallUrl();
   refresh({ force: true }).catch(() => {});
 });
 
-chrome.runtime.onStartup.addListener(() => { schedulePolling(); refresh({}).catch(() => {}); });
+chrome.runtime.onStartup.addListener(() => { schedulePolling(); updateUninstallUrl(); refresh({}).catch(() => {}); });
 
-chrome.alarms.onAlarm.addListener((a) => { if (a.name === POLL_ALARM) refresh({}).catch(() => {}); });
+chrome.alarms.onAlarm.addListener((a) => {
+  if (a.name !== POLL_ALARM) return;
+  refresh({}).catch(() => {});
+  if (Date.now() - uninstallUrlSetAt > 12 * 3600e3) updateUninstallUrl();
+});
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local" || !changes.settings) return;
@@ -600,6 +630,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case "chatTokens":
         try { return { result: await chatTokens(msg.conversationId, !!msg.force) }; }
         catch (e) { return { error: e.code || "error" }; }
+      case "open-review": {
+        await chrome.storage.local.set({ rate_us_clicked: true, rate_us_clicked_at: Date.now() });
+        const url = cumStoreUrl() || CUM_CONFIG.PRODUCT_URL;
+        await chrome.tabs.create({ url });
+        return { ok: true };
+      }
       case "openOptions":
         chrome.runtime.openOptionsPage();
         return { ok: true };

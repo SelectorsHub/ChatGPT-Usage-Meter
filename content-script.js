@@ -17,6 +17,25 @@
   const C = CUM_CONFIG;
   const HOST_ID = "chatgpt-usage-overlay";
   const HIDE_MS = 12 * 3600e3;
+
+  // ---- Rating ask: same flow as Claude Usage Meter ----
+  //   install          -> no button, no card
+  //   +RATE_DELAY (2d) -> "Rate us" button appears in the strip
+  //   +NUDGE_FIRST (3d)-> the rating card pops, anchored to the button
+  //   "Maybe later"    -> the card returns NUDGE_REPEAT (2d) later, until rated
+  //   Rate us clicked anywhere (strip, card, popup) -> button + card gone for good
+  // CUM_CONFIG.RATE_TEST (test builds only) shrinks every clock so the whole
+  // flow can be checked in a couple of minutes.
+  const DAY_MS = 86400e3;
+  const RATE_TEST = !!C.RATE_TEST;
+  const RATE_KEY = "rate_us_clicked";
+  const RATE_AT_KEY = "rate_us_clicked_at";
+  const INSTALL_KEY = "installedAt";
+  const NUDGE_KEY = "rate_nudge_at";
+  const RATE_DELAY = RATE_TEST ? 0 : 2 * DAY_MS;
+  const NUDGE_FIRST = RATE_TEST ? 0 : 3 * DAY_MS;
+  const NUDGE_REPEAT = RATE_TEST ? 60 * 1000 : 2 * DAY_MS;
+  const NUDGE_MOUNT_DELAY = RATE_TEST ? 3 * 1000 : 10 * 1000;
   const UUID_IN_PATH = /\/c\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i;
 
   let alive = true;
@@ -38,7 +57,9 @@
     tokens: null,          // result for convId
     tokensFor: null,
     fit: 0,
-    autoCollapsed: false
+    autoCollapsed: false,
+    // Rating ask (same flow as Claude Usage Meter). null = not loaded yet.
+    rated: false, installAt: null, nudgeAt: null
   };
   const pageConversations = new Map(); // id -> tokens result from the page's own fetch
 
@@ -106,13 +127,16 @@
 
   // ---------------------------------------------------------------- storage
   async function loadAll() {
-    const s = await chrome.storage.local.get(["settings", "snapshot", "capHits", "msgLog", "stripHiddenUntil", "promoDismissed"]);
+    const s = await chrome.storage.local.get(["settings", "snapshot", "capHits", "msgLog", "stripHiddenUntil", "promoDismissed", RATE_KEY, INSTALL_KEY, NUDGE_KEY]);
     S.settings = mergeSettings(s.settings);
     S.snapshot = s.snapshot || null;
     S.capHits = s.capHits || {};
     S.msgLog = s.msgLog || [];
     S.hiddenUntil = s.stripHiddenUntil || 0;
     S.promoDismissed = s.promoDismissed || "";
+    S.rated = !!s[RATE_KEY];
+    S.installAt = s[INSTALL_KEY] || null;   // background writes it on install/startup
+    S.nudgeAt = s[NUDGE_KEY] || 0;
   }
 
   function mergeSettings(s) {
@@ -138,6 +162,9 @@
     if (ch.msgLog) { S.msgLog = ch.msgLog.newValue || []; dirty = true; }
     if (ch.stripHiddenUntil) { S.hiddenUntil = ch.stripHiddenUntil.newValue || 0; dirty = true; }
     if (ch.promoDismissed) { S.promoDismissed = ch.promoDismissed.newValue || ""; dirty = true; }
+    if (ch[RATE_KEY]) { S.rated = !!ch[RATE_KEY].newValue; if (S.rated) closeNudge(true); dirty = true; }
+    if (ch[INSTALL_KEY]) { S.installAt = ch[INSTALL_KEY].newValue || null; dirty = true; }
+    if (ch[NUDGE_KEY]) { S.nudgeAt = ch[NUDGE_KEY].newValue || 0; }
     if (dirty) render();
   });
 
@@ -474,10 +501,13 @@
     }
 
     const ctrls = h("span", { class: "cgum-ctrls" });
-    const store = cumStoreUrl();
-    if (store && !collapsed) {
-      ctrls.appendChild(h("a", { class: "cgum-rate", href: cumUtm(store, "strip", "rate"), target: "_blank", rel: "noopener", title: "Enjoying the meter? A quick rating helps a lot." },
-        ICONS.star(), h("span", { class: "cgum-rate-txt" }, "Rate us")));
+    if (rateUnlocked() && !S.rated) {
+      const rb = h("button", { class: "cgum-rate" + (nudgeOpen ? " cgum-rate-pulse" : ""), type: "button", "data-cgum": "rate",
+        title: nudgeOpen ? null : "Pls Rate us & this button disappears forever after you review.",
+        "aria-label": "Rate ChatGPT Usage Meter" },
+        h("span", { class: "cgum-rate-star", "aria-hidden": "true" }, "⭐️"), h("span", { class: "cgum-rate-txt" }, "Rate us"));
+      rb.addEventListener("click", (e) => { e.stopPropagation(); doRate(); });
+      ctrls.appendChild(rb);
     }
     const gear = h("button", { class: "cgum-icon-btn", title: "Choose what the strip shows", "aria-label": "Strip settings" }, ICONS.gear());
     gear.addEventListener("click", (e) => { e.stopPropagation(); toggleGearMenu(gear); });
@@ -497,6 +527,8 @@
 
     host.appendChild(strip);
     if (!collapsed && !S.autoCollapsed) requestAnimationFrame(() => fitStrip());
+    if (nudgeOpen) requestAnimationFrame(positionNudge);   // the button was rebuilt: re-anchor
+    scheduleNudge();
   }
 
   function collapsedSummary() {
@@ -549,6 +581,133 @@
     } finally { fitting = false; }
   }
 
+  // ---------------------------------------------------------------- rating ask
+  function rateUnlocked() {
+    if (S.installAt === null) return false;           // not loaded / not recorded yet
+    return Date.now() - S.installAt >= RATE_DELAY;
+  }
+
+  // The single "user rated" path, shared by the strip button, the card and its
+  // stars: mark it, tear the card down, open the store review page.
+  function doRate() {
+    S.rated = true;
+    closeNudge(true);
+    try { chrome.storage.local.set({ [RATE_KEY]: true, [RATE_AT_KEY]: Date.now() }); } catch (_) {}
+    send({ type: "open-review" }).then((r) => {
+      if (!r) { try { window.open(cumStoreUrl() || C.PRODUCT_URL, "_blank", "noopener"); } catch (_) {} }
+    });
+    render();
+  }
+
+  let nudgeOpen = false, nudgeEl = null, nudgeTimer = null, nudgeHandlers = null;
+
+  function nudgeDue() {
+    if (S.rated || S.installAt === null || S.nudgeAt === null) return false;
+    if (!rateUnlocked()) return false;
+    if (Date.now() - S.installAt < NUDGE_FIRST) return false;
+    if (S.nudgeAt && Date.now() - S.nudgeAt < NUDGE_REPEAT) return false;
+    return true;
+  }
+
+  // Called after every render, so a tab left open for days still gets the card
+  // when it comes due. The timer handle stops timeouts stacking.
+  function scheduleNudge() {
+    if (nudgeTimer || nudgeOpen || !nudgeDue()) return;
+    nudgeTimer = setTimeout(() => { nudgeTimer = null; maybeShowNudge(); }, NUDGE_MOUNT_DELAY);
+  }
+
+  function maybeShowNudge() {
+    if (nudgeOpen || !nudgeDue()) return;
+    if (document.hidden) return;                        // don't waste the ask on a background tab
+    if (openMenu) return;                               // never on top of another popover
+    const btn = host && host.querySelector('[data-cgum="rate"]');
+    if (!btn || !btn.getClientRects().length) return;   // the anchor must be on screen
+    showNudge();
+  }
+
+  function showNudge() {
+    nudgeOpen = true;
+    // Stamp first: other chatgpt.com tabs see it and skip their own card,
+    // and the repeat clock starts from now.
+    S.nudgeAt = Date.now();
+    try { chrome.storage.local.set({ [NUDGE_KEY]: S.nudgeAt }); } catch (_) {}
+
+    nudgeEl = h("div", { class: "cgum-nudge" + (isDark() ? " cgum-nudge-dark" : ""), role: "dialog", "aria-label": "Rate ChatGPT Usage Meter" },
+      h("button", { class: "cgum-nudge-x", type: "button", "data-n": "close", "aria-label": "Not now" }, "×"),
+      h("div", { class: "cgum-nudge-title" }, "Is ChatGPT Usage Meter helping you?"),
+      h("div", { class: "cgum-nudge-stars", "data-n": "rate", role: "button", tabindex: "0", "aria-label": "Leave a 5 star review" },
+        h("span", null, "★"), h("span", null, "★"), h("span", null, "★"), h("span", null, "★"), h("span", null, "★")),
+      h("div", { class: "cgum-nudge-body" },
+        "Pls Rate us & this button disappears forever after you review. 🙏🏻",
+        h("span", { class: "cgum-nudge-by" }, "Thank you ~ ",
+          h("a", { href: "https://www.linkedin.com/in/creator-sanjaykumar/", target: "_blank", rel: "noopener noreferrer" }, "Sanjay"), ", Creator")),
+      h("div", { class: "cgum-nudge-actions" },
+        h("button", { class: "cgum-nudge-cta", type: "button", "data-n": "rate" }, "Write a review"),
+        h("button", { class: "cgum-nudge-later", type: "button", "data-n": "later" }, "Maybe later")));
+    document.body.appendChild(nudgeEl);
+    nudgeEl.style.visibility = "hidden";
+    positionNudge();
+    nudgeEl.style.visibility = "";
+    requestAnimationFrame(() => { if (nudgeEl) nudgeEl.classList.add("cgum-nudge-in"); });
+    const btn = host && host.querySelector('[data-cgum="rate"]');
+    if (btn) { btn.classList.add("cgum-rate-pulse"); btn.removeAttribute("title"); }
+
+    nudgeEl.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      const t = ev.target.closest("[data-n]");
+      const what = t && t.getAttribute("data-n");
+      if (what === "rate") doRate();
+      else if (what === "later" || what === "close") closeNudge();
+    });
+    nudgeEl.querySelector(".cgum-nudge-stars").addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); doRate(); }
+    });
+    let queued = false;
+    const follow = () => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; positionNudge(); }); };
+    const outside = (ev) => { if (nudgeEl && !nudgeEl.contains(ev.target)) closeNudge(); };
+    const esc = (ev) => { if (ev.key === "Escape") closeNudge(); };
+    setTimeout(() => document.addEventListener("click", outside, true), 0);
+    document.addEventListener("keydown", esc, true);
+    window.addEventListener("resize", follow);
+    window.addEventListener("scroll", follow, true);
+    nudgeHandlers = { outside, esc, follow };
+  }
+
+  // Above the Rate us button when there's room, below otherwise, clamped to
+  // the viewport, with the arrow kept on the button.
+  function positionNudge() {
+    const btn = host && host.querySelector('[data-cgum="rate"]');
+    if (!nudgeEl || !nudgeOpen) return;
+    if (!btn || !btn.getClientRects().length) { closeNudge(true); return; }
+    btn.classList.add("cgum-rate-pulse");
+    const br = btn.getBoundingClientRect(), nr = nudgeEl.getBoundingClientRect();
+    const margin = 8, vw = window.innerWidth;
+    let left = Math.max(margin, Math.min(br.left + br.width / 2 - nr.width / 2, vw - nr.width - margin));
+    let top;
+    if (br.top >= nr.height + 14) { top = br.top - nr.height - 10; nudgeEl.classList.remove("cgum-nudge-below"); }
+    else { top = br.bottom + 10; nudgeEl.classList.add("cgum-nudge-below"); }
+    nudgeEl.style.setProperty("--cgum-arrow-x", Math.max(14, Math.min(br.left + br.width / 2 - left, nr.width - 14)) + "px");
+    nudgeEl.style.left = left + "px";
+    nudgeEl.style.top = top + "px";
+  }
+
+  // silent = torn down for a reason other than "not now" (rated, strip gone).
+  function closeNudge(silent) {
+    if (nudgeTimer) { clearTimeout(nudgeTimer); nudgeTimer = null; }
+    if (!nudgeOpen && !nudgeEl) return;
+    nudgeOpen = false;
+    if (nudgeHandlers) {
+      document.removeEventListener("click", nudgeHandlers.outside, true);
+      document.removeEventListener("keydown", nudgeHandlers.esc, true);
+      window.removeEventListener("resize", nudgeHandlers.follow);
+      window.removeEventListener("scroll", nudgeHandlers.follow, true);
+      nudgeHandlers = null;
+    }
+    if (nudgeEl) { const el = nudgeEl; nudgeEl = null; el.classList.remove("cgum-nudge-in"); setTimeout(() => el.remove(), 180); }
+    const btn = host && host.querySelector('[data-cgum="rate"]');
+    if (btn) { btn.classList.remove("cgum-rate-pulse"); btn.title = "Pls Rate us & this button disappears forever after you review."; }
+  }
+
   // ---------------------------------------------------------------- menus
   let openMenu = null;
   function closeMenu() { if (openMenu) { openMenu.el.remove(); openMenu = null; } }
@@ -577,7 +736,7 @@
 
   function toggleGearMenu(anchor) {
     if (openMenu && openMenu.kind === "gear") { closeMenu(); return; }
-    closeMenu();
+    closeMenu(); closeNudge();
     const s = S.settings, f = s.fields;
     const row = (label, checked, onChange, note) => {
       const cb = h("input", { type: "checkbox", class: "cgum-cb" }); cb.checked = !!checked;
@@ -609,7 +768,7 @@
 
   function toggleLogoMenu(anchor) {
     if (openMenu && openMenu.kind === "logo") { closeMenu(); return; }
-    closeMenu();
+    closeMenu(); closeNudge();
     const items = C.TOOLS.map((t) => {
       const img = h("img", { class: "cgum-tool-ic", alt: "", width: 20, height: 20 });
       toolIcon(t.icon).then((src) => { if (src) img.src = src; else img.remove(); });
@@ -635,7 +794,8 @@
     watchUrl();
     render();
     // Keep reset countdowns fresh between polls.
-    setInterval(() => { if (host && host.isConnected && !openMenu) render(); }, 30000);
+    setInterval(() => { if (host && host.isConnected && !openMenu && !nudgeOpen) render(); }, 30000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) scheduleNudge(); });
     if (!S.snapshot || Date.now() - (S.snapshot.fetchedAt || 0) > 60000) send({ type: "refresh" });
   })();
 })();
