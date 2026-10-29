@@ -2,8 +2,10 @@
 //
 // 1. Bridge: relays what page-injector.js sees (messages sent, cap hits,
 //    usage responses, stream ends) to the service worker.
-// 2. proxyFetch: lets the service worker run a same-origin API call through
-//    this tab when a direct call from the worker is refused.
+// 2. proxyFetch / proxySession: let the service worker run a same-origin API
+//    call (or read who is signed in) through this tab. Used when a direct call
+//    from the worker is refused, and ALWAYS for a private / container window,
+//    whose cookies the worker cannot send (v1.0.3).
 // 3. The usage strip, mounted just above ChatGPT's composer.
 //
 // Everything is drawn with DOM APIs — no innerHTML from data, no remote
@@ -17,6 +19,7 @@
   const C = CUM_CONFIG;
   const HOST_ID = "chatgpt-usage-overlay";
   const HIDE_MS = 12 * 3600e3;
+  const PTR = "ptr:";   // v1.0.3: background's pointer to this window's account prefix
 
   // ---- Rating ask: same flow as Claude Usage Meter ----
   //   install          -> no button, no card
@@ -58,6 +61,9 @@
     tokensFor: null,
     fit: 0,
     autoCollapsed: false,
+    // v1.0.3: which cookie jar / account this tab belongs to. Usage data is
+    // stored per account; the background tells us the key prefix ("whoami").
+    ctx: null, prefix: null,
     // Rating ask (same flow as Claude Usage Meter). null = not loaded yet.
     rated: false, installAt: null, nudgeAt: null
   };
@@ -105,14 +111,36 @@
     return cachedToken.token;
   }
 
+  const cookieAccount = () => (document.cookie.match(/(?:^|;\s*)_account=([^;]+)/) || [])[1];
+
   chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
-    if (!msg || msg.type !== "proxyFetch") return;
+    if (!msg) return;
+    // v1.0.3: who is signed in, in THIS window. Same-origin, so the browser
+    // sends this window's cookies. The access token itself is not returned.
+    if (msg.type === "proxySession") {
+      (async () => {
+        try {
+          const r = await fetch("/api/auth/session", { credentials: "include", cache: "no-store", headers: { accept: "application/json" } });
+          const j = await r.json().catch(() => null);
+          if (!j) return { status: r.status || 0 };
+          const id = cumIdentity(j, cookieAccount());
+          if (!id) return { status: 401 };
+          cachedToken = { token: j.accessToken, exp: j.expires ? Date.parse(j.expires) : Date.now() + 10 * 60e3 };   // keep proxyFetch on the same account
+          return { status: 200, identity: id };
+        } catch (_) { return { status: 0 }; }
+      })().then(sendResponse);
+      return true;
+    }
+    if (msg.type !== "proxyFetch") return;
     (async () => {
       try {
+        // v1.0.3: only chatgpt.com's own API paths; the bearer token must never be sent elsewhere.
+        const path = String(msg.path || "");
+        if (!/^\/(?:backend-api|api)\//.test(path)) return { status: 0, ok: false, json: null };
         const token = await pageToken(false);
         if (!token) return { status: 401, ok: false, json: null };
         const headers = { accept: "application/json", authorization: "Bearer " + token };
-        const acct = (document.cookie.match(/(?:^|;\s*)_account=([^;]+)/) || [])[1];
+        const acct = cookieAccount();
         if (acct && /^[0-9a-f-]{36}$/i.test(acct)) headers["chatgpt-account-id"] = acct;
         const o = msg.opts || {};
         if (o.body) headers["content-type"] = "application/json";
@@ -126,12 +154,24 @@
   });
 
   // ---------------------------------------------------------------- storage
+  // v1.0.3: ask the background which account this window is on.
+  async function resolveScope() {
+    const r = await send({ type: "whoami" });
+    if (r && r.prefix) { S.ctx = r.ctx; S.prefix = r.prefix; return true; }
+    return false;
+  }
+  async function loadScoped() {
+    const p = S.prefix;
+    const s = p ? await chrome.storage.local.get([p + "snapshot", p + "capHits", p + "msgLog"]) : {};
+    S.snapshot = (p && s[p + "snapshot"]) || null;
+    S.capHits = (p && s[p + "capHits"]) || {};
+    S.msgLog = (p && s[p + "msgLog"]) || [];
+  }
+
   async function loadAll() {
-    const s = await chrome.storage.local.get(["settings", "snapshot", "capHits", "msgLog", "stripHiddenUntil", "promoDismissed", RATE_KEY, INSTALL_KEY, NUDGE_KEY]);
+    const s = await chrome.storage.local.get(["settings", "stripHiddenUntil", "promoDismissed", RATE_KEY, INSTALL_KEY, NUDGE_KEY]);
     S.settings = mergeSettings(s.settings);
-    S.snapshot = s.snapshot || null;
-    S.capHits = s.capHits || {};
-    S.msgLog = s.msgLog || [];
+    await loadScoped();
     S.hiddenUntil = s.stripHiddenUntil || 0;
     S.promoDismissed = s.promoDismissed || "";
     S.rated = !!s[RATE_KEY];
@@ -157,9 +197,15 @@
     if (area !== "local") return;
     let dirty = false;
     if (ch.settings) { S.settings = mergeSettings(ch.settings.newValue); dirty = true; }
-    if (ch.snapshot) { S.snapshot = ch.snapshot.newValue || null; dirty = true; }
-    if (ch.capHits) { S.capHits = ch.capHits.newValue || {}; dirty = true; }
-    if (ch.msgLog) { S.msgLog = ch.msgLog.newValue || []; dirty = true; }
+    // v1.0.3: the account behind this window changed (sign-in / workspace switch).
+    if (S.ctx && ch[PTR + S.ctx] && ch[PTR + S.ctx].newValue && ch[PTR + S.ctx].newValue !== S.prefix) {
+      S.prefix = ch[PTR + S.ctx].newValue;
+      loadScoped().then(render);
+    }
+    const p = S.prefix;
+    if (p && ch[p + "snapshot"]) { S.snapshot = ch[p + "snapshot"].newValue || null; dirty = true; }
+    if (p && ch[p + "capHits"]) { S.capHits = ch[p + "capHits"].newValue || {}; dirty = true; }
+    if (p && ch[p + "msgLog"]) { S.msgLog = ch[p + "msgLog"].newValue || []; dirty = true; }
     if (ch.stripHiddenUntil) { S.hiddenUntil = ch.stripHiddenUntil.newValue || 0; dirty = true; }
     if (ch.promoDismissed) { S.promoDismissed = ch.promoDismissed.newValue || ""; dirty = true; }
     if (ch[RATE_KEY]) { S.rated = !!ch[RATE_KEY].newValue; if (S.rated) closeNudge(true); dirty = true; }
@@ -788,6 +834,8 @@
 
   // ---------------------------------------------------------------- boot
   (async () => {
+    // The background may still be waking up: a few tries before giving up.
+    for (let i = 0; i < 4 && !(await resolveScope()); i++) await new Promise((r) => setTimeout(r, 1500));
     await loadAll();
     assetDataUrl("icons/logo64.png").then((src) => { if (src) { logoSrc = src; render(); } });
     mo.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });

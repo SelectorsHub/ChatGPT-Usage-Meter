@@ -15,6 +15,13 @@
 // cap/limit refusals, and the same usage responses whenever the page fetches
 // them itself (those are merged in for free).
 //
+// v1.0.3: SEVERAL ACCOUNTS. A private / container window can be signed in to
+// a different ChatGPT account than the normal window. Everything that
+// describes one account (snapshot, history, fired alerts, message log, limit
+// hits) is stored per account, requests for a non-default window are made by a
+// chatgpt.com tab in that window, and every message is handled in the window
+// it came from. See "browsing contexts" below.
+//
 // Requests go straight from the service worker first. If that fails in a way
 // that looks like a bot wall rather than a signed-out session, the same
 // request is relayed through an open chatgpt.com tab, where it is an ordinary
@@ -42,6 +49,233 @@ function mergeDefaults(s) {
 async function getSettings() {
   const { settings } = await chrome.storage.local.get("settings");
   return mergeDefaults(settings);
+}
+
+// ---------- browsing contexts (v1.0.3) ----------
+//
+// One extension instance serves several cookie jars: the normal window, an
+// incognito / private window and (Firefox) container tabs. Each jar can be
+// signed in to a DIFFERENT ChatGPT account. The service worker's own fetch()
+// always carries the NORMAL jar's cookies, so before this version a private
+// window was shown the normal account's numbers (and its page data was merged
+// into the normal account's snapshot).
+//
+//   CTX            "default" for the normal jar, otherwise "incognito" (Chrome /
+//                  Edge) or the Firefox cookieStoreId.
+//   inCtx(ctx, fn) runs fn with CTX set, strictly one at a time (FIFO), so the
+//                  code in between can use the K() key helper as if there were
+//                  one account. Every entry point (alarm, message, cookie
+//                  change) goes through it.
+//   api()          "default" calls from the worker, as before. Any other jar
+//                  cannot be reached from the worker, so the request is run by
+//                  the content script of a chatgpt.com tab living in that jar.
+//
+// Account-level data is stored under "acct:<user>~<workspace>:<name>" no
+// matter which window it was seen from (same account in two windows = same
+// entry). When the account cannot be read (signed out, no tab in a private
+// window) the window's own "ctx:<ctx>:<name>" keys are used instead. Settings,
+// rating state etc. are user-level and stay shared. "ptr:<ctx>" tells the UI of
+// that window which prefix to read.
+//
+// Freeze guards: the queue is one lane, so every job has a hard time limit,
+// every request a shorter one, and a request that finishes after its job was
+// given up on is discarded (ctx_expired) instead of writing into whichever
+// account runs next.
+let CTX = "default";
+let CURRENT_ACCT = null;       // storage-key part of the account being served
+let CURRENT_ID = null;         // { userId, accountId, plan } of that account
+let CURRENT_ID_ERROR = null;   // why it could not be read (signed_out / no_tab)
+
+const ACCOUNT_KEYS = ["snapshot", "history", "capHits", "fired", "msgLog"];
+function acctPrefix() { return CURRENT_ACCT ? `acct:${CURRENT_ACCT}:` : `ctx:${CTX}:`; }
+function K(name) { return ACCOUNT_KEYS.includes(name) ? acctPrefix() + name : name; }
+
+const PTR_PREFIX = "ptr:";
+const PTR_SEEN = new Map();
+async function publishPointer() {
+  const p = acctPrefix();
+  if (PTR_SEEN.get(CTX) === p) return;
+  PTR_SEEN.set(CTX, p);
+  try { await chrome.storage.local.set({ [PTR_PREFIX + CTX]: p }); } catch (_) { PTR_SEEN.delete(CTX); }
+}
+
+// Firefox exposes cookieStoreId on the tab; Chrome / Edge only say whether it
+// is incognito (they have just the two jars).
+function ctxOfTab(tab) {
+  if (!tab) return "default";
+  const sid = tab.cookieStoreId;
+  if (sid) return (sid === "firefox-default" || sid === "0") ? "default" : String(sid);
+  return tab.incognito ? "incognito" : "default";
+}
+
+async function tabsOfCtx(ctx) {
+  try {
+    const tabs = await chrome.tabs.query({ url: ORIGIN + "/*" });
+    return tabs.filter((t) => ctxOfTab(t) === ctx).sort((a, b) => (b.active ? 1 : 0) - (a.active ? 1 : 0));
+  } catch (_) { return []; }
+}
+
+// Every jar that has a chatgpt.com tab, plus "default" (always polled, as
+// before, so the toolbar badge works without a chatgpt.com tab).
+async function activeCtxs() {
+  const set = new Set(["default"]);
+  try {
+    for (const t of await chrome.tabs.query({ url: ORIGIN + "/*" })) set.add(ctxOfTab(t));
+  } catch (_) {}
+  return [...set];
+}
+
+const CTX_JOB_TIMEOUT_MS = 60 * 1000;    // longest a single queued job may hold the lane
+const CTX_FETCH_TIMEOUT_MS = 20 * 1000;  // longest a single request may take
+let ctxQueue = Promise.resolve();
+let RUN_ID = 0;    // id of the job currently holding the lane (0 = none)
+let runSeq = 0;
+
+function withTimeout(promise, ms, label) {
+  let t = null;
+  return Promise.race([
+    promise,
+    new Promise((_, rej) => { t = setTimeout(() => rej(new Error(label || "timeout")), ms); })
+  ]).finally(() => clearTimeout(t));
+}
+
+function assertRun(myRun) { if (myRun && RUN_ID !== myRun) throw new Error("ctx_expired"); }
+
+// fetch with a time limit; refuses to hand back a response once the job that
+// asked for it no longer holds the lane.
+async function guardedFetch(url, init) {
+  const myRun = RUN_ID;
+  const ctl = typeof AbortController === "function" ? new AbortController() : null;
+  const timer = setTimeout(() => { try { ctl && ctl.abort(); } catch (_) {} }, CTX_FETCH_TIMEOUT_MS);
+  try {
+    const resp = await fetch(url, ctl ? Object.assign({}, init || {}, { signal: ctl.signal }) : init);
+    assertRun(myRun);
+    return resp;
+  } finally { clearTimeout(timer); }
+}
+
+// ---- which account is this window on? ----
+const ID_TTL_MS = 10 * 60 * 1000;
+const ID_BY_CTX = new Map();   // ctx -> { id, at } (dropped whenever a login cookie changes)
+function forgetIdentities() { ID_BY_CTX.clear(); auth = null; }
+
+// Ask a chatgpt.com tab of THIS jar who is signed in (same-origin there, so
+// the browser sends that jar's cookies). null = no tab answered.
+async function sessionViaTab(ctx) {
+  const myRun = RUN_ID;
+  let signedOut = false;
+  for (const t of await tabsOfCtx(ctx)) {
+    let r = null;
+    try {
+      r = await withTimeout(chrome.tabs.sendMessage(t.id, { type: "proxySession" }), CTX_FETCH_TIMEOUT_MS + 2000, "proxy_timeout");
+    } catch (_) { continue; }
+    assertRun(myRun);
+    if (r && r.status === 200 && r.identity) return r.identity;
+    if (r && r.status === 401) signedOut = true;
+  }
+  if (signedOut) throw apiError("signed_out", "Not signed in to chatgpt.com", 401);
+  return null;
+}
+
+async function identityForCtx(ctx) {
+  const hit = ID_BY_CTX.get(ctx);
+  if (hit && Date.now() - hit.at < ID_TTL_MS) return hit.id;
+  let id = null;
+  if (ctx === "default") {
+    try {
+      const a = await getAuth(false);
+      id = { userId: a.userId, accountId: a.accountId, plan: a.plan };
+    } catch (e) {
+      if (e && (e.code === "signed_out" || e.message === "ctx_expired")) throw e;
+      // blocked / network: a tab of this same jar may still be able to tell
+      try { id = await sessionViaTab(ctx); } catch (e2) { if (e2 && e2.code === "signed_out") throw e2; }
+    }
+  } else {
+    id = await sessionViaTab(ctx);
+    if (!id) throw apiError("no_tab", "Open a chatgpt.com tab in this window to see its account.");
+  }
+  if (id && cumAcctKey(id)) ID_BY_CTX.set(ctx, { id, at: Date.now() });
+  return id;
+}
+
+async function resolveCtxAccount() {
+  CURRENT_ID = null; CURRENT_ID_ERROR = null; CURRENT_ACCT = null;
+  try { CURRENT_ID = await identityForCtx(CTX); }
+  catch (e) {
+    if (e && e.message === "ctx_expired") throw e;
+    CURRENT_ID_ERROR = e;
+  }
+  CURRENT_ACCT = CURRENT_ID ? cumAcctKey(CURRENT_ID) : null;
+  if (CURRENT_ACCT) await migrateLegacyAccountState();
+  await publishPointer();
+}
+
+// Before 1.0.3 the account-level keys were stored un-prefixed, and only the
+// normal window was ever polled. The first time an account is seen in the
+// normal window, that data is moved under it (never overwriting its own).
+let LEGACY_DONE = false;
+async function migrateLegacyAccountState() {
+  if (CTX !== "default" || LEGACY_DONE || !CURRENT_ACCT) return;
+  LEGACY_DONE = true;
+  try {
+    const prefix = acctPrefix();
+    const got = await chrome.storage.local.get([...ACCOUNT_KEYS, ...ACCOUNT_KEYS.map((n) => prefix + n)]);
+    const moved = {}, legacy = [];
+    for (const n of ACCOUNT_KEYS) {
+      if (got[n] == null) continue;
+      legacy.push(n);
+      if (got[prefix + n] == null) moved[prefix + n] = got[n];
+    }
+    if (!legacy.length) return;
+    if (Object.keys(moved).length) await chrome.storage.local.set(moved);
+    await chrome.storage.local.remove(legacy);
+  } catch (_) { LEGACY_DONE = false; }
+}
+
+function inCtx(ctx, fn) {
+  const run = () => {
+    const myRun = ++runSeq;
+    RUN_ID = myRun;
+    CTX = ctx || "default";
+    CURRENT_ACCT = null; CURRENT_ID = null; CURRENT_ID_ERROR = null;
+    let timer = null;
+    const work = (async () => {
+      await resolveCtxAccount();
+      return await fn();
+    })();
+    const watchdog = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error("ctx_job_timeout")), CTX_JOB_TIMEOUT_MS);
+    });
+    return Promise.race([work, watchdog]).finally(() => {
+      clearTimeout(timer);
+      if (RUN_ID !== myRun) return;   // never touch another job's state
+      CTX = "default"; CURRENT_ACCT = null; CURRENT_ID = null; CURRENT_ID_ERROR = null; RUN_ID = 0;
+    });
+  };
+  const p = ctxQueue.then(run, run);
+  ctxQueue = p.catch(() => {});
+  return p;
+}
+
+// A plain poll that is still waiting in the queue is shared, not repeated.
+const queuedPolls = new Map();   // ctx -> promise of a poll that has not started
+function pollCtx(ctx, opts) {
+  const plain = !opts || !Object.keys(opts).length;
+  if (plain && queuedPolls.has(ctx)) return queuedPolls.get(ctx);
+  const p = inCtx(ctx, () => {
+    if (plain && queuedPolls.get(ctx) === p) queuedPolls.delete(ctx);
+    return refresh(opts || {});
+  });
+  if (plain) {
+    queuedPolls.set(ctx, p);
+    const clear = () => { if (queuedPolls.get(ctx) === p) queuedPolls.delete(ctx); };
+    p.then(clear, clear);
+  }
+  return p;
+}
+async function pollAll(opts) {
+  const list = await activeCtxs();
+  await Promise.allSettled(list.map((c) => pollCtx(c, opts)));
 }
 
 // ---------- auth ----------
@@ -74,8 +308,9 @@ async function getAuth(force) {
   authPromise = (async () => {
     let r;
     try {
-      r = await fetch(ORIGIN + "/api/auth/session", { credentials: "include", cache: "no-store", headers: { accept: "application/json" } });
+      r = await guardedFetch(ORIGIN + "/api/auth/session", { credentials: "include", cache: "no-store", headers: { accept: "application/json" } });
     } catch (e) {
+      if (e && e.message === "ctx_expired") throw e;
       throw apiError("network", "Couldn't reach chatgpt.com");
     }
     const j = await r.json().catch(() => null);
@@ -86,6 +321,7 @@ async function getAuth(force) {
       exp: jwtExp(j.accessToken) || (j.expires ? Date.parse(j.expires) : Date.now() + 30 * 60e3),
       accountId: (await accountIdCookie()) || (j.account && j.account.id) || null,
       plan: (j.account && (j.account.planType || j.account.plan_type)) || null,
+      userId: cumUserId(j),
       email: (j.user && j.user.email) || null
     };
     return auth;
@@ -100,14 +336,17 @@ async function directApi(path, opts, retried) {
   if (opts && opts.body) headers["content-type"] = "application/json";
   let r;
   try {
-    r = await fetch(ORIGIN + path, {
+    r = await guardedFetch(ORIGIN + path, {
       method: (opts && opts.method) || "GET",
       credentials: "include",
       cache: "no-store",
       headers,
       body: opts && opts.body ? JSON.stringify(opts.body) : undefined
     });
-  } catch (e) { throw apiError("network", "Couldn't reach chatgpt.com"); }
+  } catch (e) {
+    if (e && e.message === "ctx_expired") throw e;
+    throw apiError("network", "Couldn't reach chatgpt.com");
+  }
   if (r.status === 401 && !retried) { auth = null; return directApi(path, opts, true); }
   const json = await r.json().catch(() => null);
   return { status: r.status, ok: r.ok, json };
@@ -117,18 +356,30 @@ async function chatgptTabs() {
   try { return await chrome.tabs.query({ url: ORIGIN + "/*" }); } catch (_) { return []; }
 }
 
+// Relay through a chatgpt.com tab of the SAME cookie jar as the job (v1.0.3:
+// it used to be any tab, so a refused call could be answered by a private
+// window signed in to another account).
 async function tabApi(path, opts) {
-  const tabs = await chatgptTabs();
-  for (const t of tabs) {
+  const myRun = RUN_ID;
+  for (const t of await tabsOfCtx(CTX)) {
+    let res = null;
     try {
-      const res = await chrome.tabs.sendMessage(t.id, { type: "proxyFetch", path, opts });
-      if (res && res.status) return res;
-    } catch (_) {}
+      res = await withTimeout(chrome.tabs.sendMessage(t.id, { type: "proxyFetch", path, opts }), CTX_FETCH_TIMEOUT_MS + 2000, "proxy_timeout");
+    } catch (_) { continue; }
+    assertRun(myRun);
+    if (res && res.status) return res;
   }
   return null;
 }
 
 async function api(path, opts) {
+  if (CTX !== "default") {
+    // The worker cannot reach another jar: only a tab of that jar may ask.
+    const res = await tabApi(path, opts);
+    if (!res) throw apiError("no_tab", "Open a chatgpt.com tab in this window to see its account.");
+    if (res.status === 401) throw apiError("signed_out", "Not signed in to chatgpt.com", 401);
+    return res;
+  }
   let res = null, err = null;
   try { res = await directApi(path, opts); } catch (e) { err = e; }
   const bad = !res || (!res.ok && res.status !== 404) || res.json == null;
@@ -276,14 +527,18 @@ function parseFeatures(j, now) {
 // ---------- state ----------
 
 async function loadState() {
-  const s = await chrome.storage.local.get(["snapshot", "history", "capHits", "fired", "msgLog"]);
+  const s = await chrome.storage.local.get(ACCOUNT_KEYS.map(K));
   return {
-    snapshot: s.snapshot || null,
-    history: s.history || {},
-    capHits: s.capHits || {},
-    fired: s.fired || [],
-    msgLog: s.msgLog || []
+    snapshot: s[K("snapshot")] || null,
+    history: s[K("history")] || {},
+    capHits: s[K("capHits")] || {},
+    fired: s[K("fired")] || [],
+    msgLog: s[K("msgLog")] || []
   };
+}
+
+async function saveState(snap, history, fired) {
+  await chrome.storage.local.set({ [K("snapshot")]: snap, [K("history")]: history, [K("fired")]: fired });
 }
 
 function allWindows(snap) {
@@ -330,10 +585,12 @@ function updateHistoryAndForecast(snap, history, now) {
 
 function notify(id, title, message) {
   try {
-    chrome.notifications.create(id, {
+    // v1.0.3: a private window can be a different account; say so.
+    const where = CTX === "default" ? "" : " (private window)";
+    chrome.notifications.create(CTX === "default" ? id : id + "|" + CTX, {
       type: "basic",
       iconUrl: "icons/icon128.png",
-      title,
+      title: title + where,
       message,
       priority: 1
     });
@@ -361,79 +618,116 @@ async function checkThresholds(snap, fired, settings) {
   return fired.slice(-300);
 }
 
+const BADGE_COLORS = { green: "#10a37f", amber: "#d99a06", orange: "#ea6a12", red: "#dc2626" };
+function computeBadge(snap, settings) {
+  const p = snap && snap.usage && snap.usage.windows[0];
+  if (!settings.badge || !p || p.pct == null) return { text: "" };
+  const pct = Math.round(p.pct);
+  return { text: pct >= 100 ? "MAX" : String(pct), color: BADGE_COLORS[cumLevel(pct)] || "#555" };
+}
+async function paintBadge(b, tabId) {
+  const t = tabId == null ? {} : { tabId };
+  await chrome.action.setBadgeText({ ...t, text: b.text });
+  if (!b.text) return;
+  await chrome.action.setBadgeBackgroundColor({ ...t, color: b.color });
+  try { await chrome.action.setBadgeTextColor({ ...t, color: "#ffffff" }); } catch (_) {}
+}
+// v1.0.3: the normal window paints the global badge, as before. Any other jar
+// paints tab-specific badges on ITS tabs only (a tab-specific value wins over
+// the global one), so a private window never shows the normal account's %.
 async function updateBadge(snap, settings) {
+  const ctx = CTX;   // captured: this can be called late, and CTX moves on
   try {
-    const p = snap && snap.usage && snap.usage.windows[0];
-    if (!settings.badge || !p || p.pct == null) { await chrome.action.setBadgeText({ text: "" }); return; }
-    const pct = Math.round(p.pct);
-    await chrome.action.setBadgeText({ text: pct >= 100 ? "MAX" : String(pct) });
-    const colors = { green: "#10a37f", amber: "#d99a06", orange: "#ea6a12", red: "#dc2626" };
-    await chrome.action.setBadgeBackgroundColor({ color: colors[cumLevel(pct)] || "#555" });
-    try { await chrome.action.setBadgeTextColor({ color: "#ffffff" }); } catch (_) {}
+    const b = computeBadge(snap, settings);
+    if (ctx === "default") { await paintBadge(b); return; }
+    for (const t of await chrome.tabs.query({})) if (ctxOfTab(t) === ctx) { try { await paintBadge(b, t.id); } catch (_) {} }
   } catch (_) {}
+}
+function refreshAllBadges(settings) {
+  activeCtxs().then((list) => {
+    for (const c of list) inCtx(c, async () => { await updateBadge((await loadState()).snapshot, settings); }).catch(() => {});
+  }).catch(() => {});
+}
+// Tab-specific badges reset when a tab navigates, and a new private tab would
+// otherwise inherit the global (normal-account) badge: repaint on tab events.
+async function refreshTabBadge(tab) {
+  try {
+    if (!tab || tab.id == null) return;
+    const ctx = ctxOfTab(tab);
+    if (ctx === "default") return;
+    await inCtx(ctx, async () => {
+      try { await paintBadge(computeBadge((await loadState()).snapshot, await getSettings()), tab.id); } catch (_) {}
+    });
+  } catch (_) {}
+}
+if (chrome.tabs && chrome.tabs.onActivated) {
+  chrome.tabs.onActivated.addListener(({ tabId }) => {
+    chrome.tabs.get(tabId).then(refreshTabBadge).catch(() => {});
+  });
+  chrome.tabs.onUpdated.addListener((_id, info, tab) => {
+    if (info.status === "complete" || info.status === "loading") refreshTabBadge(tab);
+  });
 }
 
 // ---------- refresh ----------
 
-let refreshing = null;
-
 async function refresh(opts) {
   opts = opts || {};
-  if (refreshing) return refreshing;
-  refreshing = (async () => {
-    const now = Date.now();
-    const settings = await getSettings();
-    const st = await loadState();
-    const prev = st.snapshot || {};
-    const snap = {
-      fetchedAt: now,
-      usage: prev.usage || null,
-      features: prev.features || null,
-      plan: prev.plan || null,
-      error: null,
-      usageUnavailable: false
-    };
+  const now = Date.now();
+  if (opts.forceAuth) {
+    if (CTX === "default") auth = null;
+    ID_BY_CTX.delete(CTX);
+    await resolveCtxAccount();   // v1.0.3: the account may have changed
+  }
+  const settings = await getSettings();
+  const st = await loadState();
+  const prev = st.snapshot || {};
+  const snap = {
+    fetchedAt: now,
+    usage: prev.usage || null,
+    features: prev.features || null,
+    plan: prev.plan || null,
+    error: null,
+    usageUnavailable: false
+  };
 
-    try {
-      if (opts.forceAuth) auth = null;
-      // Plan name is a nicety; a failed session read here is handled (and
-      // relayed through a tab if needed) by api() below.
-      try { const a = await getAuth(false); snap.plan = a.plan || snap.plan; }
-      catch (e) { if (e.code === "signed_out") throw e; }
-      const r = await api("/backend-api/wham/usage");
-      if (r && r.ok && r.json) {
-        const u = parseUsage(r.json, now);
-        snap.usage = u;
-        snap.usageAt = now;
-        if (u && u.plan) snap.plan = u.plan;
-        snap.usageUnavailable = !u || (!u.windows.length && !u.extra.length);
-      } else if (r && (r.status === 404 || r.status === 403 || r.status === 400)) {
-        snap.usage = null;
-        snap.usageUnavailable = true;
-      } else {
-        snap.error = { code: "http", message: `Usage request failed (${r ? r.status : "no response"})` };
-      }
-
-      const needFeatures = opts.force || opts.features || !prev.features || now - (prev.features.at || 0) > FEATURES_EVERY_MS;
-      if (needFeatures) {
-        const f = await api("/backend-api/conversation/init", {
-          method: "POST",
-          body: { gizmo_id: null, requested_default_model: null, conversation_id: null, timezone_offset_min: new Date().getTimezoneOffset() }
-        }).catch(() => null);
-        if (f && f.ok && f.json) snap.features = parseFeatures(f.json, now);
-      }
-    } catch (e) {
-      snap.error = { code: e.code || "error", message: e.message || String(e) };
-      if (e.code === "signed_out") { snap.usage = null; snap.features = null; }
+  try {
+    // Signed out, or a private window with no chatgpt.com tab: nothing to ask.
+    if (CURRENT_ID_ERROR && (CURRENT_ID_ERROR.code === "signed_out" || CURRENT_ID_ERROR.code === "no_tab")) throw CURRENT_ID_ERROR;
+    if (CURRENT_ID && CURRENT_ID.plan) snap.plan = CURRENT_ID.plan;
+    const r = await api("/backend-api/wham/usage");
+    if (r && r.ok && r.json) {
+      const u = parseUsage(r.json, now);
+      snap.usage = u;
+      snap.usageAt = now;
+      if (u && u.plan) snap.plan = u.plan;
+      snap.usageUnavailable = !u || (!u.windows.length && !u.extra.length);
+    } else if (r && (r.status === 404 || r.status === 403 || r.status === 400)) {
+      snap.usage = null;
+      snap.usageUnavailable = true;
+    } else {
+      snap.error = { code: "http", message: `Usage request failed (${r ? r.status : "no response"})` };
     }
 
-    updateHistoryAndForecast(snap, st.history, now);
-    const fired = await checkThresholds(snap, st.fired, settings);
-    await chrome.storage.local.set({ snapshot: snap, history: st.history, fired });
-    await updateBadge(snap, settings);
-    return snap;
-  })();
-  try { return await refreshing; } finally { refreshing = null; }
+    const needFeatures = opts.force || opts.features || !prev.features || now - (prev.features.at || 0) > FEATURES_EVERY_MS;
+    if (needFeatures) {
+      const f = await api("/backend-api/conversation/init", {
+        method: "POST",
+        body: { gizmo_id: null, requested_default_model: null, conversation_id: null, timezone_offset_min: new Date().getTimezoneOffset() }
+      }).catch((e) => { if (e && e.message === "ctx_expired") throw e; return null; });
+      if (f && f.ok && f.json) snap.features = parseFeatures(f.json, now);
+    }
+  } catch (e) {
+    if (e && e.message === "ctx_expired") throw e;
+    snap.error = { code: e.code || "error", message: e.message || String(e) };
+    if (e.code === "signed_out") { snap.usage = null; snap.features = null; }
+  }
+
+  updateHistoryAndForecast(snap, st.history, now);
+  const fired = await checkThresholds(snap, st.fired, settings);
+  await saveState(snap, st.history, fired);
+  await updateBadge(snap, settings);
+  return snap;
 }
 
 // Fresh data the page fetched itself — merge without a network call.
@@ -454,25 +748,30 @@ async function mergeFromPage(kind, data) {
   }
   updateHistoryAndForecast(snap, st.history, now);
   const fired = await checkThresholds(snap, st.fired, settings);
-  await chrome.storage.local.set({ snapshot: snap, history: st.history, fired });
+  await saveState(snap, st.history, fired);
   await updateBadge(snap, settings);
 }
 
-let followUpTimer = null;
+const followUpTimers = new Map();   // ctx -> timer
 function scheduleFollowUp(ms) {
-  clearTimeout(followUpTimer);
-  followUpTimer = setTimeout(() => { refresh({ features: true }).catch(() => {}); }, ms);
+  const ctx = CTX;   // the follow-up belongs to the window that asked
+  clearTimeout(followUpTimers.get(ctx));
+  followUpTimers.set(ctx, setTimeout(() => {
+    followUpTimers.delete(ctx);
+    pollCtx(ctx, { features: true }).catch(() => {});
+  }, ms));
 }
 
 // ---------- messages log, caps ----------
 
 async function logMessage(model, at) {
-  const { msgLog } = await chrome.storage.local.get("msgLog");
+  const got = await chrome.storage.local.get(K("msgLog"));
+  const msgLog = got[K("msgLog")];
   const log = Array.isArray(msgLog) ? msgLog : [];
   const now = Date.now();
   log.push({ t: at || now, m: String(model || "auto").slice(0, 80) });
   const pruned = log.filter((e) => now - e.t <= LOG_KEEP_MS).slice(-LOG_MAX);
-  await chrome.storage.local.set({ msgLog: pruned });
+  await chrome.storage.local.set({ [K("msgLog")]: pruned });
 
   const settings = await getSettings();
   if (settings.notify && settings.modelCaps.length) {
@@ -482,13 +781,13 @@ async function logMessage(model, at) {
       const ths = (settings.thresholds || []).filter((t) => pct >= t);
       if (!ths.length) continue;
       const top = Math.max(...ths);
-      const { fired } = await chrome.storage.local.get("fired");
-      const f = Array.isArray(fired) ? fired : [];
+      const gotF = await chrome.storage.local.get(K("fired"));
+      const f = Array.isArray(gotF[K("fired")]) ? gotF[K("fired")] : [];
       const bucket = Math.floor(now / (CUM_CONFIG.WINDOWS[c.cap.window] || CUM_CONFIG.WINDOWS.day).ms);
       const fid = `cap|${c.cap.model}|${c.cap.window}|${bucket}|${top}`;
       if (f.includes(fid)) continue;
       f.push(fid);
-      await chrome.storage.local.set({ fired: f.slice(-300) });
+      await chrome.storage.local.set({ [K("fired")]: f.slice(-300) });
       notify("cgum-" + fid, `${c.cap.model}: ${c.used} of ${c.limit} used`,
         `You've sent ${c.used} of your ${c.limit} ${c.cap.model} messages in the last ${(CUM_CONFIG.WINDOWS[c.cap.window] || {}).label || c.cap.window} (counted in this browser).`);
     }
@@ -496,8 +795,8 @@ async function logMessage(model, at) {
 }
 
 async function recordCap(msg) {
-  const { capHits } = await chrome.storage.local.get("capHits");
-  const hits = capHits || {};
+  const gotC = await chrome.storage.local.get(K("capHits"));
+  const hits = gotC[K("capHits")] || {};
   const now = Date.now();
   const key = String(msg.model || "auto");
   const resetAt = msg.resetAt ? Date.parse(msg.resetAt) : null;
@@ -507,7 +806,7 @@ async function recordCap(msg) {
     const h = hits[k];
     if ((h.resetAt && h.resetAt < now) || (!h.resetAt && now - h.at > 6 * 3600e3)) delete hits[k];
   }
-  await chrome.storage.local.set({ capHits: hits });
+  await chrome.storage.local.set({ [K("capHits")]: hits });
   const settings = await getSettings();
   if (settings.notify && (!prev || now - prev.at > 30 * 60e3)) {
     const when = hits[key] && hits[key].resetAt ? ` Resets in ${cumFmtDuration(hits[key].resetAt - now)}.` : "";
@@ -522,12 +821,13 @@ const tokenCache = new Map(); // id -> { at, result }
 
 async function chatTokens(conversationId, force) {
   if (!conversationId) return null;
-  const c = tokenCache.get(conversationId);
+  const ck = (CURRENT_ACCT || CTX) + "|" + conversationId;   // v1.0.3: per account
+  const c = tokenCache.get(ck);
   if (!force && c && Date.now() - c.at < 20000) return c.result;
   const r = await api("/backend-api/conversation/" + conversationId);
   if (!r || !r.ok || !r.json) return null;
   const result = CUM_TOKENS.fromConversation(r.json);
-  tokenCache.set(conversationId, { at: Date.now(), result });
+  tokenCache.set(ck, { at: Date.now(), result });
   if (tokenCache.size > 50) tokenCache.delete(tokenCache.keys().next().value);
   return result;
 }
@@ -576,14 +876,14 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     chrome.tabs.create({ url: cumUtm(CUM_CONFIG.INSTALL_URL, "install", "onboarding") });
   }
   await updateUninstallUrl();
-  refresh({ force: true }).catch(() => {});
+  pollAll({ force: true }).catch(() => {});
 });
 
-chrome.runtime.onStartup.addListener(() => { schedulePolling(); updateUninstallUrl(); refresh({}).catch(() => {}); });
+chrome.runtime.onStartup.addListener(() => { schedulePolling(); updateUninstallUrl(); pollAll().catch(() => {}); });
 
 chrome.alarms.onAlarm.addListener((a) => {
   if (a.name !== POLL_ALARM) return;
-  refresh({}).catch(() => {});
+  pollAll().catch(() => {});
   if (Date.now() - uninstallUrlSetAt > 12 * 3600e3) updateUninstallUrl();
 });
 
@@ -591,8 +891,28 @@ chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local" || !changes.settings) return;
   const o = mergeDefaults(changes.settings.oldValue), n = mergeDefaults(changes.settings.newValue);
   if (o.pollMinutes !== n.pollMinutes) schedulePolling();
-  if (o.badge !== n.badge) chrome.storage.local.get("snapshot").then(({ snapshot }) => updateBadge(snapshot, n));
+  if (o.badge !== n.badge) refreshAllBadges(n);   // v1.0.3: every window, not only the normal one
 });
+
+// v1.0.3: a login cookie changed in ANY jar (sign in / out, workspace switch):
+// forget who each window is, and re-read soon. Rate-limited, because a session
+// cookie can also be re-issued while the page is simply open.
+let cookiePollAt = 0, cookieTimer = null;
+if (chrome.cookies && chrome.cookies.onChanged) {
+  chrome.cookies.onChanged.addListener(({ cookie }) => {
+    const domain = String((cookie && cookie.domain) || "").replace(/^\./, "");
+    if (!(domain === "chatgpt.com" || domain.endsWith(".chatgpt.com"))) return;
+    if (cookie.name !== "_account" && !/session-token/.test(cookie.name)) return;
+    forgetIdentities();
+    if (cookieTimer) return;
+    cookieTimer = setTimeout(() => {
+      cookieTimer = null;
+      if (Date.now() - cookiePollAt < 20000) return;
+      cookiePollAt = Date.now();
+      pollAll().catch(() => {});
+    }, 1000);
+  });
+}
 
 chrome.notifications.onClicked.addListener((id) => {
   if (!String(id).startsWith("cgum-")) return;
@@ -603,48 +923,67 @@ chrome.notifications.onClicked.addListener((id) => {
   chrome.notifications.clear(id);
 });
 
+async function handleMessage(msg, sender) {
+  switch (msg.type) {
+    case "whoami":
+      // v1.0.3: tells a tab / popup which storage prefix is ITS account's.
+      return { ctx: CTX, prefix: acctPrefix(), error: CURRENT_ID_ERROR ? (CURRENT_ID_ERROR.code || "error") : null };
+    case "refresh": {
+      const snap = await refresh({ force: !!msg.force, forceAuth: !!msg.force });
+      return { snapshot: snap };
+    }
+    case "message_sent":
+      await logMessage(msg.model, msg.at);
+      return { ok: true };
+    case "completion_done":
+      scheduleFollowUp(msg.failed ? 1500 : 4000);
+      return { ok: true };
+    case "cap_hit":
+      await recordCap(msg);
+      scheduleFollowUp(1500);
+      return { ok: true };
+    case "page_usage":
+      await mergeFromPage("usage", msg.data);
+      return { ok: true };
+    case "page_features":
+      await mergeFromPage("features", msg.data);
+      return { ok: true };
+    case "chatTokens":
+      try { return { result: await chatTokens(msg.conversationId, !!msg.force) }; }
+      catch (e) { if (e && e.message === "ctx_expired") throw e; return { error: e.code || "error" }; }
+    case "open-review": {
+      await chrome.storage.local.set({ rate_us_clicked: true, rate_us_clicked_at: Date.now() });
+      const url = cumStoreUrl() || CUM_CONFIG.PRODUCT_URL;
+      await chrome.tabs.create({ url });
+      return { ok: true };
+    }
+    case "openOptions":
+      chrome.runtime.openOptionsPage();
+      return { ok: true };
+    case "openTab":
+      if (msg.url) chrome.tabs.create({ url: msg.url });
+      return { ok: true };
+    default:
+      return null;
+  }
+}
+
+// v1.0.3: every message is handled inside the cookie jar it came from: the
+// sender's tab, or msg.tabId for the popup (which has no sender tab).
+const CTX_FREE_MESSAGES = new Set(["open-review", "openOptions", "openTab"]);
+async function ctxForMessage(msg, sender) {
+  if (sender && sender.tab) return ctxOfTab(sender.tab);
+  if (msg && typeof msg.tabId === "number") {
+    try { return ctxOfTab(await chrome.tabs.get(msg.tabId)); } catch (_) {}
+  }
+  return "default";
+}
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg || !msg.type) return;
-  (async () => {
-    switch (msg.type) {
-      case "refresh": {
-        const snap = await refresh({ force: !!msg.force, forceAuth: !!msg.force });
-        return { snapshot: snap };
-      }
-      case "message_sent":
-        await logMessage(msg.model, msg.at);
-        return { ok: true };
-      case "completion_done":
-        scheduleFollowUp(msg.failed ? 1500 : 4000);
-        return { ok: true };
-      case "cap_hit":
-        await recordCap(msg);
-        scheduleFollowUp(1500);
-        return { ok: true };
-      case "page_usage":
-        await mergeFromPage("usage", msg.data);
-        return { ok: true };
-      case "page_features":
-        await mergeFromPage("features", msg.data);
-        return { ok: true };
-      case "chatTokens":
-        try { return { result: await chatTokens(msg.conversationId, !!msg.force) }; }
-        catch (e) { return { error: e.code || "error" }; }
-      case "open-review": {
-        await chrome.storage.local.set({ rate_us_clicked: true, rate_us_clicked_at: Date.now() });
-        const url = cumStoreUrl() || CUM_CONFIG.PRODUCT_URL;
-        await chrome.tabs.create({ url });
-        return { ok: true };
-      }
-      case "openOptions":
-        chrome.runtime.openOptionsPage();
-        return { ok: true };
-      case "openTab":
-        if (msg.url) chrome.tabs.create({ url: msg.url });
-        return { ok: true };
-      default:
-        return null;
-    }
-  })().then(sendResponse, (e) => sendResponse({ error: String(e && e.message || e) }));
+  const fail = (e) => sendResponse({ error: String((e && e.message) || e) });   // never leave the caller hanging
+  if (CTX_FREE_MESSAGES.has(msg.type)) { handleMessage(msg, sender).then(sendResponse, fail); return true; }
+  ctxForMessage(msg, sender)
+    .then((ctx) => inCtx(ctx, () => handleMessage(msg, sender)))
+    .then(sendResponse, fail);
   return true;
 });

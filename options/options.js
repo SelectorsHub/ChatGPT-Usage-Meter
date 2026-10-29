@@ -10,6 +10,7 @@
     credits: "Credits", modelCaps: "My model caps", chatTokens: "Chat tokens"
   };
   let settings;
+  let logKey = "msgLog";   // v1.0.3: the message log is kept per account
 
   function merge(s) {
     const d = C.DEFAULT_SETTINGS; s = s || {};
@@ -46,7 +47,11 @@
   }
 
   async function init() {
-    const s = await chrome.storage.local.get(["settings", "msgLog"]);
+    try {
+      const w = await chrome.runtime.sendMessage({ type: "whoami" });   // answered for the window this page is open in
+      if (w && w.prefix) logKey = w.prefix + "msgLog";
+    } catch (_) {}
+    const s = await chrome.storage.local.get(["settings", logKey]);
     settings = merge(s.settings);
     $("about").href = cumUtm(C.PRODUCT_URL, "options", "about");
 
@@ -73,7 +78,7 @@
       const l = document.createElement("label"); l.append(cb, document.createTextNode(label)); fields.append(l);
     }
 
-    const models = [...new Set((s.msgLog || []).map((e) => e.m))].filter((m) => m && m !== "auto").sort();
+    const models = [...new Set((s[logKey] || []).map((e) => e.m))].filter((m) => m && m !== "auto").sort();
     $("models").replaceChildren(...models.map((m) => new Option(m)));
     renderCaps();
     $("add-cap").addEventListener("click", () => {
@@ -83,7 +88,7 @@
       inputs[inputs.length - 1].focus();
     });
 
-    $("clear-log").addEventListener("click", async () => { await chrome.storage.local.set({ msgLog: [] }); $("saved").textContent = "Cleared"; save().then(() => setTimeout(() => ($("saved").textContent = "Saved"), 1300)); });
+    $("clear-log").addEventListener("click", async () => { await chrome.storage.local.set({ [logKey]: [] }); $("saved").textContent = "Cleared"; save().then(() => setTimeout(() => ($("saved").textContent = "Saved"), 1300)); });
     $("reset-hidden").addEventListener("click", async () => { await chrome.storage.local.set({ stripHiddenUntil: 0 }); settings.strip = true; $("strip").checked = true; save(); });
   }
   init();
