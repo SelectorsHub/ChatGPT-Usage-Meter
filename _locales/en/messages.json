@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "See your ChatGPT limits, reset times and chat size live, right above the chat box. Get alerted before you run out."
+ },
+ "durNow": {
+  "message": "now"
+ },
+ "durLt1": {
+  "message": "<1m"
+ },
+ "durM": {
+  "message": "$1m"
+ },
+ "durHM": {
+  "message": "$1h $2m"
+ },
+ "durD": {
+  "message": "$1d"
+ },
+ "durDH": {
+  "message": "$1d $2h"
+ },
+ "winUsage": {
+  "message": "Usage"
+ },
+ "lblLimit": {
+  "message": "Limit"
+ },
+ "win5h": {
+  "message": "5-hour"
+ },
+ "win5hShort": {
+  "message": "5h"
+ },
+ "win3h": {
+  "message": "3-hour"
+ },
+ "win3hShort": {
+  "message": "3h"
+ },
+ "winDay": {
+  "message": "Daily"
+ },
+ "winDayShort": {
+  "message": "Day"
+ },
+ "winWeek": {
+  "message": "Weekly"
+ },
+ "winWeekShort": {
+  "message": "Week"
+ },
+ "winWeekLetter": {
+  "message": "W"
+ },
+ "winMonth": {
+  "message": "Monthly"
+ },
+ "winMonthShort": {
+  "message": "Month"
+ },
+ "winNDay": {
+  "message": "$1-day"
+ },
+ "winNHour": {
+  "message": "$1-hour"
+ },
+ "winNMin": {
+  "message": "$1-min"
+ },
+ "capWin3h": {
+  "message": "3 hours"
+ },
+ "capWin5h": {
+  "message": "5 hours"
+ },
+ "capWinDay": {
+  "message": "24 hours"
+ },
+ "capWinWeek": {
+  "message": "7 days"
+ },
+ "capWinMonth": {
+  "message": "30 days"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "$1 left"
+ },
+ "nOfMaxLeft": {
+  "message": "$1/$2 left"
+ },
+ "leftApprox": {
+  "message": "~$1 left"
+ },
+ "resetIn": {
+  "message": "Reset in $1"
+ },
+ "resetsInLower": {
+  "message": "resets in $1"
+ },
+ "resetsShort": {
+  "message": "resets $1"
+ },
+ "tipUsage": {
+  "message": "$1 usage: $2"
+ },
+ "tipResetsAt": {
+  "message": "Resets in $1 ($2)"
+ },
+ "tipResetsIn": {
+  "message": "Resets in $1"
+ },
+ "tipForecast": {
+  "message": "At your current pace you'll reach this limit in about $1 — before it resets."
+ },
+ "tipSignIn": {
+  "message": "Sign in to chatgpt.com in this browser profile."
+ },
+ "signInToSee": {
+  "message": "Sign in to see usage"
+ },
+ "tipFetching": {
+  "message": "Fetching your usage…"
+ },
+ "loading": {
+  "message": "Loading…"
+ },
+ "tipThinkingLeft": {
+  "message": "Thinking messages left: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "Reported by ChatGPT for your plan."
+ },
+ "tipCodexNote": {
+  "message": "Codex usage reported by ChatGPT for your plan (also used by agent / Work tasks). Plain chat isn't counted here."
+ },
+ "credits": {
+  "message": "Credits"
+ },
+ "creditsShort": {
+  "message": "Cr"
+ },
+ "on": {
+  "message": "on"
+ },
+ "onCap": {
+  "message": "On"
+ },
+ "unlimited": {
+  "message": "Unlimited"
+ },
+ "tipCredits": {
+  "message": "Credits on this account (used after plan limits run out)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: $2 left"
+ },
+ "tipAllQuotas": {
+  "message": "All feature quotas are in the toolbar popup."
+ },
+ "tipCapUsed": {
+  "message": "$1: $2 of $3 messages in the last $4"
+ },
+ "tipNextFrees": {
+  "message": "Next message frees up in $1"
+ },
+ "tipCountedHere": {
+  "message": "Counted from messages sent in this browser."
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT reported a usage limit."
+ },
+ "limitHit": {
+  "message": "Limit hit"
+ },
+ "limitShort": {
+  "message": "Limit"
+ },
+ "limitReached": {
+  "message": "Limit reached"
+ },
+ "tipTokens1": {
+  "message": "This chat is about $1 tokens — roughly what ChatGPT re-reads with each new message here."
+ },
+ "tipTokens2": {
+  "message": "You $1 · ChatGPT $2 · Tools $3 · Images $4"
+ },
+ "tipTokensCtx": {
+  "message": "Custom instructions $1"
+ },
+ "tipTokens3": {
+  "message": "Estimate. Files read by search, memory and the system prompt aren't included."
+ },
+ "tipTokens4": {
+  "message": "Long chat? Starting a new one is the cheapest message you can send."
+ },
+ "chat": {
+  "message": "Chat"
+ },
+ "tokensWord": {
+  "message": "tokens"
+ },
+ "tipThisChat": {
+  "message": "This chat: ~$1 tokens"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: $1 left"
+ },
+ "errFetch": {
+  "message": "Couldn't fetch usage."
+ },
+ "tipRetrying": {
+  "message": "Retrying automatically. Open the toolbar popup to refresh now."
+ },
+ "usageUnavailable": {
+  "message": "Usage unavailable"
+ },
+ "tipNoWindows": {
+  "message": "ChatGPT isn't reporting usage windows for this account right now. Feature quotas, caps you define and limit hits are still tracked."
+ },
+ "noLimits": {
+  "message": "No limits reported"
+ },
+ "tipLogo": {
+  "message": "$1 — offered by SelectorsHub\nClick for more free tools"
+ },
+ "bySelectorsHub": {
+  "message": "by SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "Meanwhile, try $1 →"
+ },
+ "tryTool": {
+  "message": "Try $1 →"
+ },
+ "hideUntilReset": {
+  "message": "Hide until the next reset"
+ },
+ "rateTip": {
+  "message": "Pls Rate us & this button disappears forever after you review."
+ },
+ "rateAria": {
+  "message": "Rate $1"
+ },
+ "rateUs": {
+  "message": "Rate us"
+ },
+ "tipGear": {
+  "message": "Choose what the strip shows"
+ },
+ "stripSettings": {
+  "message": "Strip settings"
+ },
+ "expand": {
+  "message": "Expand"
+ },
+ "collapse": {
+  "message": "Collapse"
+ },
+ "tipHide": {
+  "message": "Hide for 12 hours (turn it back on from the toolbar popup)"
+ },
+ "hide": {
+  "message": "Hide"
+ },
+ "notNow": {
+  "message": "Not now"
+ },
+ "nudgeTitle": {
+  "message": "Is $1 helping you?"
+ },
+ "leaveFiveStar": {
+  "message": "Leave a 5 star review"
+ },
+ "nudgeBody": {
+  "message": "Pls Rate us & this button disappears forever after you review. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Thank you ~ $1, Creator"
+ },
+ "writeReview": {
+  "message": "Write a review"
+ },
+ "maybeLater": {
+  "message": "Maybe later"
+ },
+ "showInStrip": {
+  "message": "Show in strip"
+ },
+ "fThinking": {
+  "message": "Thinking left"
+ },
+ "fThinkingNote": {
+  "message": "chat limit"
+ },
+ "fPrimary": {
+  "message": "Codex usage"
+ },
+ "fPrimaryNote": {
+  "message": "5-hour / monthly"
+ },
+ "fResetPrimary": {
+  "message": "Reset times"
+ },
+ "fSecondary": {
+  "message": "Codex weekly usage"
+ },
+ "fSecondaryNote": {
+  "message": "paid plans"
+ },
+ "fResetSecondary": {
+  "message": "Weekly reset time"
+ },
+ "fForecast": {
+  "message": "Limit forecast"
+ },
+ "fForecastNote": {
+  "message": "when on pace to run out"
+ },
+ "fBars": {
+  "message": "Usage bars"
+ },
+ "fExtra": {
+  "message": "Other limits"
+ },
+ "fExtraNote": {
+  "message": "per-feature windows"
+ },
+ "fFeatures": {
+  "message": "Feature quotas"
+ },
+ "fFeaturesNote": {
+  "message": "deep research, images…"
+ },
+ "fModelCaps": {
+  "message": "My model caps"
+ },
+ "fModelCapsNote": {
+  "message": "set in Settings"
+ },
+ "fChatTokens": {
+  "message": "Chat tokens"
+ },
+ "desktopNotifications": {
+  "message": "Desktop notifications"
+ },
+ "allSettings": {
+  "message": "All settings…"
+ },
+ "offeredBy": {
+  "message": "Offered by SelectorsHub · more free tools"
+ },
+ "seeAllTools": {
+  "message": "See all 15+ free tools →"
+ },
+ "aboutName": {
+  "message": "About $1"
+ },
+ "notAffiliated": {
+  "message": "Not affiliated with OpenAI."
+ },
+ "notAffiliatedShort": {
+  "message": "Not affiliated with OpenAI"
+ },
+ "refresh": {
+  "message": "Refresh"
+ },
+ "refreshNow": {
+  "message": "Refresh now"
+ },
+ "settings": {
+  "message": "Settings"
+ },
+ "showStripLabel": {
+  "message": "Show usage strip above chat"
+ },
+ "creditsSub": {
+  "message": "Used once plan limits run out."
+ },
+ "reportedByChatGPT": {
+  "message": "reported by ChatGPT"
+ },
+ "countedInBrowser": {
+  "message": "counted in this browser"
+ },
+ "msgsSent": {
+  "message": "Messages sent from this browser"
+ },
+ "rng5h": {
+  "message": "5h"
+ },
+ "rng24h": {
+  "message": "24h"
+ },
+ "rng7d": {
+  "message": "7d"
+ },
+ "setCap": {
+  "message": "+ Set a cap for a model"
+ },
+ "moreTools": {
+  "message": "More free tools from SelectorsHub"
+ },
+ "resetsInAt": {
+  "message": "Resets in $1 · $2"
+ },
+ "resetNotReported": {
+  "message": "Reset time not reported"
+ },
+ "forecastPopup": {
+  "message": "At this pace you'll hit the limit in ~$1"
+ },
+ "hiddenUntil": {
+  "message": "Hidden until $1"
+ },
+ "shownOn": {
+  "message": "Shown on chatgpt.com"
+ },
+ "off": {
+  "message": "Off"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com didn't answer the extension directly. Open a chatgpt.com tab and click refresh."
+ },
+ "thinkingMessages": {
+  "message": "Thinking messages"
+ },
+ "tipNextSlot": {
+  "message": "Next slot frees in $1"
+ },
+ "noneYet": {
+  "message": "None yet — sends are counted from when the extension was installed."
+ },
+ "signInHint": {
+  "message": "Sign in to $1 in this browser profile, then click refresh."
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT isn't reporting usage windows for this account."
+ },
+ "noWindowsBody": {
+  "message": "That's normal on some plans. Feature quotas, limit hits and any caps you set are still tracked."
+ },
+ "updatedJustNow": {
+  "message": "Updated just now"
+ },
+ "updatedAgo": {
+  "message": "Updated $1 ago"
+ },
+ "settingsBy": {
+  "message": "Settings · by"
+ },
+ "saved": {
+  "message": "Saved"
+ },
+ "cleared": {
+  "message": "Cleared"
+ },
+ "polling": {
+  "message": "Polling"
+ },
+ "checkEvery": {
+  "message": "Check usage every"
+ },
+ "min1": {
+  "message": "1 minute"
+ },
+ "minN": {
+  "message": "$1 minutes"
+ },
+ "pollNote": {
+  "message": "Usage is also refreshed a few seconds after every reply, and whenever you open the toolbar popup."
+ },
+ "alerts": {
+  "message": "Alerts"
+ },
+ "alertCrosses": {
+  "message": "Alert when usage crosses"
+ },
+ "badgeLabel": {
+  "message": "Show 5-hour % on the toolbar icon"
+ },
+ "usageStrip": {
+  "message": "Usage strip"
+ },
+ "showStripOpt": {
+  "message": "Show the strip above ChatGPT's chat box"
+ },
+ "startCollapsed": {
+  "message": "Start collapsed"
+ },
+ "capsNote": {
+  "message": "ChatGPT doesn't report a remaining count for every model. If your plan has a fixed cap (for example a weekly limit on a Pro model), add it here and the meter counts your messages to that model in this browser against it. Use the exact model slug — the ones you've used are suggested — or end it with $1 to match a family (e.g. $2)."
+ },
+ "thModel": {
+  "message": "Model"
+ },
+ "thLimit": {
+  "message": "Limit"
+ },
+ "thPer": {
+  "message": "Per"
+ },
+ "addCap": {
+  "message": "+ Add cap"
+ },
+ "egModel": {
+  "message": "e.g. $1"
+ },
+ "remove": {
+  "message": "Remove"
+ },
+ "data": {
+  "message": "Data"
+ },
+ "dataNote": {
+  "message": "Everything stays in this browser. Usage is read from chatgpt.com with your own signed-in session; nothing is sent anywhere else."
+ },
+ "clearCounts": {
+  "message": "Clear message counts"
+ },
+ "unhideStrip": {
+  "message": "Un-hide strip"
+ },
+ "footerDisc": {
+  "message": "Not affiliated with or endorsed by OpenAI. ChatGPT is a trademark of OpenAI."
+ },
+ "errNetwork": {
+  "message": "Couldn't reach chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com didn't return session data"
+ },
+ "errSignedOut": {
+  "message": "Not signed in to chatgpt.com"
+ },
+ "errHttp": {
+  "message": "Usage request failed ($1)"
+ },
+ "noResponse": {
+  "message": "no response"
+ },
+ "resetsInSentence": {
+  "message": "Resets in $1."
+ },
+ "notifLimitReached": {
+  "message": "$1 limit reached"
+ },
+ "notifUsageAt": {
+  "message": "$1 usage at $2%"
+ },
+ "notifBody": {
+  "message": "ChatGPT $1 usage is at $2%."
+ },
+ "notifCapTitle": {
+  "message": "$1: $2 of $3 used"
+ },
+ "notifCapBody": {
+  "message": "You've sent $1 of your $2 $3 messages in the last $4 (counted in this browser)."
+ },
+ "notifHitTitle": {
+  "message": "ChatGPT limit reached"
+ },
+ "featDeepResearch": {
+  "message": "Deep research"
+ },
+ "featImageGen": {
+  "message": "Image generation"
+ },
+ "featFileUploads": {
+  "message": "File uploads"
+ },
+ "featAgent": {
+  "message": "Agent"
+ },
+ "featVideo": {
+  "message": "Video"
+ },
+ "featVoice": {
+  "message": "Voice"
+ },
+ "featCanvas": {
+  "message": "Canvas"
+ },
+ "featTasks": {
+  "message": "Tasks"
+ },
+ "featConnectors": {
+  "message": "Connectors"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Code review"
+ },
+ "featResearch": {
+  "message": "Research"
+ },
+ "featPasteToFile": {
+  "message": "Paste to file"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Screenshots with the URL bar"
+ },
+ "tool_testcase_studio": {
+  "message": "Record test steps as you go"
+ },
+ "tool_check_my_links": {
+  "message": "Find broken links in 1 click"
+ },
+ "tool_page_load_timer": {
+  "message": "Page load time, automatically"
+ },
+ "tool_selectorshub": {
+  "message": "XPath & Playwright locators"
+ },
+ "tool_cssviewer": {
+  "message": "See any element's CSS on hover"
+ },
+ "tool_clearcache": {
+  "message": "Clear cache in one click"
+ },
+ "tool_auto_data_filler": {
+  "message": "Fill forms in one click"
+ },
+ "tool_modify_header": {
+  "message": "Edit request & response headers"
+ },
+ "tool_anyformat": {
+  "message": "Save images in any format"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Find any bookmark by typing"
+ },
+ "tool_testing_daily": {
+  "message": "Daily testing news & updates"
+ }
+}

@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "Xem trực tiếp giới hạn ChatGPT, thời điểm đặt lại và độ dài cuộc trò chuyện ngay phía trên ô chat. Nhận cảnh báo trước khi hết lượt."
+ },
+ "durNow": {
+  "message": "ngay bây giờ"
+ },
+ "durLt1": {
+  "message": "<1 phút"
+ },
+ "durM": {
+  "message": "$1 phút"
+ },
+ "durHM": {
+  "message": "$1 giờ $2 phút"
+ },
+ "durD": {
+  "message": "$1 ngày"
+ },
+ "durDH": {
+  "message": "$1 ngày $2 giờ"
+ },
+ "winUsage": {
+  "message": "Mức dùng"
+ },
+ "lblLimit": {
+  "message": "Giới hạn"
+ },
+ "win5h": {
+  "message": "5 giờ"
+ },
+ "win5hShort": {
+  "message": "5 giờ"
+ },
+ "win3h": {
+  "message": "3 giờ"
+ },
+ "win3hShort": {
+  "message": "3 giờ"
+ },
+ "winDay": {
+  "message": "Hằng ngày"
+ },
+ "winDayShort": {
+  "message": "Ngày"
+ },
+ "winWeek": {
+  "message": "Hằng tuần"
+ },
+ "winWeekShort": {
+  "message": "Tuần"
+ },
+ "winWeekLetter": {
+  "message": "T"
+ },
+ "winMonth": {
+  "message": "Hằng tháng"
+ },
+ "winMonthShort": {
+  "message": "Tháng"
+ },
+ "winNDay": {
+  "message": "$1 ngày"
+ },
+ "winNHour": {
+  "message": "$1 giờ"
+ },
+ "winNMin": {
+  "message": "$1 phút"
+ },
+ "capWin3h": {
+  "message": "3 giờ"
+ },
+ "capWin5h": {
+  "message": "5 giờ"
+ },
+ "capWinDay": {
+  "message": "24 giờ"
+ },
+ "capWinWeek": {
+  "message": "7 ngày"
+ },
+ "capWinMonth": {
+  "message": "30 ngày"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "còn $1"
+ },
+ "nOfMaxLeft": {
+  "message": "còn $1/$2"
+ },
+ "leftApprox": {
+  "message": "còn ~$1"
+ },
+ "resetIn": {
+  "message": "Đặt lại sau $1"
+ },
+ "resetsInLower": {
+  "message": "đặt lại sau $1"
+ },
+ "resetsShort": {
+  "message": "đặt lại sau $1"
+ },
+ "tipUsage": {
+  "message": "Mức dùng $1: $2"
+ },
+ "tipResetsAt": {
+  "message": "Đặt lại sau $1 ($2)"
+ },
+ "tipResetsIn": {
+  "message": "Đặt lại sau $1"
+ },
+ "tipForecast": {
+  "message": "Với tốc độ hiện tại, bạn sẽ chạm giới hạn này sau khoảng $1 — trước khi được đặt lại."
+ },
+ "tipSignIn": {
+  "message": "Hãy đăng nhập chatgpt.com trong hồ sơ trình duyệt này."
+ },
+ "signInToSee": {
+  "message": "Đăng nhập để xem mức dùng"
+ },
+ "tipFetching": {
+  "message": "Đang lấy mức dùng của bạn…"
+ },
+ "loading": {
+  "message": "Đang tải…"
+ },
+ "tipThinkingLeft": {
+  "message": "Số tin nhắn Thinking còn lại: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "Do ChatGPT báo cáo cho gói của bạn."
+ },
+ "tipCodexNote": {
+  "message": "Mức dùng Codex do ChatGPT báo cáo cho gói của bạn (tác vụ tác tử / Work cũng dùng). Chat thông thường không tính ở đây."
+ },
+ "credits": {
+  "message": "Tín dụng"
+ },
+ "creditsShort": {
+  "message": "TD"
+ },
+ "on": {
+  "message": "bật"
+ },
+ "onCap": {
+  "message": "Bật"
+ },
+ "unlimited": {
+  "message": "Không giới hạn"
+ },
+ "tipCredits": {
+  "message": "Tín dụng của tài khoản này (dùng khi hết giới hạn của gói)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: còn $2"
+ },
+ "tipAllQuotas": {
+  "message": "Mọi hạn mức tính năng đều có trong cửa sổ bật lên trên thanh công cụ."
+ },
+ "tipCapUsed": {
+  "message": "$1: $2 / $3 tin nhắn trong $4 qua"
+ },
+ "tipNextFrees": {
+  "message": "Tin nhắn tiếp theo khả dụng sau $1"
+ },
+ "tipCountedHere": {
+  "message": "Đếm từ các tin nhắn gửi trên trình duyệt này."
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT báo đã chạm giới hạn sử dụng."
+ },
+ "limitHit": {
+  "message": "Đã chạm giới hạn"
+ },
+ "limitShort": {
+  "message": "Giới hạn"
+ },
+ "limitReached": {
+  "message": "Đã chạm giới hạn"
+ },
+ "tipTokens1": {
+  "message": "Cuộc trò chuyện này khoảng $1 token — gần bằng lượng ChatGPT phải đọc lại mỗi khi có tin nhắn mới."
+ },
+ "tipTokens2": {
+  "message": "Bạn $1 · ChatGPT $2 · Công cụ $3 · Hình ảnh $4"
+ },
+ "tipTokensCtx": {
+  "message": "Hướng dẫn tùy chỉnh $1"
+ },
+ "tipTokens3": {
+  "message": "Ước tính. Không gồm tệp do tìm kiếm đọc, bộ nhớ và lời nhắc hệ thống."
+ },
+ "tipTokens4": {
+  "message": "Cuộc trò chuyện quá dài? Bắt đầu cuộc mới là cách tiết kiệm nhất."
+ },
+ "chat": {
+  "message": "Chat"
+ },
+ "tokensWord": {
+  "message": "token"
+ },
+ "tipThisChat": {
+  "message": "Cuộc trò chuyện này: ~$1 token"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: còn $1"
+ },
+ "errFetch": {
+  "message": "Không lấy được mức dùng."
+ },
+ "tipRetrying": {
+  "message": "Sẽ tự động thử lại. Mở cửa sổ bật lên trên thanh công cụ để làm mới ngay."
+ },
+ "usageUnavailable": {
+  "message": "Không có dữ liệu mức dùng"
+ },
+ "tipNoWindows": {
+  "message": "Hiện ChatGPT không báo cáo khung thời gian sử dụng cho tài khoản này. Hạn mức tính năng, giới hạn bạn đặt và các lần chạm giới hạn vẫn được theo dõi."
+ },
+ "noLimits": {
+  "message": "Không có giới hạn nào được báo cáo"
+ },
+ "tipLogo": {
+  "message": "$1 — do SelectorsHub cung cấp\nNhấp để xem thêm công cụ miễn phí"
+ },
+ "bySelectorsHub": {
+  "message": "bởi SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "Trong lúc chờ, thử $1 →"
+ },
+ "tryTool": {
+  "message": "Thử $1 →"
+ },
+ "hideUntilReset": {
+  "message": "Ẩn đến lần đặt lại tiếp theo"
+ },
+ "rateTip": {
+  "message": "Hãy đánh giá chúng tôi — nút này sẽ biến mất vĩnh viễn sau khi bạn viết đánh giá."
+ },
+ "rateAria": {
+  "message": "Đánh giá $1"
+ },
+ "rateUs": {
+  "message": "Đánh giá"
+ },
+ "tipGear": {
+  "message": "Chọn nội dung hiển thị trên thanh"
+ },
+ "stripSettings": {
+  "message": "Cài đặt thanh"
+ },
+ "expand": {
+  "message": "Mở rộng"
+ },
+ "collapse": {
+  "message": "Thu gọn"
+ },
+ "tipHide": {
+  "message": "Ẩn trong 12 giờ (bật lại từ cửa sổ bật lên trên thanh công cụ)"
+ },
+ "hide": {
+  "message": "Ẩn"
+ },
+ "notNow": {
+  "message": "Để sau"
+ },
+ "nudgeTitle": {
+  "message": "$1 có giúp ích cho bạn không?"
+ },
+ "leaveFiveStar": {
+  "message": "Đánh giá 5 sao"
+ },
+ "nudgeBody": {
+  "message": "Hãy đánh giá chúng tôi — nút này sẽ biến mất vĩnh viễn sau khi bạn viết đánh giá. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Cảm ơn bạn ~ $1, người tạo"
+ },
+ "writeReview": {
+  "message": "Viết đánh giá"
+ },
+ "maybeLater": {
+  "message": "Để sau"
+ },
+ "showInStrip": {
+  "message": "Hiển thị trên thanh"
+ },
+ "fThinking": {
+  "message": "Thinking còn lại"
+ },
+ "fThinkingNote": {
+  "message": "giới hạn chat"
+ },
+ "fPrimary": {
+  "message": "Mức dùng Codex"
+ },
+ "fPrimaryNote": {
+  "message": "5 giờ / hằng tháng"
+ },
+ "fResetPrimary": {
+  "message": "Thời điểm đặt lại"
+ },
+ "fSecondary": {
+  "message": "Mức dùng Codex hằng tuần"
+ },
+ "fSecondaryNote": {
+  "message": "gói trả phí"
+ },
+ "fResetSecondary": {
+  "message": "Đặt lại hằng tuần"
+ },
+ "fForecast": {
+  "message": "Dự báo giới hạn"
+ },
+ "fForecastNote": {
+  "message": "khi sắp hết"
+ },
+ "fBars": {
+  "message": "Thanh mức dùng"
+ },
+ "fExtra": {
+  "message": "Giới hạn khác"
+ },
+ "fExtraNote": {
+  "message": "khung theo từng tính năng"
+ },
+ "fFeatures": {
+  "message": "Hạn mức tính năng"
+ },
+ "fFeaturesNote": {
+  "message": "nghiên cứu sâu, hình ảnh…"
+ },
+ "fModelCaps": {
+  "message": "Giới hạn mô hình của tôi"
+ },
+ "fModelCapsNote": {
+  "message": "đặt trong Cài đặt"
+ },
+ "fChatTokens": {
+  "message": "Token cuộc trò chuyện"
+ },
+ "desktopNotifications": {
+  "message": "Thông báo trên màn hình"
+ },
+ "allSettings": {
+  "message": "Tất cả cài đặt…"
+ },
+ "offeredBy": {
+  "message": "Do SelectorsHub cung cấp · thêm công cụ miễn phí"
+ },
+ "seeAllTools": {
+  "message": "Xem tất cả 15+ công cụ miễn phí →"
+ },
+ "aboutName": {
+  "message": "Giới thiệu $1"
+ },
+ "notAffiliated": {
+  "message": "Không liên kết với OpenAI."
+ },
+ "notAffiliatedShort": {
+  "message": "Không liên kết với OpenAI"
+ },
+ "refresh": {
+  "message": "Làm mới"
+ },
+ "refreshNow": {
+  "message": "Làm mới ngay"
+ },
+ "settings": {
+  "message": "Cài đặt"
+ },
+ "showStripLabel": {
+  "message": "Hiển thị thanh mức dùng phía trên ô chat"
+ },
+ "creditsSub": {
+  "message": "Dùng khi đã hết giới hạn của gói."
+ },
+ "reportedByChatGPT": {
+  "message": "do ChatGPT báo cáo"
+ },
+ "countedInBrowser": {
+  "message": "đếm trên trình duyệt này"
+ },
+ "msgsSent": {
+  "message": "Tin nhắn đã gửi từ trình duyệt này"
+ },
+ "rng5h": {
+  "message": "5 giờ"
+ },
+ "rng24h": {
+  "message": "24 giờ"
+ },
+ "rng7d": {
+  "message": "7 ngày"
+ },
+ "setCap": {
+  "message": "+ Đặt giới hạn cho một mô hình"
+ },
+ "moreTools": {
+  "message": "Thêm công cụ miễn phí từ SelectorsHub"
+ },
+ "resetsInAt": {
+  "message": "Đặt lại sau $1 · $2"
+ },
+ "resetNotReported": {
+  "message": "Không có thời điểm đặt lại"
+ },
+ "forecastPopup": {
+  "message": "Với tốc độ này, bạn sẽ chạm giới hạn sau ~$1"
+ },
+ "hiddenUntil": {
+  "message": "Ẩn đến $1"
+ },
+ "shownOn": {
+  "message": "Đang hiển thị trên chatgpt.com"
+ },
+ "off": {
+  "message": "Tắt"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com không phản hồi trực tiếp cho tiện ích. Hãy mở một thẻ chatgpt.com rồi nhấp làm mới."
+ },
+ "thinkingMessages": {
+  "message": "Tin nhắn Thinking"
+ },
+ "tipNextSlot": {
+  "message": "Lượt tiếp theo khả dụng sau $1"
+ },
+ "noneYet": {
+  "message": "Chưa có — số tin nhắn được đếm từ lúc cài tiện ích."
+ },
+ "signInHint": {
+  "message": "Hãy đăng nhập $1 trong hồ sơ trình duyệt này, rồi nhấp làm mới."
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT không báo cáo khung thời gian sử dụng cho tài khoản này."
+ },
+ "noWindowsBody": {
+  "message": "Điều này bình thường với một số gói. Hạn mức tính năng, các lần chạm giới hạn và giới hạn bạn đặt vẫn được theo dõi."
+ },
+ "updatedJustNow": {
+  "message": "Vừa cập nhật"
+ },
+ "updatedAgo": {
+  "message": "Cập nhật $1 trước"
+ },
+ "settingsBy": {
+  "message": "Cài đặt · bởi"
+ },
+ "saved": {
+  "message": "Đã lưu"
+ },
+ "cleared": {
+  "message": "Đã xóa"
+ },
+ "polling": {
+  "message": "Tần suất kiểm tra"
+ },
+ "checkEvery": {
+  "message": "Kiểm tra mức dùng mỗi"
+ },
+ "min1": {
+  "message": "1 phút"
+ },
+ "minN": {
+  "message": "$1 phút"
+ },
+ "pollNote": {
+  "message": "Mức dùng cũng được làm mới vài giây sau mỗi câu trả lời và mỗi khi bạn mở cửa sổ bật lên trên thanh công cụ."
+ },
+ "alerts": {
+  "message": "Cảnh báo"
+ },
+ "alertCrosses": {
+  "message": "Cảnh báo khi mức dùng vượt"
+ },
+ "badgeLabel": {
+  "message": "Hiển thị % 5 giờ trên biểu tượng thanh công cụ"
+ },
+ "usageStrip": {
+  "message": "Thanh mức dùng"
+ },
+ "showStripOpt": {
+  "message": "Hiển thị thanh phía trên ô chat của ChatGPT"
+ },
+ "startCollapsed": {
+  "message": "Bắt đầu ở dạng thu gọn"
+ },
+ "capsNote": {
+  "message": "ChatGPT không báo số lượt còn lại cho mọi mô hình. Nếu gói của bạn có giới hạn cố định (ví dụ giới hạn hằng tuần cho một mô hình Pro), hãy thêm vào đây; tiện ích sẽ đếm số tin nhắn bạn gửi tới mô hình đó trên trình duyệt này. Dùng đúng tên mô hình (các mô hình bạn đã dùng sẽ được gợi ý) hoặc thêm $1 ở cuối để áp dụng cho cả họ mô hình (vd. $2)."
+ },
+ "thModel": {
+  "message": "Mô hình"
+ },
+ "thLimit": {
+  "message": "Giới hạn"
+ },
+ "thPer": {
+  "message": "Mỗi"
+ },
+ "addCap": {
+  "message": "+ Thêm giới hạn"
+ },
+ "egModel": {
+  "message": "vd. $1"
+ },
+ "remove": {
+  "message": "Xóa"
+ },
+ "data": {
+  "message": "Dữ liệu"
+ },
+ "dataNote": {
+  "message": "Mọi thứ đều ở lại trong trình duyệt này. Mức dùng được đọc từ chatgpt.com bằng phiên đăng nhập của chính bạn; không gửi đi bất kỳ đâu khác."
+ },
+ "clearCounts": {
+  "message": "Xóa số đếm tin nhắn"
+ },
+ "unhideStrip": {
+  "message": "Hiện lại thanh"
+ },
+ "footerDisc": {
+  "message": "Không liên kết với hoặc được OpenAI xác nhận. ChatGPT là nhãn hiệu của OpenAI."
+ },
+ "errNetwork": {
+  "message": "Không kết nối được chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com không trả về dữ liệu phiên"
+ },
+ "errSignedOut": {
+  "message": "Chưa đăng nhập chatgpt.com"
+ },
+ "errHttp": {
+  "message": "Yêu cầu mức dùng thất bại ($1)"
+ },
+ "noResponse": {
+  "message": "không phản hồi"
+ },
+ "resetsInSentence": {
+  "message": "Đặt lại sau $1."
+ },
+ "notifLimitReached": {
+  "message": "Đã chạm giới hạn $1"
+ },
+ "notifUsageAt": {
+  "message": "Mức dùng $1 đạt $2%"
+ },
+ "notifBody": {
+  "message": "Mức dùng $1 của ChatGPT đã đạt $2%."
+ },
+ "notifCapTitle": {
+  "message": "$1: đã dùng $2 / $3"
+ },
+ "notifCapBody": {
+  "message": "Bạn đã gửi $1 / $2 tin nhắn $3 trong $4 qua (đếm trên trình duyệt này)."
+ },
+ "notifHitTitle": {
+  "message": "Đã chạm giới hạn ChatGPT"
+ },
+ "featDeepResearch": {
+  "message": "Nghiên cứu sâu"
+ },
+ "featImageGen": {
+  "message": "Tạo hình ảnh"
+ },
+ "featFileUploads": {
+  "message": "Tải tệp lên"
+ },
+ "featAgent": {
+  "message": "Tác tử"
+ },
+ "featVideo": {
+  "message": "Video"
+ },
+ "featVoice": {
+  "message": "Giọng nói"
+ },
+ "featCanvas": {
+  "message": "Canvas"
+ },
+ "featTasks": {
+  "message": "Tác vụ"
+ },
+ "featConnectors": {
+  "message": "Trình kết nối"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Xem xét mã"
+ },
+ "featResearch": {
+  "message": "Nghiên cứu"
+ },
+ "featPasteToFile": {
+  "message": "Dán thành tệp"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Chụp màn hình kèm thanh địa chỉ"
+ },
+ "tool_testcase_studio": {
+  "message": "Ghi lại các bước kiểm thử khi làm"
+ },
+ "tool_check_my_links": {
+  "message": "Tìm liên kết hỏng chỉ với 1 cú nhấp"
+ },
+ "tool_page_load_timer": {
+  "message": "Tự động đo thời gian tải trang"
+ },
+ "tool_selectorshub": {
+  "message": "Bộ định vị XPath & Playwright"
+ },
+ "tool_cssviewer": {
+  "message": "Xem CSS của phần tử khi rê chuột"
+ },
+ "tool_clearcache": {
+  "message": "Xóa bộ nhớ đệm chỉ với một cú nhấp"
+ },
+ "tool_auto_data_filler": {
+  "message": "Điền biểu mẫu chỉ với một cú nhấp"
+ },
+ "tool_modify_header": {
+  "message": "Sửa tiêu đề yêu cầu & phản hồi"
+ },
+ "tool_anyformat": {
+  "message": "Lưu ảnh ở mọi định dạng"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Tìm dấu trang bằng cách gõ"
+ },
+ "tool_testing_daily": {
+  "message": "Tin tức kiểm thử hằng ngày"
+ }
+}

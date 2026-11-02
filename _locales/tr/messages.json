@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "ChatGPT limitleri, sıfırlanma zamanı ve sohbet boyutu yazma kutusunun üstünde canlı. Limit dolmadan uyarır."
+ },
+ "durNow": {
+  "message": "şimdi"
+ },
+ "durLt1": {
+  "message": "<1 dk"
+ },
+ "durM": {
+  "message": "$1 dk"
+ },
+ "durHM": {
+  "message": "$1 sa $2 dk"
+ },
+ "durD": {
+  "message": "$1 g"
+ },
+ "durDH": {
+  "message": "$1 g $2 sa"
+ },
+ "winUsage": {
+  "message": "Kullanım"
+ },
+ "lblLimit": {
+  "message": "Limit"
+ },
+ "win5h": {
+  "message": "5 saatlik"
+ },
+ "win5hShort": {
+  "message": "5 sa"
+ },
+ "win3h": {
+  "message": "3 saatlik"
+ },
+ "win3hShort": {
+  "message": "3 sa"
+ },
+ "winDay": {
+  "message": "Günlük"
+ },
+ "winDayShort": {
+  "message": "Gün"
+ },
+ "winWeek": {
+  "message": "Haftalık"
+ },
+ "winWeekShort": {
+  "message": "Hafta"
+ },
+ "winWeekLetter": {
+  "message": "H"
+ },
+ "winMonth": {
+  "message": "Aylık"
+ },
+ "winMonthShort": {
+  "message": "Ay"
+ },
+ "winNDay": {
+  "message": "$1 günlük"
+ },
+ "winNHour": {
+  "message": "$1 saatlik"
+ },
+ "winNMin": {
+  "message": "$1 dakikalık"
+ },
+ "capWin3h": {
+  "message": "3 saat"
+ },
+ "capWin5h": {
+  "message": "5 saat"
+ },
+ "capWinDay": {
+  "message": "24 saat"
+ },
+ "capWinWeek": {
+  "message": "7 gün"
+ },
+ "capWinMonth": {
+  "message": "30 gün"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "$1 kaldı"
+ },
+ "nOfMaxLeft": {
+  "message": "$1/$2 kaldı"
+ },
+ "leftApprox": {
+  "message": "~$1 kaldı"
+ },
+ "resetIn": {
+  "message": "$1 sonra sıfırlanır"
+ },
+ "resetsInLower": {
+  "message": "$1 sonra sıfırlanır"
+ },
+ "resetsShort": {
+  "message": "$1 sonra sıfırlanır"
+ },
+ "tipUsage": {
+  "message": "$1 kullanım: $2"
+ },
+ "tipResetsAt": {
+  "message": "$1 sonra sıfırlanır ($2)"
+ },
+ "tipResetsIn": {
+  "message": "$1 sonra sıfırlanır"
+ },
+ "tipForecast": {
+  "message": "Bu hızla, sıfırlanmadan önce yaklaşık $1 içinde bu limite ulaşacaksınız."
+ },
+ "tipSignIn": {
+  "message": "Bu tarayıcı profilinde chatgpt.com'a giriş yapın."
+ },
+ "signInToSee": {
+  "message": "Kullanımı görmek için giriş yapın"
+ },
+ "tipFetching": {
+  "message": "Kullanımınız alınıyor…"
+ },
+ "loading": {
+  "message": "Yükleniyor…"
+ },
+ "tipThinkingLeft": {
+  "message": "Kalan Thinking mesajı: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "ChatGPT'nin planınız için bildirdiği değer."
+ },
+ "tipCodexNote": {
+  "message": "ChatGPT'nin planınız için bildirdiği Codex kullanımı (ajan / Work görevleri de bunu kullanır). Normal sohbet burada sayılmaz."
+ },
+ "credits": {
+  "message": "Kredi"
+ },
+ "creditsShort": {
+  "message": "Kr"
+ },
+ "on": {
+  "message": "açık"
+ },
+ "onCap": {
+  "message": "Açık"
+ },
+ "unlimited": {
+  "message": "Sınırsız"
+ },
+ "tipCredits": {
+  "message": "Bu hesabın kredileri (plan limitleri dolduktan sonra kullanılır)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: $2 kaldı"
+ },
+ "tipAllQuotas": {
+  "message": "Tüm özellik kotaları araç çubuğu açılır penceresinde."
+ },
+ "tipCapUsed": {
+  "message": "$1: son $4 içinde $3 mesajın $2 tanesi"
+ },
+ "tipNextFrees": {
+  "message": "Sonraki mesaj $1 sonra açılır"
+ },
+ "tipCountedHere": {
+  "message": "Bu tarayıcıdan gönderilen mesajlardan sayılır."
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT bir kullanım limitine ulaşıldığını bildirdi."
+ },
+ "limitHit": {
+  "message": "Limite ulaşıldı"
+ },
+ "limitShort": {
+  "message": "Limit"
+ },
+ "limitReached": {
+  "message": "Limite ulaşıldı"
+ },
+ "tipTokens1": {
+  "message": "Bu sohbet yaklaşık $1 token — ChatGPT'nin her yeni mesajda kabaca yeniden okuduğu miktar."
+ },
+ "tipTokens2": {
+  "message": "Siz $1 · ChatGPT $2 · Araçlar $3 · Görseller $4"
+ },
+ "tipTokensCtx": {
+  "message": "Özel talimatlar $1"
+ },
+ "tipTokens3": {
+  "message": "Tahminidir. Arama ile okunan dosyalar, bellek ve sistem istemi dahil değildir."
+ },
+ "tipTokens4": {
+  "message": "Sohbet uzadı mı? Yeni bir sohbet başlatmak gönderebileceğiniz en ucuz mesajdır."
+ },
+ "chat": {
+  "message": "Sohbet"
+ },
+ "tokensWord": {
+  "message": "token"
+ },
+ "tipThisChat": {
+  "message": "Bu sohbet: ~$1 token"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: $1 kaldı"
+ },
+ "errFetch": {
+  "message": "Kullanım alınamadı."
+ },
+ "tipRetrying": {
+  "message": "Otomatik olarak yeniden denenecek. Hemen yenilemek için araç çubuğu penceresini açın."
+ },
+ "usageUnavailable": {
+  "message": "Kullanım alınamıyor"
+ },
+ "tipNoWindows": {
+  "message": "ChatGPT şu anda bu hesap için kullanım dönemi bildirmiyor. Özellik kotaları, belirlediğiniz limitler ve ulaşılan limitler izlenmeye devam eder."
+ },
+ "noLimits": {
+  "message": "Bildirilen limit yok"
+ },
+ "tipLogo": {
+  "message": "$1 — SelectorsHub tarafından\nDaha fazla ücretsiz araç için tıklayın"
+ },
+ "bySelectorsHub": {
+  "message": "SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "Bu arada $1 aracını deneyin →"
+ },
+ "tryTool": {
+  "message": "$1 deneyin →"
+ },
+ "hideUntilReset": {
+  "message": "Sonraki sıfırlamaya kadar gizle"
+ },
+ "rateTip": {
+  "message": "Lütfen bizi değerlendirin; yorumunuzdan sonra bu düğme kalıcı olarak kaybolur."
+ },
+ "rateAria": {
+  "message": "$1 uygulamasını değerlendir"
+ },
+ "rateUs": {
+  "message": "Bizi değerlendirin"
+ },
+ "tipGear": {
+  "message": "Çubukta neyin gösterileceğini seçin"
+ },
+ "stripSettings": {
+  "message": "Çubuk ayarları"
+ },
+ "expand": {
+  "message": "Genişlet"
+ },
+ "collapse": {
+  "message": "Daralt"
+ },
+ "tipHide": {
+  "message": "12 saat gizle (araç çubuğu penceresinden tekrar açabilirsiniz)"
+ },
+ "hide": {
+  "message": "Gizle"
+ },
+ "notNow": {
+  "message": "Şimdi değil"
+ },
+ "nudgeTitle": {
+  "message": "$1 işinize yarıyor mu?"
+ },
+ "leaveFiveStar": {
+  "message": "5 yıldızlı yorum bırakın"
+ },
+ "nudgeBody": {
+  "message": "Lütfen bizi değerlendirin; yorumunuzdan sonra bu düğme kalıcı olarak kaybolur. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Teşekkürler ~ $1, Geliştirici"
+ },
+ "writeReview": {
+  "message": "Yorum yaz"
+ },
+ "maybeLater": {
+  "message": "Belki sonra"
+ },
+ "showInStrip": {
+  "message": "Çubukta göster"
+ },
+ "fThinking": {
+  "message": "Kalan Thinking"
+ },
+ "fThinkingNote": {
+  "message": "sohbet limiti"
+ },
+ "fPrimary": {
+  "message": "Codex kullanımı"
+ },
+ "fPrimaryNote": {
+  "message": "5 saat / aylık"
+ },
+ "fResetPrimary": {
+  "message": "Sıfırlanma zamanları"
+ },
+ "fSecondary": {
+  "message": "Haftalık Codex kullanımı"
+ },
+ "fSecondaryNote": {
+  "message": "ücretli planlar"
+ },
+ "fResetSecondary": {
+  "message": "Haftalık sıfırlanma"
+ },
+ "fForecast": {
+  "message": "Limit tahmini"
+ },
+ "fForecastNote": {
+  "message": "bitmek üzereyken"
+ },
+ "fBars": {
+  "message": "Kullanım çubukları"
+ },
+ "fExtra": {
+  "message": "Diğer limitler"
+ },
+ "fExtraNote": {
+  "message": "özellik başına dönemler"
+ },
+ "fFeatures": {
+  "message": "Özellik kotaları"
+ },
+ "fFeaturesNote": {
+  "message": "derin araştırma, görseller…"
+ },
+ "fModelCaps": {
+  "message": "Model limitlerim"
+ },
+ "fModelCapsNote": {
+  "message": "Ayarlar'dan belirleyin"
+ },
+ "fChatTokens": {
+  "message": "Sohbet tokenleri"
+ },
+ "desktopNotifications": {
+  "message": "Masaüstü bildirimleri"
+ },
+ "allSettings": {
+  "message": "Tüm ayarlar…"
+ },
+ "offeredBy": {
+  "message": "SelectorsHub sunar · daha fazla ücretsiz araç"
+ },
+ "seeAllTools": {
+  "message": "15+ ücretsiz aracın tümünü gör →"
+ },
+ "aboutName": {
+  "message": "$1 hakkında"
+ },
+ "notAffiliated": {
+  "message": "OpenAI ile bağlantılı değildir."
+ },
+ "notAffiliatedShort": {
+  "message": "OpenAI ile bağlantılı değildir"
+ },
+ "refresh": {
+  "message": "Yenile"
+ },
+ "refreshNow": {
+  "message": "Şimdi yenile"
+ },
+ "settings": {
+  "message": "Ayarlar"
+ },
+ "showStripLabel": {
+  "message": "Sohbetin üstünde kullanım çubuğunu göster"
+ },
+ "creditsSub": {
+  "message": "Plan limitleri dolduktan sonra kullanılır."
+ },
+ "reportedByChatGPT": {
+  "message": "ChatGPT bildirir"
+ },
+ "countedInBrowser": {
+  "message": "bu tarayıcıda sayılır"
+ },
+ "msgsSent": {
+  "message": "Bu tarayıcıdan gönderilen mesajlar"
+ },
+ "rng5h": {
+  "message": "5 sa"
+ },
+ "rng24h": {
+  "message": "24 sa"
+ },
+ "rng7d": {
+  "message": "7 g"
+ },
+ "setCap": {
+  "message": "+ Bir model için limit belirle"
+ },
+ "moreTools": {
+  "message": "SelectorsHub'dan daha fazla ücretsiz araç"
+ },
+ "resetsInAt": {
+  "message": "$1 sonra sıfırlanır · $2"
+ },
+ "resetNotReported": {
+  "message": "Sıfırlanma zamanı bildirilmedi"
+ },
+ "forecastPopup": {
+  "message": "Bu hızla limite ~$1 içinde ulaşacaksınız"
+ },
+ "hiddenUntil": {
+  "message": "$1 tarihine kadar gizli"
+ },
+ "shownOn": {
+  "message": "chatgpt.com'da gösteriliyor"
+ },
+ "off": {
+  "message": "Kapalı"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com uzantıya doğrudan yanıt vermedi. Bir chatgpt.com sekmesi açıp yenile'ye tıklayın."
+ },
+ "thinkingMessages": {
+  "message": "Thinking mesajları"
+ },
+ "tipNextSlot": {
+  "message": "Sonraki hak $1 sonra açılır"
+ },
+ "noneYet": {
+  "message": "Henüz yok — gönderimler uzantı yüklendiğinden itibaren sayılır."
+ },
+ "signInHint": {
+  "message": "Bu tarayıcı profilinde $1 adresine giriş yapın, ardından yenile'ye tıklayın."
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT bu hesap için kullanım dönemi bildirmiyor."
+ },
+ "noWindowsBody": {
+  "message": "Bazı planlarda bu normaldir. Özellik kotaları, ulaşılan limitler ve belirlediğiniz limitler izlenmeye devam eder."
+ },
+ "updatedJustNow": {
+  "message": "Az önce güncellendi"
+ },
+ "updatedAgo": {
+  "message": "$1 önce güncellendi"
+ },
+ "settingsBy": {
+  "message": "Ayarlar ·"
+ },
+ "saved": {
+  "message": "Kaydedildi"
+ },
+ "cleared": {
+  "message": "Temizlendi"
+ },
+ "polling": {
+  "message": "Yoklama"
+ },
+ "checkEvery": {
+  "message": "Kullanımı şu sıklıkla kontrol et"
+ },
+ "min1": {
+  "message": "1 dakika"
+ },
+ "minN": {
+  "message": "$1 dakika"
+ },
+ "pollNote": {
+  "message": "Kullanım ayrıca her yanıttan birkaç saniye sonra ve araç çubuğu penceresini her açtığınızda yenilenir."
+ },
+ "alerts": {
+  "message": "Uyarılar"
+ },
+ "alertCrosses": {
+  "message": "Kullanım şu değeri geçince uyar"
+ },
+ "badgeLabel": {
+  "message": "Araç çubuğu simgesinde 5 saatlik %'yi göster"
+ },
+ "usageStrip": {
+  "message": "Kullanım çubuğu"
+ },
+ "showStripOpt": {
+  "message": "Çubuğu ChatGPT yazma kutusunun üstünde göster"
+ },
+ "startCollapsed": {
+  "message": "Daraltılmış başlat"
+ },
+ "capsNote": {
+  "message": "ChatGPT her model için kalan sayıyı bildirmez. Planınızda sabit bir limit varsa (örneğin bir Pro modelde haftalık limit), buraya ekleyin; uzantı bu tarayıcıda o modele gönderdiğiniz mesajları sayar. Modelin tam adını kullanın (kullandıklarınız önerilir) ya da bir model ailesinin tamamı için sonuna $1 ekleyin (ör. $2)."
+ },
+ "thModel": {
+  "message": "Model"
+ },
+ "thLimit": {
+  "message": "Limit"
+ },
+ "thPer": {
+  "message": "Dönem"
+ },
+ "addCap": {
+  "message": "+ Limit ekle"
+ },
+ "egModel": {
+  "message": "ör. $1"
+ },
+ "remove": {
+  "message": "Kaldır"
+ },
+ "data": {
+  "message": "Veriler"
+ },
+ "dataNote": {
+  "message": "Her şey bu tarayıcıda kalır. Kullanım, kendi oturumunuzla chatgpt.com'dan okunur; başka hiçbir yere gönderilmez."
+ },
+ "clearCounts": {
+  "message": "Mesaj sayılarını temizle"
+ },
+ "unhideStrip": {
+  "message": "Çubuğu yeniden göster"
+ },
+ "footerDisc": {
+  "message": "OpenAI ile bağlantılı değildir ve OpenAI tarafından onaylanmamıştır. ChatGPT, OpenAI'nin ticari markasıdır."
+ },
+ "errNetwork": {
+  "message": "chatgpt.com'a ulaşılamadı"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com oturum verisi döndürmedi"
+ },
+ "errSignedOut": {
+  "message": "chatgpt.com'a giriş yapılmadı"
+ },
+ "errHttp": {
+  "message": "Kullanım isteği başarısız ($1)"
+ },
+ "noResponse": {
+  "message": "yanıt yok"
+ },
+ "resetsInSentence": {
+  "message": "$1 sonra sıfırlanır."
+ },
+ "notifLimitReached": {
+  "message": "$1 limite ulaşıldı"
+ },
+ "notifUsageAt": {
+  "message": "$1 kullanım %$2"
+ },
+ "notifBody": {
+  "message": "ChatGPT $1 kullanımı %$2 seviyesinde."
+ },
+ "notifCapTitle": {
+  "message": "$1: $3 hakkın $2 tanesi kullanıldı"
+ },
+ "notifCapBody": {
+  "message": "Son $4 içinde $3 için $2 mesajın $1 tanesini gönderdiniz (bu tarayıcıda sayıldı)."
+ },
+ "notifHitTitle": {
+  "message": "ChatGPT limitine ulaşıldı"
+ },
+ "featDeepResearch": {
+  "message": "Derin araştırma"
+ },
+ "featImageGen": {
+  "message": "Görsel oluşturma"
+ },
+ "featFileUploads": {
+  "message": "Dosya yükleme"
+ },
+ "featAgent": {
+  "message": "Ajan"
+ },
+ "featVideo": {
+  "message": "Video"
+ },
+ "featVoice": {
+  "message": "Ses"
+ },
+ "featCanvas": {
+  "message": "Tuval"
+ },
+ "featTasks": {
+  "message": "Görevler"
+ },
+ "featConnectors": {
+  "message": "Bağlayıcılar"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Kod incelemesi"
+ },
+ "featResearch": {
+  "message": "Araştırma"
+ },
+ "featPasteToFile": {
+  "message": "Dosya olarak yapıştır"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Adres çubuğuyla ekran görüntüsü"
+ },
+ "tool_testcase_studio": {
+  "message": "Test adımlarını çalışırken kaydedin"
+ },
+ "tool_check_my_links": {
+  "message": "Kırık bağlantıları tek tıkla bulun"
+ },
+ "tool_page_load_timer": {
+  "message": "Sayfa yükleme süresi, otomatik"
+ },
+ "tool_selectorshub": {
+  "message": "XPath ve Playwright konumlayıcıları"
+ },
+ "tool_cssviewer": {
+  "message": "Üzerine gelince öğenin CSS'ini görün"
+ },
+ "tool_clearcache": {
+  "message": "Önbelleği tek tıkla temizleyin"
+ },
+ "tool_auto_data_filler": {
+  "message": "Formları tek tıkla doldurun"
+ },
+ "tool_modify_header": {
+  "message": "İstek ve yanıt başlıklarını düzenleyin"
+ },
+ "tool_anyformat": {
+  "message": "Görselleri istediğiniz formatta kaydedin"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Yer imlerini yazarak bulun"
+ },
+ "tool_testing_daily": {
+  "message": "Günlük test haberleri"
+ }
+}

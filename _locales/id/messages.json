@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "Lihat batas ChatGPT, waktu reset, dan ukuran chat secara langsung tepat di atas kotak chat. Dapatkan peringatan sebelum kuota habis."
+ },
+ "durNow": {
+  "message": "sekarang"
+ },
+ "durLt1": {
+  "message": "<1 mnt"
+ },
+ "durM": {
+  "message": "$1 mnt"
+ },
+ "durHM": {
+  "message": "$1 j $2 mnt"
+ },
+ "durD": {
+  "message": "$1 h"
+ },
+ "durDH": {
+  "message": "$1 h $2 j"
+ },
+ "winUsage": {
+  "message": "Penggunaan"
+ },
+ "lblLimit": {
+  "message": "Batas"
+ },
+ "win5h": {
+  "message": "5 jam"
+ },
+ "win5hShort": {
+  "message": "5 j"
+ },
+ "win3h": {
+  "message": "3 jam"
+ },
+ "win3hShort": {
+  "message": "3 j"
+ },
+ "winDay": {
+  "message": "Harian"
+ },
+ "winDayShort": {
+  "message": "Hari"
+ },
+ "winWeek": {
+  "message": "Mingguan"
+ },
+ "winWeekShort": {
+  "message": "Minggu"
+ },
+ "winWeekLetter": {
+  "message": "M"
+ },
+ "winMonth": {
+  "message": "Bulanan"
+ },
+ "winMonthShort": {
+  "message": "Bulan"
+ },
+ "winNDay": {
+  "message": "$1 hari"
+ },
+ "winNHour": {
+  "message": "$1 jam"
+ },
+ "winNMin": {
+  "message": "$1 menit"
+ },
+ "capWin3h": {
+  "message": "3 jam"
+ },
+ "capWin5h": {
+  "message": "5 jam"
+ },
+ "capWinDay": {
+  "message": "24 jam"
+ },
+ "capWinWeek": {
+  "message": "7 hari"
+ },
+ "capWinMonth": {
+  "message": "30 hari"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "sisa $1"
+ },
+ "nOfMaxLeft": {
+  "message": "sisa $1/$2"
+ },
+ "leftApprox": {
+  "message": "sisa ~$1"
+ },
+ "resetIn": {
+  "message": "Reset dalam $1"
+ },
+ "resetsInLower": {
+  "message": "reset dalam $1"
+ },
+ "resetsShort": {
+  "message": "reset dalam $1"
+ },
+ "tipUsage": {
+  "message": "Penggunaan $1: $2"
+ },
+ "tipResetsAt": {
+  "message": "Reset dalam $1 ($2)"
+ },
+ "tipResetsIn": {
+  "message": "Reset dalam $1"
+ },
+ "tipForecast": {
+  "message": "Dengan kecepatan saat ini, Anda akan mencapai batas ini dalam sekitar $1 — sebelum reset."
+ },
+ "tipSignIn": {
+  "message": "Masuk ke chatgpt.com di profil browser ini."
+ },
+ "signInToSee": {
+  "message": "Masuk untuk melihat penggunaan"
+ },
+ "tipFetching": {
+  "message": "Mengambil data penggunaan…"
+ },
+ "loading": {
+  "message": "Memuat…"
+ },
+ "tipThinkingLeft": {
+  "message": "Sisa pesan Thinking: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "Dilaporkan oleh ChatGPT untuk paket Anda."
+ },
+ "tipCodexNote": {
+  "message": "Penggunaan Codex yang dilaporkan ChatGPT untuk paket Anda (juga dipakai oleh tugas agen / Work). Chat biasa tidak dihitung di sini."
+ },
+ "credits": {
+  "message": "Kredit"
+ },
+ "creditsShort": {
+  "message": "Kr"
+ },
+ "on": {
+  "message": "aktif"
+ },
+ "onCap": {
+  "message": "Aktif"
+ },
+ "unlimited": {
+  "message": "Tanpa batas"
+ },
+ "tipCredits": {
+  "message": "Kredit di akun ini (dipakai setelah batas paket habis)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: sisa $2"
+ },
+ "tipAllQuotas": {
+  "message": "Semua kuota fitur ada di popup toolbar."
+ },
+ "tipCapUsed": {
+  "message": "$1: $2 dari $3 pesan dalam $4 terakhir"
+ },
+ "tipNextFrees": {
+  "message": "Pesan berikutnya tersedia dalam $1"
+ },
+ "tipCountedHere": {
+  "message": "Dihitung dari pesan yang dikirim di browser ini."
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT melaporkan batas penggunaan tercapai."
+ },
+ "limitHit": {
+  "message": "Batas tercapai"
+ },
+ "limitShort": {
+  "message": "Batas"
+ },
+ "limitReached": {
+  "message": "Batas tercapai"
+ },
+ "tipTokens1": {
+  "message": "Chat ini sekitar $1 token — kira-kira sebanyak itulah yang dibaca ulang ChatGPT di setiap pesan baru."
+ },
+ "tipTokens2": {
+  "message": "Anda $1 · ChatGPT $2 · Alat $3 · Gambar $4"
+ },
+ "tipTokensCtx": {
+  "message": "Instruksi khusus $1"
+ },
+ "tipTokens3": {
+  "message": "Perkiraan. File yang dibaca oleh pencarian, memori, dan prompt sistem tidak termasuk."
+ },
+ "tipTokens4": {
+  "message": "Chat sudah panjang? Memulai chat baru adalah pesan paling hemat."
+ },
+ "chat": {
+  "message": "Chat"
+ },
+ "tokensWord": {
+  "message": "token"
+ },
+ "tipThisChat": {
+  "message": "Chat ini: ~$1 token"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: sisa $1"
+ },
+ "errFetch": {
+  "message": "Tidak dapat mengambil data penggunaan."
+ },
+ "tipRetrying": {
+  "message": "Akan dicoba lagi otomatis. Buka popup toolbar untuk menyegarkan sekarang."
+ },
+ "usageUnavailable": {
+  "message": "Penggunaan tidak tersedia"
+ },
+ "tipNoWindows": {
+  "message": "Saat ini ChatGPT tidak melaporkan periode penggunaan untuk akun ini. Kuota fitur, batas yang Anda atur, dan batas yang tercapai tetap dilacak."
+ },
+ "noLimits": {
+  "message": "Tidak ada batas yang dilaporkan"
+ },
+ "tipLogo": {
+  "message": "$1 — dari SelectorsHub\nKlik untuk alat gratis lainnya"
+ },
+ "bySelectorsHub": {
+  "message": "oleh SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "Sementara itu, coba $1 →"
+ },
+ "tryTool": {
+  "message": "Coba $1 →"
+ },
+ "hideUntilReset": {
+  "message": "Sembunyikan sampai reset berikutnya"
+ },
+ "rateTip": {
+  "message": "Mohon beri kami rating — tombol ini hilang selamanya setelah Anda memberi ulasan."
+ },
+ "rateAria": {
+  "message": "Beri rating $1"
+ },
+ "rateUs": {
+  "message": "Beri rating"
+ },
+ "tipGear": {
+  "message": "Pilih yang ditampilkan di bilah"
+ },
+ "stripSettings": {
+  "message": "Pengaturan bilah"
+ },
+ "expand": {
+  "message": "Bentangkan"
+ },
+ "collapse": {
+  "message": "Ciutkan"
+ },
+ "tipHide": {
+  "message": "Sembunyikan selama 12 jam (aktifkan lagi dari popup toolbar)"
+ },
+ "hide": {
+  "message": "Sembunyikan"
+ },
+ "notNow": {
+  "message": "Nanti saja"
+ },
+ "nudgeTitle": {
+  "message": "Apakah $1 membantu Anda?"
+ },
+ "leaveFiveStar": {
+  "message": "Beri ulasan bintang 5"
+ },
+ "nudgeBody": {
+  "message": "Mohon beri kami rating — tombol ini hilang selamanya setelah Anda memberi ulasan. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Terima kasih ~ $1, Pembuat"
+ },
+ "writeReview": {
+  "message": "Tulis ulasan"
+ },
+ "maybeLater": {
+  "message": "Mungkin nanti"
+ },
+ "showInStrip": {
+  "message": "Tampilkan di bilah"
+ },
+ "fThinking": {
+  "message": "Sisa Thinking"
+ },
+ "fThinkingNote": {
+  "message": "batas chat"
+ },
+ "fPrimary": {
+  "message": "Penggunaan Codex"
+ },
+ "fPrimaryNote": {
+  "message": "5 jam / bulanan"
+ },
+ "fResetPrimary": {
+  "message": "Waktu reset"
+ },
+ "fSecondary": {
+  "message": "Penggunaan Codex mingguan"
+ },
+ "fSecondaryNote": {
+  "message": "paket berbayar"
+ },
+ "fResetSecondary": {
+  "message": "Reset mingguan"
+ },
+ "fForecast": {
+  "message": "Prakiraan batas"
+ },
+ "fForecastNote": {
+  "message": "saat hampir habis"
+ },
+ "fBars": {
+  "message": "Bilah penggunaan"
+ },
+ "fExtra": {
+  "message": "Batas lainnya"
+ },
+ "fExtraNote": {
+  "message": "periode per fitur"
+ },
+ "fFeatures": {
+  "message": "Kuota fitur"
+ },
+ "fFeaturesNote": {
+  "message": "riset mendalam, gambar…"
+ },
+ "fModelCaps": {
+  "message": "Batas model saya"
+ },
+ "fModelCapsNote": {
+  "message": "atur di Pengaturan"
+ },
+ "fChatTokens": {
+  "message": "Token chat"
+ },
+ "desktopNotifications": {
+  "message": "Notifikasi desktop"
+ },
+ "allSettings": {
+  "message": "Semua pengaturan…"
+ },
+ "offeredBy": {
+  "message": "Dari SelectorsHub · alat gratis lainnya"
+ },
+ "seeAllTools": {
+  "message": "Lihat semua 15+ alat gratis →"
+ },
+ "aboutName": {
+  "message": "Tentang $1"
+ },
+ "notAffiliated": {
+  "message": "Tidak berafiliasi dengan OpenAI."
+ },
+ "notAffiliatedShort": {
+  "message": "Tidak berafiliasi dengan OpenAI"
+ },
+ "refresh": {
+  "message": "Segarkan"
+ },
+ "refreshNow": {
+  "message": "Segarkan sekarang"
+ },
+ "settings": {
+  "message": "Pengaturan"
+ },
+ "showStripLabel": {
+  "message": "Tampilkan bilah penggunaan di atas chat"
+ },
+ "creditsSub": {
+  "message": "Dipakai setelah batas paket habis."
+ },
+ "reportedByChatGPT": {
+  "message": "dilaporkan ChatGPT"
+ },
+ "countedInBrowser": {
+  "message": "dihitung di browser ini"
+ },
+ "msgsSent": {
+  "message": "Pesan yang dikirim dari browser ini"
+ },
+ "rng5h": {
+  "message": "5 j"
+ },
+ "rng24h": {
+  "message": "24 j"
+ },
+ "rng7d": {
+  "message": "7 h"
+ },
+ "setCap": {
+  "message": "+ Atur batas untuk model"
+ },
+ "moreTools": {
+  "message": "Alat gratis lainnya dari SelectorsHub"
+ },
+ "resetsInAt": {
+  "message": "Reset dalam $1 · $2"
+ },
+ "resetNotReported": {
+  "message": "Waktu reset tidak dilaporkan"
+ },
+ "forecastPopup": {
+  "message": "Dengan kecepatan ini, batas tercapai dalam ~$1"
+ },
+ "hiddenUntil": {
+  "message": "Disembunyikan sampai $1"
+ },
+ "shownOn": {
+  "message": "Ditampilkan di chatgpt.com"
+ },
+ "off": {
+  "message": "Nonaktif"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com tidak merespons ekstensi secara langsung. Buka tab chatgpt.com lalu klik segarkan."
+ },
+ "thinkingMessages": {
+  "message": "Pesan Thinking"
+ },
+ "tipNextSlot": {
+  "message": "Slot berikutnya tersedia dalam $1"
+ },
+ "noneYet": {
+  "message": "Belum ada — pengiriman dihitung sejak ekstensi dipasang."
+ },
+ "signInHint": {
+  "message": "Masuk ke $1 di profil browser ini, lalu klik segarkan."
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT tidak melaporkan periode penggunaan untuk akun ini."
+ },
+ "noWindowsBody": {
+  "message": "Ini normal pada beberapa paket. Kuota fitur, batas yang tercapai, dan batas yang Anda atur tetap dilacak."
+ },
+ "updatedJustNow": {
+  "message": "Baru saja diperbarui"
+ },
+ "updatedAgo": {
+  "message": "Diperbarui $1 lalu"
+ },
+ "settingsBy": {
+  "message": "Pengaturan · oleh"
+ },
+ "saved": {
+  "message": "Tersimpan"
+ },
+ "cleared": {
+  "message": "Dihapus"
+ },
+ "polling": {
+  "message": "Pemeriksaan"
+ },
+ "checkEvery": {
+  "message": "Periksa penggunaan setiap"
+ },
+ "min1": {
+  "message": "1 menit"
+ },
+ "minN": {
+  "message": "$1 menit"
+ },
+ "pollNote": {
+  "message": "Penggunaan juga diperbarui beberapa detik setelah setiap balasan, dan setiap kali Anda membuka popup toolbar."
+ },
+ "alerts": {
+  "message": "Peringatan"
+ },
+ "alertCrosses": {
+  "message": "Beri peringatan saat penggunaan melewati"
+ },
+ "badgeLabel": {
+  "message": "Tampilkan % 5 jam di ikon toolbar"
+ },
+ "usageStrip": {
+  "message": "Bilah penggunaan"
+ },
+ "showStripOpt": {
+  "message": "Tampilkan bilah di atas kotak chat ChatGPT"
+ },
+ "startCollapsed": {
+  "message": "Mulai dalam keadaan ciut"
+ },
+ "capsNote": {
+  "message": "ChatGPT tidak melaporkan sisa pesan untuk setiap model. Jika paket Anda punya batas tetap (misalnya batas mingguan untuk model Pro), tambahkan di sini dan ekstensi akan menghitung pesan Anda ke model itu di browser ini. Gunakan nama model yang tepat (model yang pernah Anda pakai akan disarankan) atau akhiri dengan $1 untuk satu keluarga model (mis. $2)."
+ },
+ "thModel": {
+  "message": "Model"
+ },
+ "thLimit": {
+  "message": "Batas"
+ },
+ "thPer": {
+  "message": "Per"
+ },
+ "addCap": {
+  "message": "+ Tambah batas"
+ },
+ "egModel": {
+  "message": "mis. $1"
+ },
+ "remove": {
+  "message": "Hapus"
+ },
+ "data": {
+  "message": "Data"
+ },
+ "dataNote": {
+  "message": "Semuanya tetap di browser ini. Penggunaan dibaca dari chatgpt.com dengan sesi login Anda sendiri; tidak ada yang dikirim ke tempat lain."
+ },
+ "clearCounts": {
+  "message": "Hapus jumlah pesan"
+ },
+ "unhideStrip": {
+  "message": "Tampilkan lagi bilah"
+ },
+ "footerDisc": {
+  "message": "Tidak berafiliasi dengan atau didukung oleh OpenAI. ChatGPT adalah merek dagang OpenAI."
+ },
+ "errNetwork": {
+  "message": "Tidak dapat menjangkau chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com tidak mengembalikan data sesi"
+ },
+ "errSignedOut": {
+  "message": "Belum masuk ke chatgpt.com"
+ },
+ "errHttp": {
+  "message": "Permintaan penggunaan gagal ($1)"
+ },
+ "noResponse": {
+  "message": "tidak ada respons"
+ },
+ "resetsInSentence": {
+  "message": "Reset dalam $1."
+ },
+ "notifLimitReached": {
+  "message": "Batas $1 tercapai"
+ },
+ "notifUsageAt": {
+  "message": "Penggunaan $1 di $2%"
+ },
+ "notifBody": {
+  "message": "Penggunaan $1 ChatGPT sudah $2%."
+ },
+ "notifCapTitle": {
+  "message": "$1: $2 dari $3 terpakai"
+ },
+ "notifCapBody": {
+  "message": "Anda telah mengirim $1 dari $2 pesan $3 dalam $4 terakhir (dihitung di browser ini)."
+ },
+ "notifHitTitle": {
+  "message": "Batas ChatGPT tercapai"
+ },
+ "featDeepResearch": {
+  "message": "Riset mendalam"
+ },
+ "featImageGen": {
+  "message": "Pembuatan gambar"
+ },
+ "featFileUploads": {
+  "message": "Unggahan file"
+ },
+ "featAgent": {
+  "message": "Agen"
+ },
+ "featVideo": {
+  "message": "Video"
+ },
+ "featVoice": {
+  "message": "Suara"
+ },
+ "featCanvas": {
+  "message": "Canvas"
+ },
+ "featTasks": {
+  "message": "Tugas"
+ },
+ "featConnectors": {
+  "message": "Konektor"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Tinjauan kode"
+ },
+ "featResearch": {
+  "message": "Riset"
+ },
+ "featPasteToFile": {
+  "message": "Tempel sebagai file"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Tangkapan layar dengan bilah alamat"
+ },
+ "tool_testcase_studio": {
+  "message": "Rekam langkah uji sambil bekerja"
+ },
+ "tool_check_my_links": {
+  "message": "Temukan tautan rusak dalam 1 klik"
+ },
+ "tool_page_load_timer": {
+  "message": "Waktu muat halaman, otomatis"
+ },
+ "tool_selectorshub": {
+  "message": "Locator XPath & Playwright"
+ },
+ "tool_cssviewer": {
+  "message": "Lihat CSS elemen saat diarahkan"
+ },
+ "tool_clearcache": {
+  "message": "Hapus cache dalam satu klik"
+ },
+ "tool_auto_data_filler": {
+  "message": "Isi formulir dalam satu klik"
+ },
+ "tool_modify_header": {
+  "message": "Edit header permintaan & respons"
+ },
+ "tool_anyformat": {
+  "message": "Simpan gambar dalam format apa pun"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Temukan bookmark dengan mengetik"
+ },
+ "tool_testing_daily": {
+  "message": "Berita testing harian"
+ }
+}

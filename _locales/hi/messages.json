@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "चैट बॉक्स के ठीक ऊपर ChatGPT की लिमिट, रीसेट का समय और चैट का साइज़ लाइव देखें। लिमिट खत्म होने से पहले अलर्ट पाएँ।"
+ },
+ "durNow": {
+  "message": "अभी"
+ },
+ "durLt1": {
+  "message": "<1 मि."
+ },
+ "durM": {
+  "message": "$1 मि."
+ },
+ "durHM": {
+  "message": "$1 घं. $2 मि."
+ },
+ "durD": {
+  "message": "$1 दिन"
+ },
+ "durDH": {
+  "message": "$1 दिन $2 घं."
+ },
+ "winUsage": {
+  "message": "उपयोग"
+ },
+ "lblLimit": {
+  "message": "लिमिट"
+ },
+ "win5h": {
+  "message": "5-घंटे"
+ },
+ "win5hShort": {
+  "message": "5 घं."
+ },
+ "win3h": {
+  "message": "3-घंटे"
+ },
+ "win3hShort": {
+  "message": "3 घं."
+ },
+ "winDay": {
+  "message": "दैनिक"
+ },
+ "winDayShort": {
+  "message": "दिन"
+ },
+ "winWeek": {
+  "message": "साप्ताहिक"
+ },
+ "winWeekShort": {
+  "message": "सप्ताह"
+ },
+ "winWeekLetter": {
+  "message": "सप्ताह"
+ },
+ "winMonth": {
+  "message": "मासिक"
+ },
+ "winMonthShort": {
+  "message": "महीना"
+ },
+ "winNDay": {
+  "message": "$1-दिन"
+ },
+ "winNHour": {
+  "message": "$1-घंटे"
+ },
+ "winNMin": {
+  "message": "$1-मिनट"
+ },
+ "capWin3h": {
+  "message": "3 घंटे"
+ },
+ "capWin5h": {
+  "message": "5 घंटे"
+ },
+ "capWinDay": {
+  "message": "24 घंटे"
+ },
+ "capWinWeek": {
+  "message": "7 दिन"
+ },
+ "capWinMonth": {
+  "message": "30 दिन"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "$1 बचे"
+ },
+ "nOfMaxLeft": {
+  "message": "$1/$2 बचे"
+ },
+ "leftApprox": {
+  "message": "~$1 बचे"
+ },
+ "resetIn": {
+  "message": "$1 में रीसेट"
+ },
+ "resetsInLower": {
+  "message": "$1 में रीसेट"
+ },
+ "resetsShort": {
+  "message": "$1 में रीसेट"
+ },
+ "tipUsage": {
+  "message": "$1 उपयोग: $2"
+ },
+ "tipResetsAt": {
+  "message": "$1 में रीसेट ($2)"
+ },
+ "tipResetsIn": {
+  "message": "$1 में रीसेट"
+ },
+ "tipForecast": {
+  "message": "आपकी मौजूदा रफ़्तार से, रीसेट होने से पहले लगभग $1 में यह लिमिट पूरी हो जाएगी।"
+ },
+ "tipSignIn": {
+  "message": "इस ब्राउज़र प्रोफ़ाइल में chatgpt.com पर साइन इन करें।"
+ },
+ "signInToSee": {
+  "message": "उपयोग देखने के लिए साइन इन करें"
+ },
+ "tipFetching": {
+  "message": "आपका उपयोग लाया जा रहा है…"
+ },
+ "loading": {
+  "message": "लोड हो रहा है…"
+ },
+ "tipThinkingLeft": {
+  "message": "बचे हुए Thinking मैसेज: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "आपके प्लान के लिए ChatGPT द्वारा बताया गया।"
+ },
+ "tipCodexNote": {
+  "message": "आपके प्लान के लिए ChatGPT द्वारा बताया गया Codex उपयोग (एजेंट / Work टास्क भी इसे इस्तेमाल करते हैं)। सामान्य चैट यहाँ नहीं गिनी जाती।"
+ },
+ "credits": {
+  "message": "क्रेडिट"
+ },
+ "creditsShort": {
+  "message": "क्रे."
+ },
+ "on": {
+  "message": "चालू"
+ },
+ "onCap": {
+  "message": "चालू"
+ },
+ "unlimited": {
+  "message": "असीमित"
+ },
+ "tipCredits": {
+  "message": "इस अकाउंट के क्रेडिट (प्लान की लिमिट खत्म होने के बाद इस्तेमाल होते हैं)।"
+ },
+ "tipFeatureLeft": {
+  "message": "$1: $2 बचे"
+ },
+ "tipAllQuotas": {
+  "message": "सभी फ़ीचर कोटा टूलबार पॉपअप में हैं।"
+ },
+ "tipCapUsed": {
+  "message": "$1: पिछले $4 में $3 में से $2 मैसेज"
+ },
+ "tipNextFrees": {
+  "message": "अगला मैसेज $1 में उपलब्ध होगा"
+ },
+ "tipCountedHere": {
+  "message": "इस ब्राउज़र से भेजे गए मैसेज से गिना गया।"
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT ने बताया कि उपयोग की लिमिट पूरी हो गई है।"
+ },
+ "limitHit": {
+  "message": "लिमिट पूरी"
+ },
+ "limitShort": {
+  "message": "लिमिट"
+ },
+ "limitReached": {
+  "message": "लिमिट पूरी हो गई"
+ },
+ "tipTokens1": {
+  "message": "यह चैट लगभग $1 टोकन की है — हर नए मैसेज पर ChatGPT लगभग इतना फिर से पढ़ता है।"
+ },
+ "tipTokens2": {
+  "message": "आप $1 · ChatGPT $2 · टूल्स $3 · इमेज $4"
+ },
+ "tipTokensCtx": {
+  "message": "कस्टम निर्देश $1"
+ },
+ "tipTokens3": {
+  "message": "अनुमान। सर्च द्वारा पढ़ी गई फ़ाइलें, मेमोरी और सिस्टम प्रॉम्प्ट शामिल नहीं हैं।"
+ },
+ "tipTokens4": {
+  "message": "चैट लंबी हो गई? नई चैट शुरू करना सबसे किफ़ायती मैसेज है।"
+ },
+ "chat": {
+  "message": "चैट"
+ },
+ "tokensWord": {
+  "message": "टोकन"
+ },
+ "tipThisChat": {
+  "message": "यह चैट: ~$1 टोकन"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: $1 बचे"
+ },
+ "errFetch": {
+  "message": "उपयोग नहीं मिल सका।"
+ },
+ "tipRetrying": {
+  "message": "अपने आप फिर से कोशिश की जाएगी। अभी रीफ़्रेश करने के लिए टूलबार पॉपअप खोलें।"
+ },
+ "usageUnavailable": {
+  "message": "उपयोग उपलब्ध नहीं"
+ },
+ "tipNoWindows": {
+  "message": "ChatGPT अभी इस अकाउंट के लिए उपयोग विंडो नहीं बता रहा है। फ़ीचर कोटा, आपकी तय की गई लिमिट और पूरी हुई लिमिट अब भी ट्रैक की जाती हैं।"
+ },
+ "noLimits": {
+  "message": "कोई लिमिट नहीं बताई गई"
+ },
+ "tipLogo": {
+  "message": "$1 — SelectorsHub की ओर से\nऔर मुफ़्त टूल्स के लिए क्लिक करें"
+ },
+ "bySelectorsHub": {
+  "message": "by SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "तब तक, $1 आज़माएँ →"
+ },
+ "tryTool": {
+  "message": "$1 आज़माएँ →"
+ },
+ "hideUntilReset": {
+  "message": "अगले रीसेट तक छिपाएँ"
+ },
+ "rateTip": {
+  "message": "कृपया हमें रेट करें — रिव्यू के बाद यह बटन हमेशा के लिए हट जाएगा।"
+ },
+ "rateAria": {
+  "message": "$1 को रेट करें"
+ },
+ "rateUs": {
+  "message": "हमें रेट करें"
+ },
+ "tipGear": {
+  "message": "चुनें कि पट्टी में क्या दिखे"
+ },
+ "stripSettings": {
+  "message": "पट्टी की सेटिंग"
+ },
+ "expand": {
+  "message": "बड़ा करें"
+ },
+ "collapse": {
+  "message": "छोटा करें"
+ },
+ "tipHide": {
+  "message": "12 घंटे के लिए छिपाएँ (टूलबार पॉपअप से फिर चालू करें)"
+ },
+ "hide": {
+  "message": "छिपाएँ"
+ },
+ "notNow": {
+  "message": "अभी नहीं"
+ },
+ "nudgeTitle": {
+  "message": "क्या $1 आपके काम आ रहा है?"
+ },
+ "leaveFiveStar": {
+  "message": "5 स्टार रिव्यू दें"
+ },
+ "nudgeBody": {
+  "message": "कृपया हमें रेट करें — रिव्यू के बाद यह बटन हमेशा के लिए हट जाएगा। 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "धन्यवाद ~ $1, क्रिएटर"
+ },
+ "writeReview": {
+  "message": "रिव्यू लिखें"
+ },
+ "maybeLater": {
+  "message": "शायद बाद में"
+ },
+ "showInStrip": {
+  "message": "पट्टी में दिखाएँ"
+ },
+ "fThinking": {
+  "message": "बचे Thinking"
+ },
+ "fThinkingNote": {
+  "message": "चैट लिमिट"
+ },
+ "fPrimary": {
+  "message": "Codex उपयोग"
+ },
+ "fPrimaryNote": {
+  "message": "5-घंटे / मासिक"
+ },
+ "fResetPrimary": {
+  "message": "रीसेट का समय"
+ },
+ "fSecondary": {
+  "message": "Codex साप्ताहिक उपयोग"
+ },
+ "fSecondaryNote": {
+  "message": "पेड प्लान"
+ },
+ "fResetSecondary": {
+  "message": "साप्ताहिक रीसेट का समय"
+ },
+ "fForecast": {
+  "message": "लिमिट का अनुमान"
+ },
+ "fForecastNote": {
+  "message": "जब जल्दी खत्म होने वाली हो"
+ },
+ "fBars": {
+  "message": "उपयोग बार"
+ },
+ "fExtra": {
+  "message": "अन्य लिमिट"
+ },
+ "fExtraNote": {
+  "message": "हर फ़ीचर की विंडो"
+ },
+ "fFeatures": {
+  "message": "फ़ीचर कोटा"
+ },
+ "fFeaturesNote": {
+  "message": "डीप रिसर्च, इमेज…"
+ },
+ "fModelCaps": {
+  "message": "मेरी मॉडल लिमिट"
+ },
+ "fModelCapsNote": {
+  "message": "सेटिंग में सेट करें"
+ },
+ "fChatTokens": {
+  "message": "चैट टोकन"
+ },
+ "desktopNotifications": {
+  "message": "डेस्कटॉप सूचनाएँ"
+ },
+ "allSettings": {
+  "message": "सभी सेटिंग…"
+ },
+ "offeredBy": {
+  "message": "SelectorsHub की ओर से · और मुफ़्त टूल्स"
+ },
+ "seeAllTools": {
+  "message": "सभी 15+ मुफ़्त टूल्स देखें →"
+ },
+ "aboutName": {
+  "message": "$1 के बारे में"
+ },
+ "notAffiliated": {
+  "message": "OpenAI से संबद्ध नहीं।"
+ },
+ "notAffiliatedShort": {
+  "message": "OpenAI से संबद्ध नहीं"
+ },
+ "refresh": {
+  "message": "रीफ़्रेश"
+ },
+ "refreshNow": {
+  "message": "अभी रीफ़्रेश करें"
+ },
+ "settings": {
+  "message": "सेटिंग"
+ },
+ "showStripLabel": {
+  "message": "चैट के ऊपर उपयोग पट्टी दिखाएँ"
+ },
+ "creditsSub": {
+  "message": "प्लान की लिमिट खत्म होने के बाद इस्तेमाल होते हैं।"
+ },
+ "reportedByChatGPT": {
+  "message": "ChatGPT द्वारा बताया गया"
+ },
+ "countedInBrowser": {
+  "message": "इस ब्राउज़र में गिना गया"
+ },
+ "msgsSent": {
+  "message": "इस ब्राउज़र से भेजे गए मैसेज"
+ },
+ "rng5h": {
+  "message": "5 घं."
+ },
+ "rng24h": {
+  "message": "24 घं."
+ },
+ "rng7d": {
+  "message": "7 दिन"
+ },
+ "setCap": {
+  "message": "+ किसी मॉडल की लिमिट सेट करें"
+ },
+ "moreTools": {
+  "message": "SelectorsHub के और मुफ़्त टूल्स"
+ },
+ "resetsInAt": {
+  "message": "$1 में रीसेट · $2"
+ },
+ "resetNotReported": {
+  "message": "रीसेट का समय नहीं बताया गया"
+ },
+ "forecastPopup": {
+  "message": "इस रफ़्तार से ~$1 में लिमिट पूरी हो जाएगी"
+ },
+ "hiddenUntil": {
+  "message": "$1 तक छिपा है"
+ },
+ "shownOn": {
+  "message": "chatgpt.com पर दिख रहा है"
+ },
+ "off": {
+  "message": "बंद"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com ने एक्सटेंशन को सीधे जवाब नहीं दिया। chatgpt.com का एक टैब खोलें और रीफ़्रेश पर क्लिक करें।"
+ },
+ "thinkingMessages": {
+  "message": "Thinking मैसेज"
+ },
+ "tipNextSlot": {
+  "message": "अगला स्लॉट $1 में खाली होगा"
+ },
+ "noneYet": {
+  "message": "अभी कुछ नहीं — एक्सटेंशन इंस्टॉल होने के बाद से मैसेज गिने जाते हैं।"
+ },
+ "signInHint": {
+  "message": "इस ब्राउज़र प्रोफ़ाइल में $1 पर साइन इन करें, फिर रीफ़्रेश पर क्लिक करें।"
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT इस अकाउंट के लिए उपयोग विंडो नहीं बता रहा है।"
+ },
+ "noWindowsBody": {
+  "message": "कुछ प्लान में यह सामान्य है। फ़ीचर कोटा, पूरी हुई लिमिट और आपकी तय की गई लिमिट अब भी ट्रैक की जाती हैं।"
+ },
+ "updatedJustNow": {
+  "message": "अभी अपडेट हुआ"
+ },
+ "updatedAgo": {
+  "message": "$1 पहले अपडेट हुआ"
+ },
+ "settingsBy": {
+  "message": "सेटिंग ·"
+ },
+ "saved": {
+  "message": "सेव हो गया"
+ },
+ "cleared": {
+  "message": "साफ़ हो गया"
+ },
+ "polling": {
+  "message": "जाँच का अंतराल"
+ },
+ "checkEvery": {
+  "message": "उपयोग जाँचें हर"
+ },
+ "min1": {
+  "message": "1 मिनट"
+ },
+ "minN": {
+  "message": "$1 मिनट"
+ },
+ "pollNote": {
+  "message": "हर जवाब के कुछ सेकंड बाद और टूलबार पॉपअप खोलने पर भी उपयोग रीफ़्रेश होता है।"
+ },
+ "alerts": {
+  "message": "अलर्ट"
+ },
+ "alertCrosses": {
+  "message": "उपयोग इससे ज़्यादा होने पर अलर्ट करें"
+ },
+ "badgeLabel": {
+  "message": "टूलबार आइकन पर 5-घंटे का % दिखाएँ"
+ },
+ "usageStrip": {
+  "message": "उपयोग पट्टी"
+ },
+ "showStripOpt": {
+  "message": "ChatGPT चैट बॉक्स के ऊपर पट्टी दिखाएँ"
+ },
+ "startCollapsed": {
+  "message": "छोटे रूप में शुरू करें"
+ },
+ "capsNote": {
+  "message": "ChatGPT हर मॉडल के लिए बचे मैसेज नहीं बताता। अगर आपके प्लान में कोई तय लिमिट है (जैसे किसी Pro मॉडल पर साप्ताहिक लिमिट), तो उसे यहाँ जोड़ें — एक्सटेंशन इस ब्राउज़र से उस मॉडल को भेजे गए मैसेज गिनेगा। मॉडल का सही नाम लिखें (आपके इस्तेमाल किए मॉडल सुझाए जाते हैं) या पूरे मॉडल परिवार के लिए अंत में $1 लगाएँ (जैसे $2)।"
+ },
+ "thModel": {
+  "message": "मॉडल"
+ },
+ "thLimit": {
+  "message": "लिमिट"
+ },
+ "thPer": {
+  "message": "प्रति"
+ },
+ "addCap": {
+  "message": "+ लिमिट जोड़ें"
+ },
+ "egModel": {
+  "message": "जैसे $1"
+ },
+ "remove": {
+  "message": "हटाएँ"
+ },
+ "data": {
+  "message": "डेटा"
+ },
+ "dataNote": {
+  "message": "सब कुछ इसी ब्राउज़र में रहता है। उपयोग आपके अपने साइन-इन सेशन से chatgpt.com से पढ़ा जाता है; कहीं और कुछ नहीं भेजा जाता।"
+ },
+ "clearCounts": {
+  "message": "मैसेज की गिनती साफ़ करें"
+ },
+ "unhideStrip": {
+  "message": "पट्टी फिर से दिखाएँ"
+ },
+ "footerDisc": {
+  "message": "OpenAI से संबद्ध या उसके द्वारा समर्थित नहीं। ChatGPT, OpenAI का ट्रेडमार्क है।"
+ },
+ "errNetwork": {
+  "message": "chatgpt.com तक नहीं पहुँच सके"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com ने सेशन डेटा नहीं लौटाया"
+ },
+ "errSignedOut": {
+  "message": "chatgpt.com पर साइन इन नहीं है"
+ },
+ "errHttp": {
+  "message": "उपयोग अनुरोध विफल ($1)"
+ },
+ "noResponse": {
+  "message": "कोई जवाब नहीं"
+ },
+ "resetsInSentence": {
+  "message": "$1 में रीसेट होगा।"
+ },
+ "notifLimitReached": {
+  "message": "$1 लिमिट पूरी हो गई"
+ },
+ "notifUsageAt": {
+  "message": "$1 उपयोग $2% पर"
+ },
+ "notifBody": {
+  "message": "ChatGPT का $1 उपयोग $2% पर है।"
+ },
+ "notifCapTitle": {
+  "message": "$1: $3 में से $2 इस्तेमाल"
+ },
+ "notifCapBody": {
+  "message": "आपने पिछले $4 में अपने $2 $3 मैसेज में से $1 भेज दिए हैं (इस ब्राउज़र में गिना गया)।"
+ },
+ "notifHitTitle": {
+  "message": "ChatGPT लिमिट पूरी हो गई"
+ },
+ "featDeepResearch": {
+  "message": "डीप रिसर्च"
+ },
+ "featImageGen": {
+  "message": "इमेज बनाना"
+ },
+ "featFileUploads": {
+  "message": "फ़ाइल अपलोड"
+ },
+ "featAgent": {
+  "message": "एजेंट"
+ },
+ "featVideo": {
+  "message": "वीडियो"
+ },
+ "featVoice": {
+  "message": "वॉइस"
+ },
+ "featCanvas": {
+  "message": "कैनवस"
+ },
+ "featTasks": {
+  "message": "टास्क"
+ },
+ "featConnectors": {
+  "message": "कनेक्टर"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "कोड रिव्यू"
+ },
+ "featResearch": {
+  "message": "रिसर्च"
+ },
+ "featPasteToFile": {
+  "message": "फ़ाइल के रूप में पेस्ट"
+ },
+ "tool_screenshot_with_url": {
+  "message": "URL बार के साथ स्क्रीनशॉट"
+ },
+ "tool_testcase_studio": {
+  "message": "काम करते-करते टेस्ट स्टेप रिकॉर्ड करें"
+ },
+ "tool_check_my_links": {
+  "message": "1 क्लिक में टूटे लिंक खोजें"
+ },
+ "tool_page_load_timer": {
+  "message": "पेज लोड टाइम, अपने आप"
+ },
+ "tool_selectorshub": {
+  "message": "XPath और Playwright लोकेटर"
+ },
+ "tool_cssviewer": {
+  "message": "होवर करते ही एलिमेंट का CSS देखें"
+ },
+ "tool_clearcache": {
+  "message": "एक क्लिक में कैश साफ़ करें"
+ },
+ "tool_auto_data_filler": {
+  "message": "एक क्लिक में फ़ॉर्म भरें"
+ },
+ "tool_modify_header": {
+  "message": "रिक्वेस्ट और रिस्पॉन्स हेडर बदलें"
+ },
+ "tool_anyformat": {
+  "message": "इमेज किसी भी फ़ॉर्मेट में सेव करें"
+ },
+ "tool_bookmarks_finder": {
+  "message": "टाइप करके कोई भी बुकमार्क खोजें"
+ },
+ "tool_testing_daily": {
+  "message": "रोज़ की टेस्टिंग खबरें"
+ }
+}

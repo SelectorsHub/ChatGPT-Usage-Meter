@@ -8,6 +8,7 @@ A Chrome / Edge / Brave extension (Manifest V3) that shows your ChatGPT usage ri
 - **Toolbar popup**: plan badge, one card per usage window, feature quotas (deep research, image generation, agent…) with their reset times, messages sent per model (5h / 24h / 7d), and the More tools drawer.
 - **My model caps**: ChatGPT doesn't report a remaining count for every model. If your plan has a fixed cap (for example a weekly limit on a Pro model), add it in Settings and the meter counts your messages to that model against it.
 - **Alerts**: desktop notifications at 75 / 90 / 100% (configurable), and a 5-hour % badge on the toolbar icon.
+- **15 languages**: English, 简体中文, 繁體中文, 日本語, 한국어, Español, Français, Deutsch, Português, Русский, Italiano, Türkçe, Bahasa Indonesia, Tiếng Việt, हिन्दी. The extension follows the language picked in ChatGPT (Settings → General → Language, read from chatgpt.com's `<html lang>`) and switches live when it changes; until a chatgpt.com tab has been seen, or for a language it doesn't ship, it uses the browser language (`_locales/`, English fallback).
 
 ## Install (unpacked)
 

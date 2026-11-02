@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "Лимиты ChatGPT, время сброса и размер чата в реальном времени над полем ввода. Предупредит, пока лимит не кончился."
+ },
+ "durNow": {
+  "message": "сейчас"
+ },
+ "durLt1": {
+  "message": "<1 мин"
+ },
+ "durM": {
+  "message": "$1 мин"
+ },
+ "durHM": {
+  "message": "$1 ч $2 мин"
+ },
+ "durD": {
+  "message": "$1 д"
+ },
+ "durDH": {
+  "message": "$1 д $2 ч"
+ },
+ "winUsage": {
+  "message": "Использование"
+ },
+ "lblLimit": {
+  "message": "Лимит"
+ },
+ "win5h": {
+  "message": "5-часовой"
+ },
+ "win5hShort": {
+  "message": "5 ч"
+ },
+ "win3h": {
+  "message": "3-часовой"
+ },
+ "win3hShort": {
+  "message": "3 ч"
+ },
+ "winDay": {
+  "message": "Дневной"
+ },
+ "winDayShort": {
+  "message": "День"
+ },
+ "winWeek": {
+  "message": "Недельный"
+ },
+ "winWeekShort": {
+  "message": "Нед."
+ },
+ "winWeekLetter": {
+  "message": "Н"
+ },
+ "winMonth": {
+  "message": "Месячный"
+ },
+ "winMonthShort": {
+  "message": "Мес."
+ },
+ "winNDay": {
+  "message": "$1-дневный"
+ },
+ "winNHour": {
+  "message": "$1-часовой"
+ },
+ "winNMin": {
+  "message": "$1-минутный"
+ },
+ "capWin3h": {
+  "message": "3 часа"
+ },
+ "capWin5h": {
+  "message": "5 часов"
+ },
+ "capWinDay": {
+  "message": "24 часа"
+ },
+ "capWinWeek": {
+  "message": "7 дней"
+ },
+ "capWinMonth": {
+  "message": "30 дней"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "осталось $1"
+ },
+ "nOfMaxLeft": {
+  "message": "осталось $1/$2"
+ },
+ "leftApprox": {
+  "message": "осталось ~$1"
+ },
+ "resetIn": {
+  "message": "Сброс через $1"
+ },
+ "resetsInLower": {
+  "message": "сброс через $1"
+ },
+ "resetsShort": {
+  "message": "сброс через $1"
+ },
+ "tipUsage": {
+  "message": "$1 — использовано: $2"
+ },
+ "tipResetsAt": {
+  "message": "Сброс через $1 ($2)"
+ },
+ "tipResetsIn": {
+  "message": "Сброс через $1"
+ },
+ "tipForecast": {
+  "message": "При текущем темпе вы достигнете этого лимита примерно через $1 — ещё до сброса."
+ },
+ "tipSignIn": {
+  "message": "Войдите в chatgpt.com в этом профиле браузера."
+ },
+ "signInToSee": {
+  "message": "Войдите, чтобы видеть использование"
+ },
+ "tipFetching": {
+  "message": "Получаем данные об использовании…"
+ },
+ "loading": {
+  "message": "Загрузка…"
+ },
+ "tipThinkingLeft": {
+  "message": "Осталось сообщений Thinking: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "Данные ChatGPT для вашего тарифа."
+ },
+ "tipCodexNote": {
+  "message": "Использование Codex по данным ChatGPT для вашего тарифа (его также расходуют задачи агента / Work). Обычный чат здесь не учитывается."
+ },
+ "credits": {
+  "message": "Кредиты"
+ },
+ "creditsShort": {
+  "message": "Кр"
+ },
+ "on": {
+  "message": "вкл."
+ },
+ "onCap": {
+  "message": "Вкл."
+ },
+ "unlimited": {
+  "message": "Без ограничений"
+ },
+ "tipCredits": {
+  "message": "Кредиты этого аккаунта (расходуются, когда лимиты тарифа исчерпаны)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: осталось $2"
+ },
+ "tipAllQuotas": {
+  "message": "Все квоты функций — во всплывающем окне на панели инструментов."
+ },
+ "tipCapUsed": {
+  "message": "$1: $2 из $3 сообщений за последние $4"
+ },
+ "tipNextFrees": {
+  "message": "Следующее сообщение освободится через $1"
+ },
+ "tipCountedHere": {
+  "message": "Подсчитано по сообщениям, отправленным из этого браузера."
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT сообщил о достижении лимита."
+ },
+ "limitHit": {
+  "message": "Лимит достигнут"
+ },
+ "limitShort": {
+  "message": "Лимит"
+ },
+ "limitReached": {
+  "message": "Лимит достигнут"
+ },
+ "tipTokens1": {
+  "message": "В этом чате около $1 токенов — примерно столько ChatGPT перечитывает с каждым новым сообщением."
+ },
+ "tipTokens2": {
+  "message": "Вы $1 · ChatGPT $2 · Инструменты $3 · Изображения $4"
+ },
+ "tipTokensCtx": {
+  "message": "Пользовательские инструкции $1"
+ },
+ "tipTokens3": {
+  "message": "Это оценка. Файлы из поиска, память и системный промпт не учитываются."
+ },
+ "tipTokens4": {
+  "message": "Чат стал длинным? Начать новый — самое экономное сообщение."
+ },
+ "chat": {
+  "message": "Чат"
+ },
+ "tokensWord": {
+  "message": "токенов"
+ },
+ "tipThisChat": {
+  "message": "Этот чат: ~$1 токенов"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: осталось $1"
+ },
+ "errFetch": {
+  "message": "Не удалось получить данные об использовании."
+ },
+ "tipRetrying": {
+  "message": "Повторим автоматически. Откройте всплывающее окно на панели, чтобы обновить сейчас."
+ },
+ "usageUnavailable": {
+  "message": "Данные недоступны"
+ },
+ "tipNoWindows": {
+  "message": "Сейчас ChatGPT не сообщает периоды использования для этого аккаунта. Квоты функций, ваши лимиты и случаи достижения лимита по-прежнему отслеживаются."
+ },
+ "noLimits": {
+  "message": "Лимиты не указаны"
+ },
+ "tipLogo": {
+  "message": "$1 — от SelectorsHub\nНажмите, чтобы увидеть другие бесплатные инструменты"
+ },
+ "bySelectorsHub": {
+  "message": "от SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "А пока попробуйте $1 →"
+ },
+ "tryTool": {
+  "message": "Попробуйте $1 →"
+ },
+ "hideUntilReset": {
+  "message": "Скрыть до следующего сброса"
+ },
+ "rateTip": {
+  "message": "Пожалуйста, оцените нас — после отзыва эта кнопка исчезнет навсегда."
+ },
+ "rateAria": {
+  "message": "Оценить $1"
+ },
+ "rateUs": {
+  "message": "Оценить"
+ },
+ "tipGear": {
+  "message": "Выберите, что показывать на панели"
+ },
+ "stripSettings": {
+  "message": "Настройки панели"
+ },
+ "expand": {
+  "message": "Развернуть"
+ },
+ "collapse": {
+  "message": "Свернуть"
+ },
+ "tipHide": {
+  "message": "Скрыть на 12 часов (включить снова можно во всплывающем окне)"
+ },
+ "hide": {
+  "message": "Скрыть"
+ },
+ "notNow": {
+  "message": "Не сейчас"
+ },
+ "nudgeTitle": {
+  "message": "$1 вам помогает?"
+ },
+ "leaveFiveStar": {
+  "message": "Оставить отзыв на 5 звёзд"
+ },
+ "nudgeBody": {
+  "message": "Пожалуйста, оцените нас — после отзыва эта кнопка исчезнет навсегда. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Спасибо ~ $1, автор"
+ },
+ "writeReview": {
+  "message": "Написать отзыв"
+ },
+ "maybeLater": {
+  "message": "Может, позже"
+ },
+ "showInStrip": {
+  "message": "Показывать на панели"
+ },
+ "fThinking": {
+  "message": "Остаток Thinking"
+ },
+ "fThinkingNote": {
+  "message": "лимит чата"
+ },
+ "fPrimary": {
+  "message": "Использование Codex"
+ },
+ "fPrimaryNote": {
+  "message": "5 часов / месяц"
+ },
+ "fResetPrimary": {
+  "message": "Время сброса"
+ },
+ "fSecondary": {
+  "message": "Недельное использование Codex"
+ },
+ "fSecondaryNote": {
+  "message": "платные тарифы"
+ },
+ "fResetSecondary": {
+  "message": "Недельный сброс"
+ },
+ "fForecast": {
+  "message": "Прогноз лимита"
+ },
+ "fForecastNote": {
+  "message": "если лимит скоро закончится"
+ },
+ "fBars": {
+  "message": "Полосы использования"
+ },
+ "fExtra": {
+  "message": "Другие лимиты"
+ },
+ "fExtraNote": {
+  "message": "периоды по функциям"
+ },
+ "fFeatures": {
+  "message": "Квоты функций"
+ },
+ "fFeaturesNote": {
+  "message": "Deep research, изображения…"
+ },
+ "fModelCaps": {
+  "message": "Мои лимиты моделей"
+ },
+ "fModelCapsNote": {
+  "message": "задайте в настройках"
+ },
+ "fChatTokens": {
+  "message": "Токены чата"
+ },
+ "desktopNotifications": {
+  "message": "Уведомления на рабочем столе"
+ },
+ "allSettings": {
+  "message": "Все настройки…"
+ },
+ "offeredBy": {
+  "message": "От SelectorsHub · другие бесплатные инструменты"
+ },
+ "seeAllTools": {
+  "message": "Все 15+ бесплатных инструментов →"
+ },
+ "aboutName": {
+  "message": "О расширении $1"
+ },
+ "notAffiliated": {
+  "message": "Не связано с OpenAI."
+ },
+ "notAffiliatedShort": {
+  "message": "Не связано с OpenAI"
+ },
+ "refresh": {
+  "message": "Обновить"
+ },
+ "refreshNow": {
+  "message": "Обновить сейчас"
+ },
+ "settings": {
+  "message": "Настройки"
+ },
+ "showStripLabel": {
+  "message": "Показывать панель использования над чатом"
+ },
+ "creditsSub": {
+  "message": "Расходуются, когда лимиты тарифа исчерпаны."
+ },
+ "reportedByChatGPT": {
+  "message": "по данным ChatGPT"
+ },
+ "countedInBrowser": {
+  "message": "подсчитано в этом браузере"
+ },
+ "msgsSent": {
+  "message": "Сообщения из этого браузера"
+ },
+ "rng5h": {
+  "message": "5 ч"
+ },
+ "rng24h": {
+  "message": "24 ч"
+ },
+ "rng7d": {
+  "message": "7 д"
+ },
+ "setCap": {
+  "message": "+ Задать лимит для модели"
+ },
+ "moreTools": {
+  "message": "Другие бесплатные инструменты SelectorsHub"
+ },
+ "resetsInAt": {
+  "message": "Сброс через $1 · $2"
+ },
+ "resetNotReported": {
+  "message": "Время сброса не указано"
+ },
+ "forecastPopup": {
+  "message": "При таком темпе лимит закончится через ~$1"
+ },
+ "hiddenUntil": {
+  "message": "Скрыта до $1"
+ },
+ "shownOn": {
+  "message": "Показывается на chatgpt.com"
+ },
+ "off": {
+  "message": "Выкл."
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com не ответил расширению напрямую. Откройте вкладку chatgpt.com и нажмите «Обновить»."
+ },
+ "thinkingMessages": {
+  "message": "Сообщения Thinking"
+ },
+ "tipNextSlot": {
+  "message": "Следующее место освободится через $1"
+ },
+ "noneYet": {
+  "message": "Пока нет — сообщения считаются с момента установки расширения."
+ },
+ "signInHint": {
+  "message": "Войдите в $1 в этом профиле браузера, затем нажмите «Обновить»."
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT не сообщает периоды использования для этого аккаунта."
+ },
+ "noWindowsBody": {
+  "message": "Для некоторых тарифов это нормально. Квоты функций, достижения лимитов и ваши лимиты по-прежнему отслеживаются."
+ },
+ "updatedJustNow": {
+  "message": "Обновлено только что"
+ },
+ "updatedAgo": {
+  "message": "Обновлено $1 назад"
+ },
+ "settingsBy": {
+  "message": "Настройки · от"
+ },
+ "saved": {
+  "message": "Сохранено"
+ },
+ "cleared": {
+  "message": "Очищено"
+ },
+ "polling": {
+  "message": "Опрос"
+ },
+ "checkEvery": {
+  "message": "Проверять использование каждые"
+ },
+ "min1": {
+  "message": "1 минута"
+ },
+ "minN": {
+  "message": "$1 мин"
+ },
+ "pollNote": {
+  "message": "Данные также обновляются через несколько секунд после каждого ответа и при каждом открытии всплывающего окна."
+ },
+ "alerts": {
+  "message": "Оповещения"
+ },
+ "alertCrosses": {
+  "message": "Предупреждать, когда использование превысит"
+ },
+ "badgeLabel": {
+  "message": "Показывать % за 5 часов на значке расширения"
+ },
+ "usageStrip": {
+  "message": "Панель использования"
+ },
+ "showStripOpt": {
+  "message": "Показывать панель над полем ввода ChatGPT"
+ },
+ "startCollapsed": {
+  "message": "Запускать свёрнутой"
+ },
+ "capsNote": {
+  "message": "ChatGPT сообщает остаток не для каждой модели. Если в вашем тарифе есть фиксированный лимит (например, недельный лимит на модель Pro), добавьте его здесь — расширение будет считать ваши сообщения этой модели в этом браузере. Укажите точный идентификатор модели (использованные подсказываются) или добавьте в конце $1 для целого семейства (например, $2)."
+ },
+ "thModel": {
+  "message": "Модель"
+ },
+ "thLimit": {
+  "message": "Лимит"
+ },
+ "thPer": {
+  "message": "За"
+ },
+ "addCap": {
+  "message": "+ Добавить лимит"
+ },
+ "egModel": {
+  "message": "например, $1"
+ },
+ "remove": {
+  "message": "Удалить"
+ },
+ "data": {
+  "message": "Данные"
+ },
+ "dataNote": {
+  "message": "Всё хранится в этом браузере. Данные об использовании читаются с chatgpt.com через вашу собственную сессию; никуда больше ничего не отправляется."
+ },
+ "clearCounts": {
+  "message": "Сбросить счётчик сообщений"
+ },
+ "unhideStrip": {
+  "message": "Снова показать панель"
+ },
+ "footerDisc": {
+  "message": "Не связано с OpenAI и не одобрено OpenAI. ChatGPT — товарный знак OpenAI."
+ },
+ "errNetwork": {
+  "message": "Не удалось подключиться к chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com не вернул данные сессии"
+ },
+ "errSignedOut": {
+  "message": "Вход в chatgpt.com не выполнен"
+ },
+ "errHttp": {
+  "message": "Ошибка запроса использования ($1)"
+ },
+ "noResponse": {
+  "message": "нет ответа"
+ },
+ "resetsInSentence": {
+  "message": "Сброс через $1."
+ },
+ "notifLimitReached": {
+  "message": "$1 лимит исчерпан"
+ },
+ "notifUsageAt": {
+  "message": "$1 лимит: использовано $2%"
+ },
+ "notifBody": {
+  "message": "Использование ChatGPT ($1): $2%."
+ },
+ "notifCapTitle": {
+  "message": "$1: использовано $2 из $3"
+ },
+ "notifCapBody": {
+  "message": "За последние $4 вы отправили $1 из $2 сообщений $3 (подсчитано в этом браузере)."
+ },
+ "notifHitTitle": {
+  "message": "Лимит ChatGPT достигнут"
+ },
+ "featDeepResearch": {
+  "message": "Глубокое исследование"
+ },
+ "featImageGen": {
+  "message": "Генерация изображений"
+ },
+ "featFileUploads": {
+  "message": "Загрузка файлов"
+ },
+ "featAgent": {
+  "message": "Агент"
+ },
+ "featVideo": {
+  "message": "Видео"
+ },
+ "featVoice": {
+  "message": "Голос"
+ },
+ "featCanvas": {
+  "message": "Canvas"
+ },
+ "featTasks": {
+  "message": "Задачи"
+ },
+ "featConnectors": {
+  "message": "Коннекторы"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Ревью кода"
+ },
+ "featResearch": {
+  "message": "Исследование"
+ },
+ "featPasteToFile": {
+  "message": "Вставка файлом"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Скриншоты с адресной строкой"
+ },
+ "tool_testcase_studio": {
+  "message": "Записывайте шаги теста на ходу"
+ },
+ "tool_check_my_links": {
+  "message": "Битые ссылки в 1 клик"
+ },
+ "tool_page_load_timer": {
+  "message": "Время загрузки страницы автоматически"
+ },
+ "tool_selectorshub": {
+  "message": "Локаторы XPath и Playwright"
+ },
+ "tool_cssviewer": {
+  "message": "CSS любого элемента при наведении"
+ },
+ "tool_clearcache": {
+  "message": "Очистка кеша в один клик"
+ },
+ "tool_auto_data_filler": {
+  "message": "Заполнение форм в один клик"
+ },
+ "tool_modify_header": {
+  "message": "Правка заголовков запросов и ответов"
+ },
+ "tool_anyformat": {
+  "message": "Сохранение картинок в любом формате"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Поиск закладок по вводу"
+ },
+ "tool_testing_daily": {
+  "message": "Ежедневные новости тестирования"
+ }
+}

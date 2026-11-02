@@ -76,11 +76,11 @@ async function getAuth(force) {
     try {
       r = await fetch(ORIGIN + "/api/auth/session", { credentials: "include", cache: "no-store", headers: { accept: "application/json" } });
     } catch (e) {
-      throw apiError("network", "Couldn't reach chatgpt.com");
+      throw apiError("network", cumT("errNetwork"));
     }
     const j = await r.json().catch(() => null);
-    if (!j) throw apiError("blocked", "chatgpt.com didn't return session data", r.status);
-    if (!j.accessToken) throw apiError("signed_out", "Not signed in to chatgpt.com", 401);
+    if (!j) throw apiError("blocked", cumT("errBlocked"), r.status);
+    if (!j.accessToken) throw apiError("signed_out", cumT("errSignedOut"), 401);
     auth = {
       token: j.accessToken,
       exp: jwtExp(j.accessToken) || (j.expires ? Date.parse(j.expires) : Date.now() + 30 * 60e3),
@@ -107,7 +107,7 @@ async function directApi(path, opts, retried) {
       headers,
       body: opts && opts.body ? JSON.stringify(opts.body) : undefined
     });
-  } catch (e) { throw apiError("network", "Couldn't reach chatgpt.com"); }
+  } catch (e) { throw apiError("network", cumT("errNetwork")); }
   if (r.status === 401 && !retried) { auth = null; return directApi(path, opts, true); }
   const json = await r.json().catch(() => null);
   return { status: r.status, ok: r.ok, json };
@@ -142,35 +142,10 @@ async function api(path, opts) {
 
 // ---------- parsing ----------
 
-const FEATURE_NAMES = {
-  deep_research: "Deep research",
-  image_gen: "Image generation",
-  image_generation: "Image generation",
-  file_upload: "File uploads",
-  file_uploads: "File uploads",
-  odyssey: "Agent",
-  agent: "Agent",
-  agent_mode: "Agent",
-  operator: "Agent",
-  sora: "Video",
-  video_gen: "Video",
-  voice: "Voice",
-  advanced_voice: "Voice",
-  canvas: "Canvas",
-  tasks: "Tasks",
-  connector_search: "Connectors",
-  codex: "Codex",
-  code_review: "Code review",
-  research: "Research",
-  reason: "Thinking",
-  reasoning: "Thinking",
-  paste_text_to_file: "Paste to file"
-};
-
 function prettyName(s) {
-  if (!s) return "Limit";
+  if (!s) return cumT("lblLimit");
   const k = String(s).toLowerCase();
-  if (FEATURE_NAMES[k]) return FEATURE_NAMES[k];
+  if (CUM_FEATURE_KEYS[k]) return cumT(CUM_FEATURE_KEYS[k]);
   const t = k.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   return t.charAt(0).toUpperCase() + t.slice(1);
 }
@@ -220,7 +195,7 @@ function parseUsage(j, now) {
   const add = Array.isArray(j.additional_rate_limits) ? j.additional_rate_limits.slice() : [];
   // Seen on live accounts: a separate code-review limit in the rate_limit shape.
   if (j.code_review_rate_limit && typeof j.code_review_rate_limit === "object") {
-    add.push({ limit_name: "Code review", metered_feature: "code_review", rate_limit: j.code_review_rate_limit });
+    add.push({ limit_name: cumT("featCodeReview"), metered_feature: "code_review", rate_limit: j.code_review_rate_limit });
   }
   // model_usage: {} on Free. Shape on paid plans unknown — accept anything
   // that looks like a rate_limit or a window.
@@ -354,9 +329,9 @@ async function checkThresholds(snap, fired, settings) {
     // Mark every lower threshold for this window as fired too, so a jump
     // from 60% to 95% produces one alert, not two.
     for (const t of crossed) fired.push(`${key}|${resetKey}|${t}`);
-    const reset = w.resetAt ? ` Resets in ${cumFmtDuration(w.resetAt - Date.now())}.` : "";
-    notify("cgum-" + fid, top >= 100 ? `${name} limit reached` : `${name} usage at ${Math.round(w.pct)}%`,
-      `ChatGPT ${name.toLowerCase()} usage is at ${Math.round(w.pct)}%.${reset}`);
+    const reset = w.resetAt ? " " + cumT("resetsInSentence", [cumFmtDuration(w.resetAt - Date.now())]) : "";
+    notify("cgum-" + fid, top >= 100 ? cumT("notifLimitReached", [name]) : cumT("notifUsageAt", [name, Math.round(w.pct)]),
+      cumT("notifBody", [cumLower(name), Math.round(w.pct)]) + reset);
   }
   return fired.slice(-300);
 }
@@ -411,7 +386,7 @@ async function refresh(opts) {
         snap.usage = null;
         snap.usageUnavailable = true;
       } else {
-        snap.error = { code: "http", message: `Usage request failed (${r ? r.status : "no response"})` };
+        snap.error = { code: "http", message: cumT("errHttp", [r ? r.status : cumT("noResponse")]) };
       }
 
       const needFeatures = opts.force || opts.features || !prev.features || now - (prev.features.at || 0) > FEATURES_EVERY_MS;
@@ -489,8 +464,8 @@ async function logMessage(model, at) {
       if (f.includes(fid)) continue;
       f.push(fid);
       await chrome.storage.local.set({ fired: f.slice(-300) });
-      notify("cgum-" + fid, `${c.cap.model}: ${c.used} of ${c.limit} used`,
-        `You've sent ${c.used} of your ${c.limit} ${c.cap.model} messages in the last ${(CUM_CONFIG.WINDOWS[c.cap.window] || {}).label || c.cap.window} (counted in this browser).`);
+      notify("cgum-" + fid, cumT("notifCapTitle", [c.cap.model, c.used, c.limit]),
+        cumT("notifCapBody", [c.used, c.limit, c.cap.model, (CUM_CONFIG.WINDOWS[c.cap.window] || {}).label || c.cap.window]));
     }
   }
 }
@@ -510,9 +485,9 @@ async function recordCap(msg) {
   await chrome.storage.local.set({ capHits: hits });
   const settings = await getSettings();
   if (settings.notify && (!prev || now - prev.at > 30 * 60e3)) {
-    const when = hits[key] && hits[key].resetAt ? ` Resets in ${cumFmtDuration(hits[key].resetAt - now)}.` : "";
-    notify("cgum-cap-" + key + "-" + now, `ChatGPT limit reached${key !== "auto" ? " · " + key : ""}`,
-      (msg.message || "ChatGPT reported a usage limit.").slice(0, 180) + when);
+    const when = hits[key] && hits[key].resetAt ? " " + cumT("resetsInSentence", [cumFmtDuration(hits[key].resetAt - now)]) : "";
+    notify("cgum-cap-" + key + "-" + now, cumT("notifHitTitle") + (key !== "auto" ? " · " + key : ""),
+      (msg.message || cumT("tipLimitReported")).slice(0, 180) + when);
   }
 }
 
@@ -587,6 +562,14 @@ chrome.alarms.onAlarm.addListener((a) => {
   if (Date.now() - uninstallUrlSetAt > 12 * 3600e3) updateUninstallUrl();
 });
 
+// Language: follow the ChatGPT language saved by the content script. Feature
+// names and errors are baked into the snapshot, so refresh it on a change.
+const langReady = cumInitLang();
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local" || !changes.uiLang) return;
+  cumUseLang(changes.uiLang.newValue).then(() => refresh({}).catch(() => {}));
+});
+
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== "local" || !changes.settings) return;
   const o = mergeDefaults(changes.settings.oldValue), n = mergeDefaults(changes.settings.newValue);
@@ -606,7 +589,13 @@ chrome.notifications.onClicked.addListener((id) => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg || !msg.type) return;
   (async () => {
+    await langReady;
     switch (msg.type) {
+      case "cumMessages": {
+        if (!CUM_LANGS.includes(msg.lang)) return null;
+        try { return await (await fetch(chrome.runtime.getURL(`_locales/${msg.lang}/messages.json`))).json(); }
+        catch (_) { return null; }
+      }
       case "refresh": {
         const snap = await refresh({ force: !!msg.force, forceAuth: !!msg.force });
         return { snapshot: snap };

@@ -1,6 +1,7 @@
 // popup.js — toolbar popup. Opening it forces a fresh fetch.
 (function () {
   const C = CUM_CONFIG;
+  const t = cumT, tn = cumTN;   // translated text (ChatGPT language, else browser)
   const $ = (id) => document.getElementById(id);
   let state = { settings: null, snapshot: null, capHits: {}, msgLog: [], hiddenUntil: 0 };
   let msgRange = 86400e3;
@@ -34,17 +35,17 @@
   }
 
   const pct = (p) => (p == null ? "—" : Math.round(p) + "%");
-  const when = (t) => new Date(t).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" });
+  const when = (t) => new Date(t).toLocaleString(cumLangTag(), { weekday: "short", hour: "numeric", minute: "2-digit" });
 
   function windowCard(w, label, compact) {
     const lvl = cumLevel(w.pct);
     const card = h("section", { class: "card" + (compact ? " compact" : "") },
       h("div", { class: "row" }, h("span", { class: "lbl" }, label), h("span", { class: "pct lvl-" + lvl }, pct(w.pct))),
       h("div", { class: "bar" }, h("div", { class: "bar-fill bg-" + lvl, style: `width:${Math.min(100, w.pct || 0)}%` })),
-      h("div", { class: "sub" }, w.resetAt ? ["Resets in ", h("b", null, cumFmtDuration(w.resetAt - Date.now())), " · " + when(w.resetAt)] : "Reset time not reported"));
+      h("div", { class: "sub" }, w.resetAt ? tn("resetsInAt", h("b", null, cumFmtDuration(w.resetAt - Date.now())), when(w.resetAt)) : t("resetNotReported")));
     if (w.forecastMs) {
       const fl = w.forecastMs < 30 * 60e3 ? "red" : w.forecastMs < 90 * 60e3 ? "orange" : "amber";
-      card.append(h("div", { class: "fc lvl-" + fl }, `⏳ At this pace you'll hit the limit in ~${cumFmtDuration(w.forecastMs)}`));
+      card.append(h("div", { class: "fc lvl-" + fl }, "⏳ " + t("forecastPopup", [cumFmtDuration(w.forecastMs)])));
     }
     return card;
   }
@@ -54,7 +55,7 @@
     // strip toggle
     const hidden = state.hiddenUntil > Date.now();
     $("show-strip").checked = !!s.strip && !hidden;
-    $("strip-sub").textContent = hidden ? `Hidden until ${when(state.hiddenUntil)}` : s.strip ? "Shown on chatgpt.com" : "Off";
+    $("strip-sub").textContent = hidden ? t("hiddenUntil", [when(state.hiddenUntil)]) : s.strip ? t("shownOn") : t("off");
 
     // plan
     if (snap && snap.plan) { $("plan").textContent = snap.plan; $("plan").classList.remove("hidden"); }
@@ -65,8 +66,8 @@
     const eb = $("error-banner");
     if (err && err.code !== "signed_out") {
       eb.textContent = err.code === "blocked"
-        ? "chatgpt.com didn't answer the extension directly. Open a chatgpt.com tab and click refresh."
-        : err.message || "Couldn't fetch usage.";
+        ? t("errBlockedPopup")
+        : err.message || t("errFetch");
       eb.classList.remove("hidden");
     } else eb.classList.add("hidden");
 
@@ -76,9 +77,9 @@
     const hb = $("hit-banner");
     if (hits.length) {
       const x = hits[0];
-      hb.replaceChildren(h("b", null, "Limit reached" + (x.model && x.model !== "auto" ? " · " + x.model : "")), h("br"),
-        (x.message || "ChatGPT reported a usage limit.").slice(0, 200),
-        x.resetAt ? h("div", { class: "sub", style: "margin-top:4px" }, "Resets in ", h("b", null, cumFmtDuration(x.resetAt - now)), " · " + when(x.resetAt)) : "");
+      hb.replaceChildren(h("b", null, t("limitReached") + (x.model && x.model !== "auto" ? " · " + x.model : "")), h("br"),
+        (x.message || t("tipLimitReported")).slice(0, 200),
+        x.resetAt ? h("div", { class: "sub", style: "margin-top:4px" }, tn("resetsInAt", h("b", null, cumFmtDuration(x.resetAt - now)), when(x.resetAt))) : "");
       hb.classList.remove("hidden");
     } else hb.classList.add("hidden");
 
@@ -90,18 +91,18 @@
     if (thinking) {
       const lvl = thinking.remaining === 0 ? "red" : thinking.remaining <= 1 ? "orange" : "green";
       cards.push(h("section", { class: "card" },
-        h("div", { class: "row" }, h("span", { class: "lbl" }, "Thinking messages"), h("span", { class: "pct lvl-" + lvl }, thinking.remaining + " left")),
-        h("div", { class: "sub", style: "margin-top:6px" }, thinking.resetAt ? ["Resets in ", h("b", null, cumFmtDuration(thinking.resetAt - Date.now())), " · " + when(thinking.resetAt)] : "Reset time not reported")));
+        h("div", { class: "row" }, h("span", { class: "lbl" }, t("thinkingMessages")), h("span", { class: "pct lvl-" + lvl }, t("nLeft", [thinking.remaining]))),
+        h("div", { class: "sub", style: "margin-top:6px" }, thinking.resetAt ? tn("resetsInAt", h("b", null, cumFmtDuration(thinking.resetAt - Date.now())), when(thinking.resetAt)) : t("resetNotReported"))));
     }
     cards.push(...wins.map((w) => windowCard(w, "Codex · " + cumWindowLabel(w.windowSec))));
     $("windows").replaceChildren(...cards);
     const extra = (snap && snap.usage && snap.usage.extra) || [];
-    $("extra").replaceChildren(...extra.flatMap((x) => x.windows.map((w) => windowCard(w, `${x.name} · ${cumWindowLabel(w.windowSec)}`, true))));
+    $("extra").replaceChildren(...extra.flatMap((x) => x.windows.map((w) => windowCard(w, `${cumFeatureName(x)} · ${cumWindowLabel(w.windowSec)}`, true))));
 
     // credits
     const cr = snap && snap.usage && snap.usage.credits;
     if (cr && (cr.hasCredits || cr.balance)) {
-      $("credits-val").textContent = cr.unlimited ? "Unlimited" : cr.balance != null ? String(Math.round(cr.balance * 100) / 100) : "On";
+      $("credits-val").textContent = cr.unlimited ? t("unlimited") : cr.balance != null ? String(Math.round(cr.balance * 100) / 100) : t("onCap");
       $("credits-card").classList.remove("hidden");
     } else $("credits-card").classList.add("hidden");
 
@@ -111,9 +112,9 @@
       $("features").replaceChildren(...feats.map((f) => {
         const lvl = f.remaining === 0 ? "red" : f.remaining != null && f.remaining <= 3 ? "orange" : "";
         return h("div", { class: "li" },
-          h("span", { class: "nm" }, f.name),
-          h("span", { class: "vl " + (lvl ? "lvl-" + lvl : "") }, f.remaining == null ? "—" : f.max ? `${f.remaining}/${f.max} left` : `${f.remaining} left`),
-          f.resetAt ? h("span", { class: "rs", title: when(f.resetAt) }, "resets " + cumFmtDuration(f.resetAt - now)) : null);
+          h("span", { class: "nm" }, cumFeatureName(f)),
+          h("span", { class: "vl " + (lvl ? "lvl-" + lvl : "") }, f.remaining == null ? "—" : f.max ? t("nOfMaxLeft", [f.remaining, f.max]) : t("nLeft", [f.remaining])),
+          f.resetAt ? h("span", { class: "rs", title: when(f.resetAt) }, t("resetsShort", [cumFmtDuration(f.resetAt - now)])) : null);
       }));
       $("features-card").classList.remove("hidden");
     } else $("features-card").classList.add("hidden");
@@ -123,7 +124,7 @@
     if (caps.length) {
       $("caps").replaceChildren(...caps.map((c) => {
         const p = (c.used / c.limit) * 100, lvl = cumLevel(p);
-        return h("div", { class: "li", title: c.freesAt ? `Next slot frees in ${cumFmtDuration(c.freesAt - now)}` : "" },
+        return h("div", { class: "li", title: c.freesAt ? t("tipNextSlot", [cumFmtDuration(c.freesAt - now)]) : "" },
           h("span", { class: "nm" }, c.cap.model, h("span", { class: "rs" }, " / " + ((C.WINDOWS[c.cap.window] || {}).label || c.cap.window))),
           h("span", { class: "mini-bar" }, h("div", { class: "bg-" + lvl, style: `width:${Math.min(100, p)}%` })),
           h("span", { class: "vl lvl-" + lvl }, `${c.used}/${c.limit}`));
@@ -135,23 +136,23 @@
     const counts = cumModelCounts(state.msgLog, msgRange, now);
     $("msgs").replaceChildren(...(counts.length
       ? counts.slice(0, 6).map(([m, n]) => h("div", { class: "li" }, h("span", { class: "nm" }, m), h("span", { class: "vl" }, String(n))))
-      : [h("div", { class: "empty-li" }, "None yet — sends are counted from when the extension was installed.")]));
+      : [h("div", { class: "empty-li" }, t("noneYet"))]));
 
     // empty / sign-in hints
     const hint = $("empty-hint");
     if (snap && snap.error && snap.error.code === "signed_out") {
-      hint.replaceChildren("Sign in to ", h("b", null, "chatgpt.com"), " in this browser profile, then click refresh.");
+      hint.replaceChildren(...tn("signInHint", h("b", null, "chatgpt.com")));
       hint.classList.remove("hidden");
     } else if (snap && snap.usageUnavailable && !wins.length && !extra.length) {
-      hint.replaceChildren(h("b", null, "ChatGPT isn't reporting usage windows for this account."), h("br"),
-        "That's normal on some plans. Feature quotas, limit hits and any caps you set are still tracked.");
+      hint.replaceChildren(h("b", null, t("noWindowsTitle")), h("br"), t("noWindowsBody"));
       hint.classList.remove("hidden");
     } else if (!snap) {
-      hint.replaceChildren("Fetching your usage…");
+      hint.replaceChildren(t("tipFetching"));
       hint.classList.remove("hidden");
     } else hint.classList.add("hidden");
 
-    $("updated").textContent = snap && snap.fetchedAt ? `Updated ${cumFmtDuration(now - snap.fetchedAt).replace("<1m", "just now").replace(/^(\d.*)$/, "$1 ago")}` : "";
+    const age = snap && snap.fetchedAt ? now - snap.fetchedAt : null;
+    $("updated").textContent = age == null ? "" : age < 60000 ? t("updatedJustNow") : t("updatedAgo", [cumFmtDuration(age)]);
   }
 
   async function doRefresh(force) {
@@ -170,7 +171,7 @@
     box.append(...C.TOOLS.map((t) => h("a", { class: "tool", href: cumUtm(t.url, "popup"), target: "_blank", rel: "noopener" },
       h("img", { src: `../icons/tools/${t.icon}.png`, alt: "" }), h("span", null, h("b", null, t.name), h("i", null, t.desc)))));
     box.append(h("a", { class: "tool", href: cumUtm(C.ALL_TOOLS_URL, "popup-all"), target: "_blank", rel: "noopener", style: "grid-column: 1 / -1; justify-content:center" },
-      h("b", null, "See all 15+ free tools →")));
+      h("b", null, t("seeAllTools"))));
   }
 
   // wiring
@@ -222,6 +223,8 @@
   });
 
   (async () => {
+    await cumInitLang();
+    cumI18nPage();
     await load();
     render();
     const { popupToolsOpen } = await chrome.storage.local.get("popupToolsOpen");

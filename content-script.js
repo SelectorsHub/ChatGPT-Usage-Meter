@@ -15,6 +15,7 @@
   window.__cgumContent = true;
 
   const C = CUM_CONFIG;
+  const t = cumT, tn = cumTN;   // translated text (ChatGPT language, else browser)
   const HOST_ID = "chatgpt-usage-overlay";
   const HIDE_MS = 12 * 3600e3;
 
@@ -319,23 +320,46 @@
     const f = S.settings.fields;
     const lvl = cumLevel(win.pct);
     const reset = win.resetAt ? cumFmtDuration(win.resetAt - Date.now()) : "";
-    const title = `${label} usage: ${pctText(win.pct)}` +
-      (reset ? `\nResets in ${reset} (${new Date(win.resetAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })})` : "") +
-      (opts && opts.note ? `\n${opts.note}` : "");
+    const title = t("tipUsage", [label, pctText(win.pct)]) +
+      (reset ? "\n" + t("tipResetsAt", [reset, whenText(win.resetAt)]) : "") +
+      (opts && opts.note ? "\n" + opts.note : "");
     const lab = h("span", { class: "cgum-lbl" + (f.bars ? " cgum-has-bar" : ""), style: f.bars ? { "--p": Math.min(100, win.pct || 0) + "%" } : null },
       h("span", { class: "cgum-long" }, label), h("span", { class: "cgum-short" }, shortLabel));
     const kids = [lab, h("span", { class: `cgum-pct cgum-${lvl}` }, pctText(win.pct))];
     if (opts && opts.showReset && reset) {
       const rc = "cgum-reset " + (opts.resetClass || "");
-      kids.push(h("span", { class: "cgum-dot " + rc }, "·"), h("span", { class: rc }, "Reset in ", h("b", null, reset)));
+      kids.push(h("span", { class: "cgum-dot " + rc }, "·"), h("span", { class: rc }, tn("resetIn", h("b", null, reset))));
     }
     if (f.forecast && win.forecastMs) {
       const fl = win.forecastMs < 30 * 60e3 ? "red" : win.forecastMs < 90 * 60e3 ? "orange" : "amber";
-      kids.push(h("span", { class: `cgum-chip cgum-chip-${fl}`, title: `At your current pace you'll reach this limit in about ${cumFmtDuration(win.forecastMs)} — before it resets.` },
-        ICONS.hourglass(), h("span", null, "~" + cumFmtDuration(win.forecastMs) + " left")));
+      kids.push(h("span", { class: `cgum-chip cgum-chip-${fl}`, title: t("tipForecast", [cumFmtDuration(win.forecastMs)]) },
+        ICONS.hourglass(), h("span", null, t("leftApprox", [cumFmtDuration(win.forecastMs)]))));
     }
     return seg("cgum-meter " + ((opts && opts.cls) || ""), title, kids);
   }
+
+  function whenText(ts) {
+    return new Date(ts).toLocaleString(cumLangTag(), { weekday: "short", hour: "numeric", minute: "2-digit" });
+  }
+
+  // ---------------------------------------------------------------- language
+  // Follow the language picked in ChatGPT's settings (it sets <html lang>).
+  // Saved as "uiLang" so the popup, options page and notifications follow too.
+  let langApplied;
+  async function syncLang() {
+    const lang = cumNormLang(document.documentElement.getAttribute("lang"));
+    if (lang === langApplied) return;
+    langApplied = lang;
+    await cumUseLang(lang);
+    if (lang !== langApplied) return;                 // changed again meanwhile
+    try {
+      const { uiLang } = await chrome.storage.local.get("uiLang");
+      if ((uiLang || null) !== lang) await chrome.storage.local.set({ uiLang: lang || "" });
+    } catch (_) {}
+    closeMenu(); if (nudgeOpen) closeNudge(true);
+    render();
+  }
+  new MutationObserver(() => syncLang()).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
   function activeCapHit() {
     const now = Date.now();
@@ -351,9 +375,9 @@
     const wins = usage ? usage.windows : [];
 
     if (snap && snap.error && snap.error.code === "signed_out") {
-      segs.push(seg("cgum-muted", "Sign in to chatgpt.com in this browser profile.", "Sign in to see usage"));
+      segs.push(seg("cgum-muted", t("tipSignIn"), t("signInToSee")));
     } else if (!snap) {
-      segs.push(seg("cgum-muted", "Fetching your usage…", "Loading…"));
+      segs.push(seg("cgum-muted", t("tipFetching"), t("loading")));
     }
 
     const feats = (snap && snap.features && snap.features.features || []).filter((x) => x.remaining != null);
@@ -365,35 +389,36 @@
       const lvl = thinking.remaining === 0 ? "red" : thinking.remaining <= 1 ? "orange" : "neutral";
       const reset = thinking.resetAt ? cumFmtDuration(thinking.resetAt - Date.now()) : "";
       const kids = [
-        h("span", { class: "cgum-lbl" }, "Thinking"),
-        h("span", { class: `cgum-val cgum-${lvl}` }, `${thinking.remaining} left`)
+        h("span", { class: "cgum-lbl" }, t("thinking")),
+        h("span", { class: `cgum-val cgum-${lvl}` }, t("nLeft", [thinking.remaining]))
       ];
-      if (reset && f.resetPrimary) kids.push(h("span", { class: "cgum-dot cgum-reset cgum-reset-p" }, "·"), h("span", { class: "cgum-reset cgum-reset-p" }, "Reset in ", h("b", null, reset)));
-      segs.push(seg("cgum-thinking", `Thinking messages left: ${thinking.remaining}` + (reset ? `\nResets in ${reset} (${new Date(thinking.resetAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })})` : "") + "\nReported by ChatGPT for your plan.", kids));
+      if (reset && f.resetPrimary) kids.push(h("span", { class: "cgum-dot cgum-reset cgum-reset-p" }, "·"), h("span", { class: "cgum-reset cgum-reset-p" }, tn("resetIn", h("b", null, reset))));
+      segs.push(seg("cgum-thinking", t("tipThinkingLeft", [thinking.remaining]) + (reset ? "\n" + t("tipResetsAt", [reset, whenText(thinking.resetAt)]) : "") + "\n" + t("tipReportedByChatGPT"), kids));
     }
 
     wins.forEach((w, i) => {
       const isPrimary = i === 0;
       if (isPrimary ? !f.primary : !f.secondary) return;
       const label = cumWindowLabel(w.windowSec);
-      const short = w.windowSec === 18000 ? "5h" : w.windowSec === 604800 ? "W" : cumWindowLabel(w.windowSec, true);
-      segs.push(meter(w, "Codex " + label.toLowerCase(), short,
+      const short = w.windowSec === 18000 ? t("win5hShort") : w.windowSec === 604800 ? t("winWeekLetter") : cumWindowLabel(w.windowSec, true);
+      segs.push(meter(w, t("codexWindow", [cumLower(label)]), short,
         { showReset: isPrimary ? f.resetPrimary : f.resetSecondary, resetClass: isPrimary ? "cgum-reset-p" : "cgum-reset-s",
-          note: "Codex usage reported by ChatGPT for your plan (also used by agent / Work tasks). Plain chat isn't counted here." }));
+          note: t("tipCodexNote") }));
     });
 
     if (f.extraLimits && usage) {
       for (const x of usage.extra) {
         const w = x.windows.reduce((a, b) => ((b.pct || 0) > (a.pct || 0) ? b : a), x.windows[0]);
-        segs.push(meter(w, x.name, x.name.split(" ")[0], { showReset: false, cls: "cgum-extra", note: x.windows.map((ww) => `${cumWindowLabel(ww.windowSec)}: ${pctText(ww.pct)}`).join(" · ") }));
+        const xn = cumFeatureName(x);
+        segs.push(meter(w, xn, xn.split(" ")[0], { showReset: false, cls: "cgum-extra", note: x.windows.map((ww) => `${cumWindowLabel(ww.windowSec)}: ${pctText(ww.pct)}`).join(" · ") }));
       }
     }
 
     if (f.credits && usage && usage.credits && (usage.credits.hasCredits || usage.credits.balance)) {
       const c = usage.credits;
-      segs.push(seg("cgum-credits", "Credits on this account (used after plan limits run out).",
-        h("span", { class: "cgum-lbl" }, h("span", { class: "cgum-long" }, "Credits"), h("span", { class: "cgum-short" }, "Cr")),
-        h("span", { class: "cgum-val" }, c.unlimited ? "∞" : c.balance != null ? String(Math.round(c.balance * 100) / 100) : "on")));
+      segs.push(seg("cgum-credits", t("tipCredits"),
+        h("span", { class: "cgum-lbl" }, h("span", { class: "cgum-long" }, t("credits")), h("span", { class: "cgum-short" }, t("creditsShort"))),
+        h("span", { class: "cgum-val" }, c.unlimited ? "∞" : c.balance != null ? String(Math.round(c.balance * 100) / 100) : t("on"))));
     }
 
     if (f.features && feats.length) {
@@ -401,10 +426,11 @@
         .sort((a, b) => a.remaining - b.remaining || (a.resetAt || 0) - (b.resetAt || 0)).slice(0, 1);
       for (const ft of list) {
         const low = ft.remaining === 0 ? "red" : ft.remaining <= 2 ? "orange" : "neutral";
-        const reset = ft.resetAt ? `\nResets in ${cumFmtDuration(ft.resetAt - Date.now())}` : "";
-        segs.push(seg("cgum-feature", `${ft.name}: ${ft.remaining} left${reset}\nAll feature quotas are in the toolbar popup.`,
-          h("span", { class: "cgum-lbl" }, h("span", { class: "cgum-long" }, ft.name), h("span", { class: "cgum-short" }, ft.name.split(" ")[0])),
-          h("span", { class: `cgum-val cgum-${low}` }, `${ft.remaining} left`)));
+        const reset = ft.resetAt ? "\n" + t("tipResetsIn", [cumFmtDuration(ft.resetAt - Date.now())]) : "";
+        const fn = cumFeatureName(ft);
+        segs.push(seg("cgum-feature", t("tipFeatureLeft", [fn, ft.remaining]) + reset + "\n" + t("tipAllQuotas"),
+          h("span", { class: "cgum-lbl" }, h("span", { class: "cgum-long" }, fn), h("span", { class: "cgum-short" }, fn.split(" ")[0])),
+          h("span", { class: `cgum-val cgum-${low}` }, t("nLeft", [ft.remaining]))));
       }
     }
 
@@ -412,8 +438,8 @@
       for (const c of cumCapUsage(S.msgLog, s.modelCaps)) {
         const pct = (c.used / c.limit) * 100;
         const win = (C.WINDOWS[c.cap.window] || {}).label || c.cap.window;
-        segs.push(seg("cgum-cap", `${c.cap.model}: ${c.used} of ${c.limit} messages in the last ${win}` +
-          (c.freesAt ? `\nNext message frees up in ${cumFmtDuration(c.freesAt - Date.now())}` : "") + "\nCounted from messages sent in this browser.",
+        segs.push(seg("cgum-cap", t("tipCapUsed", [c.cap.model, c.used, c.limit, win]) +
+          (c.freesAt ? "\n" + t("tipNextFrees", [cumFmtDuration(c.freesAt - Date.now())]) : "") + "\n" + t("tipCountedHere"),
           h("span", { class: "cgum-lbl" }, c.cap.model),
           h("span", { class: `cgum-val cgum-${cumLevel(pct)}` }, `${c.used}/${c.limit}`)));
       }
@@ -422,29 +448,29 @@
     const hit = activeCapHit();
     if (hit) {
       const when = hit.resetAt ? cumFmtDuration(hit.resetAt - Date.now()) : "";
-      segs.push(seg("cgum-hit", (hit.message || "ChatGPT reported a usage limit.") + (when ? `\nResets in ${when}` : ""),
-        ICONS.lock(), h("span", { class: "cgum-long" }, "Limit hit" + (hit.model && hit.model !== "auto" ? " · " + hit.model : "")),
-        h("span", { class: "cgum-short" }, "Limit"), when ? h("b", null, " " + when) : null));
+      segs.push(seg("cgum-hit", (hit.message || t("tipLimitReported")) + (when ? "\n" + t("tipResetsIn", [when]) : ""),
+        ICONS.lock(), h("span", { class: "cgum-long" }, t("limitHit") + (hit.model && hit.model !== "auto" ? " · " + hit.model : "")),
+        h("span", { class: "cgum-short" }, t("limitShort")), when ? h("b", null, " " + when) : null));
     }
 
     if (f.chatTokens && S.convId && S.tokens && S.tokensFor === S.convId) {
-      const t = S.tokens;
-      const lvl = t.total >= 150000 ? "orange" : t.total >= 100000 ? "amber" : "neutral";
-      const tip = `This chat is about ${t.total.toLocaleString()} tokens — roughly what ChatGPT re-reads with each new message here.\n` +
-        `You ${cumFmtTokens(t.user)} · ChatGPT ${cumFmtTokens(t.assistant)} · Tools ${cumFmtTokens(t.tools)} · Images ${cumFmtTokens(t.images)}` +
-        (t.context ? ` · Custom instructions ${cumFmtTokens(t.context)}` : "") +
-        `\nEstimate. Files read by search, memory and the system prompt aren't included.\nLong chat? Starting a new one is the cheapest message you can send.`;
+      const tk = S.tokens;
+      const lvl = tk.total >= 150000 ? "orange" : tk.total >= 100000 ? "amber" : "neutral";
+      const tip = t("tipTokens1", [tk.total.toLocaleString()]) + "\n" +
+        t("tipTokens2", [cumFmtTokens(tk.user), cumFmtTokens(tk.assistant), cumFmtTokens(tk.tools), cumFmtTokens(tk.images)]) +
+        (tk.context ? " · " + t("tipTokensCtx", [cumFmtTokens(tk.context)]) : "") +
+        "\n" + t("tipTokens3") + "\n" + t("tipTokens4");
       segs.push(seg("cgum-tokens", tip,
-        h("span", { class: "cgum-lbl cgum-long" }, "Chat"), h("span", { class: "cgum-short cgum-ic" }, ICONS.chat()),
-        h("span", { class: `cgum-val cgum-${lvl}` }, "~" + cumFmtTokens(t.total), h("span", { class: "cgum-tok-word" }, " tokens"))));
+        h("span", { class: "cgum-lbl cgum-long" }, t("chat")), h("span", { class: "cgum-short cgum-ic" }, ICONS.chat()),
+        h("span", { class: `cgum-val cgum-${lvl}` }, "~" + cumFmtTokens(tk.total), h("span", { class: "cgum-tok-word" }, " " + t("tokensWord")))));
     }
 
     if (snap && snap.error && snap.error.code !== "signed_out" && !wins.length) {
-      segs.unshift(seg("cgum-muted", (snap.error.message || "Couldn't fetch usage.") + "\nRetrying automatically. Open the toolbar popup to refresh now.", "Usage unavailable"));
+      segs.unshift(seg("cgum-muted", (snap.error.message || t("errFetch")) + "\n" + t("tipRetrying"), t("usageUnavailable")));
     }
 
     if (snap && snap.usageUnavailable && !wins.length && !(snap.features && snap.features.features.length) && !(snap.error && snap.error.code === "signed_out")) {
-      segs.push(seg("cgum-muted", "ChatGPT isn't reporting usage windows for this account right now. Feature quotas, caps you define and limit hits are still tracked.", "No limits reported"));
+      segs.push(seg("cgum-muted", t("tipNoWindows"), t("noLimits")));
     }
     return segs;
   }
@@ -452,9 +478,9 @@
   function logoButton() {
     const b = h("a", {
       class: "cgum-logo", href: cumUtm(C.PRODUCT_URL, "strip-logo", "about"), target: "_blank", rel: "noopener",
-      title: `${C.NAME} — offered by SelectorsHub\nClick for more free tools`
+      title: t("tipLogo", [C.NAME])
     }, logoSrc ? h("img", { class: "cgum-logo-img", src: logoSrc, alt: "", width: 18, height: 18 }) : ICONS.logo(),
-      h("span", { class: "cgum-byline" }, "by SelectorsHub"));
+      h("span", { class: "cgum-byline" }, t("bySelectorsHub")));
     b.addEventListener("click", (e) => {
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
       e.preventDefault();
@@ -475,8 +501,8 @@
     const dismiss = () => chrome.storage.local.set({ promoDismissed: key });
     return h("span", { class: "cgum-seg cgum-promo" },
       h("a", { href: cumUtm(tool.url, "limit-reached"), target: "_blank", rel: "noopener", title: tool.desc, onclick: dismiss },
-        h("span", { class: "cgum-long" }, "Meanwhile, try "), h("span", { class: "cgum-short" }, "Try "), tool.name, " →"),
-      h("button", { class: "cgum-icon-btn cgum-promo-x", title: "Hide until the next reset", onclick: dismiss }, ICONS.close()));
+        h("span", { class: "cgum-long" }, t("meanwhileTry", [tool.name])), h("span", { class: "cgum-short" }, t("tryTool", [tool.name]))),
+      h("button", { class: "cgum-icon-btn cgum-promo-x", title: t("hideUntilReset"), onclick: dismiss }, ICONS.close()));
   }
 
   function render() {
@@ -503,23 +529,23 @@
     const ctrls = h("span", { class: "cgum-ctrls" });
     if (rateUnlocked() && !S.rated) {
       const rb = h("button", { class: "cgum-rate" + (nudgeOpen ? " cgum-rate-pulse" : ""), type: "button", "data-cgum": "rate",
-        title: nudgeOpen ? null : "Pls Rate us & this button disappears forever after you review.",
-        "aria-label": "Rate ChatGPT Usage Meter" },
-        h("span", { class: "cgum-rate-star", "aria-hidden": "true" }, "⭐️"), h("span", { class: "cgum-rate-txt" }, "Rate us"));
+        title: nudgeOpen ? null : t("rateTip"),
+        "aria-label": t("rateAria", [C.NAME]) },
+        h("span", { class: "cgum-rate-star", "aria-hidden": "true" }, "⭐️"), h("span", { class: "cgum-rate-txt" }, t("rateUs")));
       rb.addEventListener("click", (e) => { e.stopPropagation(); doRate(); });
       ctrls.appendChild(rb);
     }
-    const gear = h("button", { class: "cgum-icon-btn", title: "Choose what the strip shows", "aria-label": "Strip settings" }, ICONS.gear());
+    const gear = h("button", { class: "cgum-icon-btn", title: t("tipGear"), "aria-label": t("stripSettings") }, ICONS.gear());
     gear.addEventListener("click", (e) => { e.stopPropagation(); toggleGearMenu(gear); });
     ctrls.appendChild(gear);
     if (!S.autoCollapsed) {
       ctrls.appendChild(h("button", {
-        class: "cgum-icon-btn", title: s.collapsed ? "Expand" : "Collapse", "aria-label": s.collapsed ? "Expand" : "Collapse",
+        class: "cgum-icon-btn", title: t(s.collapsed ? "expand" : "collapse"), "aria-label": t(s.collapsed ? "expand" : "collapse"),
         onclick: () => saveSettings({ collapsed: !s.collapsed })
       }, s.collapsed ? ICONS.expand() : ICONS.collapse()));
     }
     ctrls.appendChild(h("button", {
-      class: "cgum-icon-btn cgum-x", title: "Hide for 12 hours (turn it back on from the toolbar popup)", "aria-label": "Hide",
+      class: "cgum-icon-btn cgum-x", title: t("tipHide"), "aria-label": t("hide"),
       onclick: () => chrome.storage.local.set({ stripHiddenUntil: Date.now() + HIDE_MS })
     }, ICONS.close()));
     strip.appendChild(h("span", { class: "cgum-sep" }));
@@ -536,18 +562,18 @@
     const box = h("span", { class: "cgum-seg cgum-summary" });
     const wins = (snap && snap.usage && snap.usage.windows) || [];
     const th = f.thinking && snap && snap.features && snap.features.features.find((x) => x.id === "reason" && x.remaining != null);
-    if (th) box.appendChild(h("span", { class: "cgum-mini", title: `Thinking: ${th.remaining} left` + (th.resetAt ? ` · resets in ${cumFmtDuration(th.resetAt - Date.now())}` : "") },
-      h("span", { class: "cgum-mini-lbl" }, "Think"), h("span", { class: "cgum-val" + (th.remaining === 0 ? " cgum-red" : "") }, String(th.remaining))));
+    if (th) box.appendChild(h("span", { class: "cgum-mini", title: t("tipThinkingMini", [th.remaining]) + (th.resetAt ? " · " + t("resetsInLower", [cumFmtDuration(th.resetAt - Date.now())]) : "") },
+      h("span", { class: "cgum-mini-lbl" }, t("thinkShort")), h("span", { class: "cgum-val" + (th.remaining === 0 ? " cgum-red" : "") }, String(th.remaining))));
     wins.forEach((w, i) => {
       if (i === 0 ? !f.primary : !f.secondary) return;
-      const lbl = i === 0 ? (w.windowSec === 18000 ? "5h" : cumWindowLabel(w.windowSec, true)) : "W";
-      box.appendChild(h("span", { class: "cgum-mini", title: `${cumWindowLabel(w.windowSec)}: ${pctText(w.pct)}` + (w.resetAt ? ` · resets in ${cumFmtDuration(w.resetAt - Date.now())}` : "") },
+      const lbl = i === 0 ? (w.windowSec === 18000 ? t("win5hShort") : cumWindowLabel(w.windowSec, true)) : t("winWeekLetter");
+      box.appendChild(h("span", { class: "cgum-mini", title: `${cumWindowLabel(w.windowSec)}: ${pctText(w.pct)}` + (w.resetAt ? " · " + t("resetsInLower", [cumFmtDuration(w.resetAt - Date.now())]) : "") },
         h("span", { class: "cgum-mini-lbl" }, lbl), h("span", { class: `cgum-pct cgum-${cumLevel(w.pct)}` }, pctText(w.pct))));
     });
     const hit = activeCapHit();
-    if (hit) box.appendChild(h("span", { class: "cgum-mini cgum-hit", title: hit.message || "Limit reached" }, ICONS.lock()));
+    if (hit) box.appendChild(h("span", { class: "cgum-mini cgum-hit", title: hit.message || t("limitReached") }, ICONS.lock()));
     if (f.chatTokens && S.tokens && S.tokensFor === S.convId) {
-      box.appendChild(h("span", { class: "cgum-mini", title: `This chat: ~${S.tokens.total.toLocaleString()} tokens` }, ICONS.chat(), h("span", { class: "cgum-val" }, cumFmtTokens(S.tokens.total))));
+      box.appendChild(h("span", { class: "cgum-mini", title: t("tipThisChat", [S.tokens.total.toLocaleString()]) }, ICONS.chat(), h("span", { class: "cgum-val" }, cumFmtTokens(S.tokens.total))));
     }
     if (!box.firstChild) box.appendChild(h("span", { class: "cgum-muted" }, snap ? "—" : "…"));
     return box;
@@ -632,18 +658,18 @@
     S.nudgeAt = Date.now();
     try { chrome.storage.local.set({ [NUDGE_KEY]: S.nudgeAt }); } catch (_) {}
 
-    nudgeEl = h("div", { class: "cgum-nudge" + (isDark() ? " cgum-nudge-dark" : ""), role: "dialog", "aria-label": "Rate ChatGPT Usage Meter" },
-      h("button", { class: "cgum-nudge-x", type: "button", "data-n": "close", "aria-label": "Not now" }, "×"),
-      h("div", { class: "cgum-nudge-title" }, "Is ChatGPT Usage Meter helping you?"),
-      h("div", { class: "cgum-nudge-stars", "data-n": "rate", role: "button", tabindex: "0", "aria-label": "Leave a 5 star review" },
+    nudgeEl = h("div", { class: "cgum-nudge" + (isDark() ? " cgum-nudge-dark" : ""), role: "dialog", "aria-label": t("rateAria", [C.NAME]) },
+      h("button", { class: "cgum-nudge-x", type: "button", "data-n": "close", "aria-label": t("notNow") }, "×"),
+      h("div", { class: "cgum-nudge-title" }, t("nudgeTitle", [C.NAME])),
+      h("div", { class: "cgum-nudge-stars", "data-n": "rate", role: "button", tabindex: "0", "aria-label": t("leaveFiveStar") },
         h("span", null, "★"), h("span", null, "★"), h("span", null, "★"), h("span", null, "★"), h("span", null, "★")),
       h("div", { class: "cgum-nudge-body" },
-        "Pls Rate us & this button disappears forever after you review. 🙏🏻",
-        h("span", { class: "cgum-nudge-by" }, "Thank you ~ ",
-          h("a", { href: "https://www.linkedin.com/in/creator-sanjaykumar/", target: "_blank", rel: "noopener noreferrer" }, "Sanjay"), ", Creator")),
+        t("nudgeBody"),
+        h("span", { class: "cgum-nudge-by" }, tn("nudgeBy",
+          h("a", { href: "https://www.linkedin.com/in/creator-sanjaykumar/", target: "_blank", rel: "noopener noreferrer" }, "Sanjay")))),
       h("div", { class: "cgum-nudge-actions" },
-        h("button", { class: "cgum-nudge-cta", type: "button", "data-n": "rate" }, "Write a review"),
-        h("button", { class: "cgum-nudge-later", type: "button", "data-n": "later" }, "Maybe later")));
+        h("button", { class: "cgum-nudge-cta", type: "button", "data-n": "rate" }, t("writeReview")),
+        h("button", { class: "cgum-nudge-later", type: "button", "data-n": "later" }, t("maybeLater"))));
     document.body.appendChild(nudgeEl);
     nudgeEl.style.visibility = "hidden";
     positionNudge();
@@ -705,7 +731,7 @@
     }
     if (nudgeEl) { const el = nudgeEl; nudgeEl = null; el.classList.remove("cgum-nudge-in"); setTimeout(() => el.remove(), 180); }
     const btn = host && host.querySelector('[data-cgum="rate"]');
-    if (btn) { btn.classList.remove("cgum-rate-pulse"); btn.title = "Pls Rate us & this button disappears forever after you review."; }
+    if (btn) { btn.classList.remove("cgum-rate-pulse"); btn.title = t("rateTip"); }
   }
 
   // ---------------------------------------------------------------- menus
@@ -745,23 +771,23 @@
     };
     const field = (k, label, note) => row(label, f[k], (v) => saveSettings({ fields: { [k]: v } }), note);
     const menu = h("div", { class: "cgum-menu cgum-gear-menu", role: "menu" },
-      h("div", { class: "cgum-mhead" }, "Show in strip"),
-      field("thinking", "Thinking left", "chat limit"),
-      field("primary", "Codex usage", "5-hour / monthly"),
-      field("resetPrimary", "Reset times"),
-      field("secondary", "Codex weekly usage", "paid plans"),
-      field("resetSecondary", "Weekly reset time"),
-      field("forecast", "Limit forecast", "when on pace to run out"),
-      field("bars", "Usage bars"),
-      field("extraLimits", "Other limits", "per-feature windows"),
-      field("features", "Feature quotas", "deep research, images…"),
-      field("credits", "Credits"),
-      field("modelCaps", "My model caps", s.modelCaps.length ? "" : "set in Settings"),
-      field("chatTokens", "Chat tokens"),
+      h("div", { class: "cgum-mhead" }, t("showInStrip")),
+      field("thinking", t("fThinking"), t("fThinkingNote")),
+      field("primary", t("fPrimary"), t("fPrimaryNote")),
+      field("resetPrimary", t("fResetPrimary")),
+      field("secondary", t("fSecondary"), t("fSecondaryNote")),
+      field("resetSecondary", t("fResetSecondary")),
+      field("forecast", t("fForecast"), t("fForecastNote")),
+      field("bars", t("fBars")),
+      field("extraLimits", t("fExtra"), t("fExtraNote")),
+      field("features", t("fFeatures"), t("fFeaturesNote")),
+      field("credits", t("credits")),
+      field("modelCaps", t("fModelCaps"), s.modelCaps.length ? "" : t("fModelCapsNote")),
+      field("chatTokens", t("fChatTokens")),
       h("div", { class: "cgum-msep" }),
-      row("Desktop notifications", s.notify, (v) => saveSettings({ notify: v })),
+      row(t("desktopNotifications"), s.notify, (v) => saveSettings({ notify: v })),
       h("div", { class: "cgum-msep" }),
-      h("button", { class: "cgum-mlink", onclick: () => { send({ type: "openOptions" }); closeMenu(); } }, "All settings…"));
+      h("button", { class: "cgum-mlink", onclick: () => { send({ type: "openOptions" }); closeMenu(); } }, t("allSettings")));
     placeMenu(menu, anchor);
     openMenu = { el: menu, anchor, kind: "gear" };
   }
@@ -776,12 +802,12 @@
         img, h("span", { class: "cgum-tool-txt" }, h("span", { class: "cgum-tool-name" }, t.name), h("span", { class: "cgum-tool-desc" }, t.desc)));
     });
     const menu = h("div", { class: "cgum-menu cgum-logo-menu", role: "menu" },
-      h("div", { class: "cgum-mhead" }, "Offered by SelectorsHub · more free tools"),
+      h("div", { class: "cgum-mhead" }, t("offeredBy")),
       h("div", { class: "cgum-tools" }, items),
       h("div", { class: "cgum-msep" }),
-      h("a", { class: "cgum-mlink", href: cumUtm(C.ALL_TOOLS_URL, "logo-menu-all"), target: "_blank", rel: "noopener" }, "See all 15+ free tools →"),
-      h("a", { class: "cgum-mlink", href: cumUtm(C.PRODUCT_URL, "logo-menu-about", "about"), target: "_blank", rel: "noopener" }, `About ${C.NAME}`),
-      h("div", { class: "cgum-mfoot" }, "Not affiliated with OpenAI."));
+      h("a", { class: "cgum-mlink", href: cumUtm(C.ALL_TOOLS_URL, "logo-menu-all"), target: "_blank", rel: "noopener" }, t("seeAllTools")),
+      h("a", { class: "cgum-mlink", href: cumUtm(C.PRODUCT_URL, "logo-menu-about", "about"), target: "_blank", rel: "noopener" }, t("aboutName", [C.NAME])),
+      h("div", { class: "cgum-mfoot" }, t("notAffiliated")));
     placeMenu(menu, anchor);
     openMenu = { el: menu, anchor, kind: "logo" };
   }
@@ -789,6 +815,7 @@
   // ---------------------------------------------------------------- boot
   (async () => {
     await loadAll();
+    await syncLang();
     assetDataUrl("icons/logo64.png").then((src) => { if (src) { logoSrc = src; render(); } });
     mo.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
     watchUrl();

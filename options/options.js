@@ -1,14 +1,23 @@
 (function () {
   const C = CUM_CONFIG;
+  const t = cumT, tn = cumTN;   // translated text (ChatGPT language, else browser)
   const $ = (id) => document.getElementById(id);
+  // field -> message key
   const FIELD_LABELS = {
-    thinking: "Thinking left",
-    primary: "Codex usage", resetPrimary: "Reset times",
-    secondary: "Codex weekly usage", resetSecondary: "Weekly reset time",
-    forecast: "Limit forecast", bars: "Usage bars",
-    extraLimits: "Other limits", features: "Feature quotas",
-    credits: "Credits", modelCaps: "My model caps", chatTokens: "Chat tokens"
+    thinking: "fThinking",
+    primary: "fPrimary", resetPrimary: "fResetPrimary",
+    secondary: "fSecondary", resetSecondary: "fResetSecondary",
+    forecast: "fForecast", bars: "fBars",
+    extraLimits: "fExtra", features: "fFeatures",
+    credits: "credits", modelCaps: "fModelCaps", chatTokens: "fChatTokens"
   };
+  function translatePage() {
+    cumI18nPage();
+    document.title = C.NAME + " — " + t("settings");
+    for (const o of $("pollMinutes").options) o.textContent = o.value === "1" ? t("min1") : t("minN", [o.value]);
+    const code = (s) => Object.assign(document.createElement("code"), { textContent: s });
+    $("caps-note").replaceChildren(...tn("capsNote", code("*"), code("gpt-6*")));
+  }
   let settings;
 
   function merge(s) {
@@ -31,12 +40,12 @@
     document.querySelector("table.caps").style.display = settings.modelCaps.length ? "" : "none";
     settings.modelCaps.forEach((cap, i) => {
       const tr = document.createElement("tr");
-      const model = Object.assign(document.createElement("input"), { type: "text", value: cap.model || "", placeholder: "e.g. gpt-6-pro" });
+      const model = Object.assign(document.createElement("input"), { type: "text", value: cap.model || "", placeholder: t("egModel", ["gpt-6-pro"]) });
       model.setAttribute("list", "models");
       const limit = Object.assign(document.createElement("input"), { type: "number", min: 1, value: cap.limit || "" });
       const win = document.createElement("select");
       for (const [k, v] of Object.entries(C.WINDOWS)) win.append(new Option(v.label, k, false, cap.window === k));
-      const del = Object.assign(document.createElement("button"), { className: "btn x", textContent: "×", title: "Remove" });
+      const del = Object.assign(document.createElement("button"), { className: "btn x", textContent: "×", title: t("remove") });
       const upd = () => { settings.modelCaps[i] = { model: model.value.trim(), limit: Number(limit.value) || 0, window: win.value }; save(); };
       model.addEventListener("change", upd); limit.addEventListener("change", upd); win.addEventListener("change", upd);
       del.addEventListener("click", () => { settings.modelCaps.splice(i, 1); save(); renderCaps(); });
@@ -46,6 +55,8 @@
   }
 
   async function init() {
+    await cumInitLang();
+    translatePage();
     const s = await chrome.storage.local.get(["settings", "msgLog"]);
     settings = merge(s.settings);
     $("about").href = cumUtm(C.PRODUCT_URL, "options", "about");
@@ -70,7 +81,7 @@
     for (const [k, label] of Object.entries(FIELD_LABELS)) {
       const cb = Object.assign(document.createElement("input"), { type: "checkbox", checked: !!settings.fields[k] });
       cb.addEventListener("change", () => { settings.fields[k] = cb.checked; save(); });
-      const l = document.createElement("label"); l.append(cb, document.createTextNode(label)); fields.append(l);
+      const l = document.createElement("label"); l.append(cb, document.createTextNode(t(label))); fields.append(l);
     }
 
     const models = [...new Set((s.msgLog || []).map((e) => e.m))].filter((m) => m && m !== "auto").sort();
@@ -83,7 +94,7 @@
       inputs[inputs.length - 1].focus();
     });
 
-    $("clear-log").addEventListener("click", async () => { await chrome.storage.local.set({ msgLog: [] }); $("saved").textContent = "Cleared"; save().then(() => setTimeout(() => ($("saved").textContent = "Saved"), 1300)); });
+    $("clear-log").addEventListener("click", async () => { await chrome.storage.local.set({ msgLog: [] }); $("saved").textContent = t("cleared"); save().then(() => setTimeout(() => ($("saved").textContent = t("saved")), 1300)); });
     $("reset-hidden").addEventListener("click", async () => { await chrome.storage.local.set({ stripHiddenUntil: 0 }); settings.strip = true; $("strip").checked = true; save(); });
   }
   init();

@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT Usage Meter",
-  "version": "1.0.1",
-  "description": "See your ChatGPT limits, reset times and chat size live, right above the chat box. Get alerted before you run out.",
+  "version": "1.0.4",
+  "default_locale": "en",
+  "description": "__MSG_extDesc__",
   "permissions": [
     "storage",
     "alarms",

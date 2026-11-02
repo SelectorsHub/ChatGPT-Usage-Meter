@@ -219,7 +219,7 @@
               : (isNaN(Date.parse(ra)) ? null : new Date(Date.parse(ra)).toISOString());
           }
           if (res.status === 429 || RE_CAP.test(t)) {
-            post({ kind: "cap_hit", model: ctx.model, message: capMessage(t) || "Usage limit reached", resetAt, status: res.status, source: "http" });
+            post({ kind: "cap_hit", model: ctx.model, message: capMessage(t) || "", resetAt, status: res.status, source: "http" });
           }
           post({ kind: "completion_done", conversationId: ctx.conversationId, model: ctx.model, failed: true });
           return res;

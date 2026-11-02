@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "ChatGPT の利用上限・リセット時刻・チャットのサイズを、入力欄のすぐ上にリアルタイム表示。上限に達する前に通知します。"
+ },
+ "durNow": {
+  "message": "まもなく"
+ },
+ "durLt1": {
+  "message": "1分未満"
+ },
+ "durM": {
+  "message": "$1分"
+ },
+ "durHM": {
+  "message": "$1時間$2分"
+ },
+ "durD": {
+  "message": "$1日"
+ },
+ "durDH": {
+  "message": "$1日$2時間"
+ },
+ "winUsage": {
+  "message": "使用量"
+ },
+ "lblLimit": {
+  "message": "上限"
+ },
+ "win5h": {
+  "message": "5時間"
+ },
+ "win5hShort": {
+  "message": "5時間"
+ },
+ "win3h": {
+  "message": "3時間"
+ },
+ "win3hShort": {
+  "message": "3時間"
+ },
+ "winDay": {
+  "message": "日次"
+ },
+ "winDayShort": {
+  "message": "日"
+ },
+ "winWeek": {
+  "message": "週間"
+ },
+ "winWeekShort": {
+  "message": "週"
+ },
+ "winWeekLetter": {
+  "message": "週"
+ },
+ "winMonth": {
+  "message": "月間"
+ },
+ "winMonthShort": {
+  "message": "月"
+ },
+ "winNDay": {
+  "message": "$1日"
+ },
+ "winNHour": {
+  "message": "$1時間"
+ },
+ "winNMin": {
+  "message": "$1分"
+ },
+ "capWin3h": {
+  "message": "3時間"
+ },
+ "capWin5h": {
+  "message": "5時間"
+ },
+ "capWinDay": {
+  "message": "24時間"
+ },
+ "capWinWeek": {
+  "message": "7日間"
+ },
+ "capWinMonth": {
+  "message": "30日間"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "思考"
+ },
+ "nLeft": {
+  "message": "残り $1"
+ },
+ "nOfMaxLeft": {
+  "message": "残り $1/$2"
+ },
+ "leftApprox": {
+  "message": "残り約$1"
+ },
+ "resetIn": {
+  "message": "リセットまで $1"
+ },
+ "resetsInLower": {
+  "message": "$1後にリセット"
+ },
+ "resetsShort": {
+  "message": "$1後にリセット"
+ },
+ "tipUsage": {
+  "message": "$1 の使用量: $2"
+ },
+ "tipResetsAt": {
+  "message": "$1後にリセット（$2）"
+ },
+ "tipResetsIn": {
+  "message": "$1後にリセット"
+ },
+ "tipForecast": {
+  "message": "今のペースだと、リセット前の約$1でこの上限に達します。"
+ },
+ "tipSignIn": {
+  "message": "このブラウザプロファイルで chatgpt.com にログインしてください。"
+ },
+ "signInToSee": {
+  "message": "ログインして使用量を表示"
+ },
+ "tipFetching": {
+  "message": "使用量を取得中…"
+ },
+ "loading": {
+  "message": "読み込み中…"
+ },
+ "tipThinkingLeft": {
+  "message": "Thinking の残りメッセージ数: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "ChatGPT がご利用のプラン向けに報告した値です。"
+ },
+ "tipCodexNote": {
+  "message": "ChatGPT がプランについて報告した Codex の使用量です（エージェント / Work タスクでも消費されます）。通常のチャットはここに含まれません。"
+ },
+ "credits": {
+  "message": "クレジット"
+ },
+ "creditsShort": {
+  "message": "Cr"
+ },
+ "on": {
+  "message": "有効"
+ },
+ "onCap": {
+  "message": "有効"
+ },
+ "unlimited": {
+  "message": "無制限"
+ },
+ "tipCredits": {
+  "message": "このアカウントのクレジット（プランの上限を使い切った後に使用されます）。"
+ },
+ "tipFeatureLeft": {
+  "message": "$1: 残り $2"
+ },
+ "tipAllQuotas": {
+  "message": "すべての機能の割り当てはツールバーのポップアップで確認できます。"
+ },
+ "tipCapUsed": {
+  "message": "$1: 直近$4で $3 件中 $2 件のメッセージ"
+ },
+ "tipNextFrees": {
+  "message": "次のメッセージが使えるまで $1"
+ },
+ "tipCountedHere": {
+  "message": "このブラウザから送信したメッセージ数で計算しています。"
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT が利用上限に達したと報告しました。"
+ },
+ "limitHit": {
+  "message": "上限に到達"
+ },
+ "limitShort": {
+  "message": "上限"
+ },
+ "limitReached": {
+  "message": "上限に到達しました"
+ },
+ "tipTokens1": {
+  "message": "このチャットは約 $1 トークンです。新しいメッセージを送るたびに ChatGPT がおおよそこの量を読み直します。"
+ },
+ "tipTokens2": {
+  "message": "あなた $1 · ChatGPT $2 · ツール $3 · 画像 $4"
+ },
+ "tipTokensCtx": {
+  "message": "カスタム指示 $1"
+ },
+ "tipTokens3": {
+  "message": "推定値です。検索で読み込んだファイル、メモリ、システムプロンプトは含まれません。"
+ },
+ "tipTokens4": {
+  "message": "チャットが長くなったら？ 新しいチャットを始めるのが一番の節約です。"
+ },
+ "chat": {
+  "message": "チャット"
+ },
+ "tokensWord": {
+  "message": "トークン"
+ },
+ "tipThisChat": {
+  "message": "このチャット: 約 $1 トークン"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: 残り $1"
+ },
+ "errFetch": {
+  "message": "使用量を取得できませんでした。"
+ },
+ "tipRetrying": {
+  "message": "自動的に再試行します。今すぐ更新するにはツールバーのポップアップを開いてください。"
+ },
+ "usageUnavailable": {
+  "message": "使用量を取得できません"
+ },
+ "tipNoWindows": {
+  "message": "現在、ChatGPT はこのアカウントの使用量ウィンドウを報告していません。機能の割り当て、設定した上限、上限到達は引き続き記録されます。"
+ },
+ "noLimits": {
+  "message": "上限の報告なし"
+ },
+ "tipLogo": {
+  "message": "$1 — 提供: SelectorsHub\nクリックして他の無料ツールを見る"
+ },
+ "bySelectorsHub": {
+  "message": "by SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "その間に $1 を試す →"
+ },
+ "tryTool": {
+  "message": "$1 を試す →"
+ },
+ "hideUntilReset": {
+  "message": "次のリセットまで非表示"
+ },
+ "rateTip": {
+  "message": "ぜひ評価をお願いします。レビュー後、このボタンは表示されなくなります。"
+ },
+ "rateAria": {
+  "message": "$1 を評価"
+ },
+ "rateUs": {
+  "message": "評価する"
+ },
+ "tipGear": {
+  "message": "バーに表示する項目を選択"
+ },
+ "stripSettings": {
+  "message": "バーの設定"
+ },
+ "expand": {
+  "message": "展開"
+ },
+ "collapse": {
+  "message": "折りたたむ"
+ },
+ "tipHide": {
+  "message": "12時間非表示（ツールバーのポップアップから再表示できます）"
+ },
+ "hide": {
+  "message": "非表示"
+ },
+ "notNow": {
+  "message": "今はしない"
+ },
+ "nudgeTitle": {
+  "message": "$1 はお役に立っていますか？"
+ },
+ "leaveFiveStar": {
+  "message": "★5のレビューを書く"
+ },
+ "nudgeBody": {
+  "message": "ぜひ評価をお願いします。レビュー後、このボタンは表示されなくなります。🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "ありがとうございます ~ 開発者 $1"
+ },
+ "writeReview": {
+  "message": "レビューを書く"
+ },
+ "maybeLater": {
+  "message": "あとで"
+ },
+ "showInStrip": {
+  "message": "バーに表示"
+ },
+ "fThinking": {
+  "message": "Thinking の残り"
+ },
+ "fThinkingNote": {
+  "message": "チャットの上限"
+ },
+ "fPrimary": {
+  "message": "Codex の使用量"
+ },
+ "fPrimaryNote": {
+  "message": "5時間 / 月間"
+ },
+ "fResetPrimary": {
+  "message": "リセット時刻"
+ },
+ "fSecondary": {
+  "message": "Codex の週間使用量"
+ },
+ "fSecondaryNote": {
+  "message": "有料プラン"
+ },
+ "fResetSecondary": {
+  "message": "週間リセット時刻"
+ },
+ "fForecast": {
+  "message": "上限予測"
+ },
+ "fForecastNote": {
+  "message": "使い切りそうなとき"
+ },
+ "fBars": {
+  "message": "使用量バー"
+ },
+ "fExtra": {
+  "message": "その他の上限"
+ },
+ "fExtraNote": {
+  "message": "機能ごとのウィンドウ"
+ },
+ "fFeatures": {
+  "message": "機能の割り当て"
+ },
+ "fFeaturesNote": {
+  "message": "Deep research、画像…"
+ },
+ "fModelCaps": {
+  "message": "モデル別の上限"
+ },
+ "fModelCapsNote": {
+  "message": "設定で追加"
+ },
+ "fChatTokens": {
+  "message": "チャットのトークン数"
+ },
+ "desktopNotifications": {
+  "message": "デスクトップ通知"
+ },
+ "allSettings": {
+  "message": "すべての設定…"
+ },
+ "offeredBy": {
+  "message": "提供: SelectorsHub · その他の無料ツール"
+ },
+ "seeAllTools": {
+  "message": "15以上の無料ツールをすべて見る →"
+ },
+ "aboutName": {
+  "message": "$1 について"
+ },
+ "notAffiliated": {
+  "message": "OpenAI とは提携していません。"
+ },
+ "notAffiliatedShort": {
+  "message": "OpenAI とは提携していません"
+ },
+ "refresh": {
+  "message": "更新"
+ },
+ "refreshNow": {
+  "message": "今すぐ更新"
+ },
+ "settings": {
+  "message": "設定"
+ },
+ "showStripLabel": {
+  "message": "チャットの上に使用量バーを表示"
+ },
+ "creditsSub": {
+  "message": "プランの上限を使い切った後に使用されます。"
+ },
+ "reportedByChatGPT": {
+  "message": "ChatGPT の報告値"
+ },
+ "countedInBrowser": {
+  "message": "このブラウザで計測"
+ },
+ "msgsSent": {
+  "message": "このブラウザから送信したメッセージ"
+ },
+ "rng5h": {
+  "message": "5時間"
+ },
+ "rng24h": {
+  "message": "24時間"
+ },
+ "rng7d": {
+  "message": "7日"
+ },
+ "setCap": {
+  "message": "+ モデルの上限を設定"
+ },
+ "moreTools": {
+  "message": "SelectorsHub のその他の無料ツール"
+ },
+ "resetsInAt": {
+  "message": "$1後にリセット · $2"
+ },
+ "resetNotReported": {
+  "message": "リセット時刻は報告されていません"
+ },
+ "forecastPopup": {
+  "message": "このペースだと約$1で上限に達します"
+ },
+ "hiddenUntil": {
+  "message": "$1 まで非表示"
+ },
+ "shownOn": {
+  "message": "chatgpt.com に表示中"
+ },
+ "off": {
+  "message": "オフ"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com が拡張機能に直接応答しませんでした。chatgpt.com のタブを開いて更新をクリックしてください。"
+ },
+ "thinkingMessages": {
+  "message": "Thinking メッセージ"
+ },
+ "tipNextSlot": {
+  "message": "次の枠が空くまで $1"
+ },
+ "noneYet": {
+  "message": "まだありません。拡張機能をインストールした時点から送信数を計測します。"
+ },
+ "signInHint": {
+  "message": "このブラウザプロファイルで $1 にログインしてから、更新をクリックしてください。"
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT はこのアカウントの使用量ウィンドウを報告していません。"
+ },
+ "noWindowsBody": {
+  "message": "一部のプランでは正常な状態です。機能の割り当て、上限到達、設定した上限は引き続き記録されます。"
+ },
+ "updatedJustNow": {
+  "message": "たった今更新"
+ },
+ "updatedAgo": {
+  "message": "$1前に更新"
+ },
+ "settingsBy": {
+  "message": "設定 · 提供:"
+ },
+ "saved": {
+  "message": "保存しました"
+ },
+ "cleared": {
+  "message": "消去しました"
+ },
+ "polling": {
+  "message": "更新間隔"
+ },
+ "checkEvery": {
+  "message": "使用量の確認間隔"
+ },
+ "min1": {
+  "message": "1分"
+ },
+ "minN": {
+  "message": "$1分"
+ },
+ "pollNote": {
+  "message": "返信のたびに数秒後、またツールバーのポップアップを開いたときにも使用量を更新します。"
+ },
+ "alerts": {
+  "message": "通知"
+ },
+ "alertCrosses": {
+  "message": "使用量がこの値を超えたら通知"
+ },
+ "badgeLabel": {
+  "message": "ツールバーのアイコンに5時間の % を表示"
+ },
+ "usageStrip": {
+  "message": "使用量バー"
+ },
+ "showStripOpt": {
+  "message": "ChatGPT の入力欄の上にバーを表示"
+ },
+ "startCollapsed": {
+  "message": "折りたたんだ状態で表示"
+ },
+ "capsNote": {
+  "message": "ChatGPT はすべてのモデルの残り回数を報告するわけではありません。プランに固定の上限（例: Pro モデルの週間上限）がある場合はここに追加してください。このブラウザからそのモデルに送ったメッセージ数を上限と比べて計測します。正確なモデル名（これまで使ったものが候補に表示されます）を入力するか、末尾に $1 を付けて系列全体に一致させます（例: $2）。"
+ },
+ "thModel": {
+  "message": "モデル"
+ },
+ "thLimit": {
+  "message": "上限"
+ },
+ "thPer": {
+  "message": "期間"
+ },
+ "addCap": {
+  "message": "+ 上限を追加"
+ },
+ "egModel": {
+  "message": "例: $1"
+ },
+ "remove": {
+  "message": "削除"
+ },
+ "data": {
+  "message": "データ"
+ },
+ "dataNote": {
+  "message": "すべてのデータはこのブラウザ内に保存されます。使用量はあなた自身のログインセッションで chatgpt.com から読み取り、他の場所には一切送信しません。"
+ },
+ "clearCounts": {
+  "message": "メッセージ数を消去"
+ },
+ "unhideStrip": {
+  "message": "バーを再表示"
+ },
+ "footerDisc": {
+  "message": "OpenAI とは提携しておらず、承認も受けていません。ChatGPT は OpenAI の商標です。"
+ },
+ "errNetwork": {
+  "message": "chatgpt.com に接続できませんでした"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com からセッション情報が返されませんでした"
+ },
+ "errSignedOut": {
+  "message": "chatgpt.com にログインしていません"
+ },
+ "errHttp": {
+  "message": "使用量の取得に失敗しました（$1）"
+ },
+ "noResponse": {
+  "message": "応答なし"
+ },
+ "resetsInSentence": {
+  "message": "$1後にリセットされます。"
+ },
+ "notifLimitReached": {
+  "message": "$1 の上限に達しました"
+ },
+ "notifUsageAt": {
+  "message": "$1 の使用量が $2% に達しました"
+ },
+ "notifBody": {
+  "message": "ChatGPT の $1 使用量は $2% です。"
+ },
+ "notifCapTitle": {
+  "message": "$1: $3 件中 $2 件を使用"
+ },
+ "notifCapBody": {
+  "message": "直近$4で、$3 のメッセージを $2 件中 $1 件送信しました（このブラウザで計測）。"
+ },
+ "notifHitTitle": {
+  "message": "ChatGPT の上限に達しました"
+ },
+ "featDeepResearch": {
+  "message": "Deep research"
+ },
+ "featImageGen": {
+  "message": "画像生成"
+ },
+ "featFileUploads": {
+  "message": "ファイルのアップロード"
+ },
+ "featAgent": {
+  "message": "エージェント"
+ },
+ "featVideo": {
+  "message": "動画"
+ },
+ "featVoice": {
+  "message": "音声"
+ },
+ "featCanvas": {
+  "message": "キャンバス"
+ },
+ "featTasks": {
+  "message": "タスク"
+ },
+ "featConnectors": {
+  "message": "コネクタ"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "コードレビュー"
+ },
+ "featResearch": {
+  "message": "リサーチ"
+ },
+ "featPasteToFile": {
+  "message": "ファイルとして貼り付け"
+ },
+ "tool_screenshot_with_url": {
+  "message": "URL バー付きのスクリーンショット"
+ },
+ "tool_testcase_studio": {
+  "message": "操作しながらテスト手順を記録"
+ },
+ "tool_check_my_links": {
+  "message": "リンク切れをワンクリックで検出"
+ },
+ "tool_page_load_timer": {
+  "message": "ページの読み込み時間を自動計測"
+ },
+ "tool_selectorshub": {
+  "message": "XPath と Playwright のロケーター"
+ },
+ "tool_cssviewer": {
+  "message": "ホバーで要素の CSS を表示"
+ },
+ "tool_clearcache": {
+  "message": "ワンクリックでキャッシュを消去"
+ },
+ "tool_auto_data_filler": {
+  "message": "ワンクリックでフォームに入力"
+ },
+ "tool_modify_header": {
+  "message": "リクエスト・レスポンスヘッダーを編集"
+ },
+ "tool_anyformat": {
+  "message": "画像を好きな形式で保存"
+ },
+ "tool_bookmarks_finder": {
+  "message": "入力するだけでブックマークを検索"
+ },
+ "tool_testing_daily": {
+  "message": "毎日のテスト関連ニュース"
+ }
+}

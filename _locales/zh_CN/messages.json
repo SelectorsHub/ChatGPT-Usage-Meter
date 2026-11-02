@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "在输入框正上方实时显示 ChatGPT 用量上限、重置时间和对话大小，在用完之前提醒你。"
+ },
+ "durNow": {
+  "message": "马上"
+ },
+ "durLt1": {
+  "message": "不到1分钟"
+ },
+ "durM": {
+  "message": "$1分钟"
+ },
+ "durHM": {
+  "message": "$1小时$2分"
+ },
+ "durD": {
+  "message": "$1天"
+ },
+ "durDH": {
+  "message": "$1天$2小时"
+ },
+ "winUsage": {
+  "message": "用量"
+ },
+ "lblLimit": {
+  "message": "上限"
+ },
+ "win5h": {
+  "message": "5小时"
+ },
+ "win5hShort": {
+  "message": "5小时"
+ },
+ "win3h": {
+  "message": "3小时"
+ },
+ "win3hShort": {
+  "message": "3小时"
+ },
+ "winDay": {
+  "message": "每日"
+ },
+ "winDayShort": {
+  "message": "日"
+ },
+ "winWeek": {
+  "message": "每周"
+ },
+ "winWeekShort": {
+  "message": "周"
+ },
+ "winWeekLetter": {
+  "message": "周"
+ },
+ "winMonth": {
+  "message": "每月"
+ },
+ "winMonthShort": {
+  "message": "月"
+ },
+ "winNDay": {
+  "message": "$1天"
+ },
+ "winNHour": {
+  "message": "$1小时"
+ },
+ "winNMin": {
+  "message": "$1分钟"
+ },
+ "capWin3h": {
+  "message": "3小时"
+ },
+ "capWin5h": {
+  "message": "5小时"
+ },
+ "capWinDay": {
+  "message": "24小时"
+ },
+ "capWinWeek": {
+  "message": "7天"
+ },
+ "capWinMonth": {
+  "message": "30天"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "思考"
+ },
+ "nLeft": {
+  "message": "剩余 $1"
+ },
+ "nOfMaxLeft": {
+  "message": "剩余 $1/$2"
+ },
+ "leftApprox": {
+  "message": "约剩 $1"
+ },
+ "resetIn": {
+  "message": "$1后重置"
+ },
+ "resetsInLower": {
+  "message": "$1后重置"
+ },
+ "resetsShort": {
+  "message": "$1后重置"
+ },
+ "tipUsage": {
+  "message": "$1 用量：$2"
+ },
+ "tipResetsAt": {
+  "message": "$1后重置（$2）"
+ },
+ "tipResetsIn": {
+  "message": "$1后重置"
+ },
+ "tipForecast": {
+  "message": "按你当前的速度，大约 $1 后就会达到这个上限——早于重置时间。"
+ },
+ "tipSignIn": {
+  "message": "请在此浏览器配置文件中登录 chatgpt.com。"
+ },
+ "signInToSee": {
+  "message": "登录后查看用量"
+ },
+ "tipFetching": {
+  "message": "正在获取你的用量…"
+ },
+ "loading": {
+  "message": "加载中…"
+ },
+ "tipThinkingLeft": {
+  "message": "剩余 Thinking 消息：$1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "由 ChatGPT 针对你的套餐报告。"
+ },
+ "tipCodexNote": {
+  "message": "ChatGPT 针对你的套餐报告的 Codex 用量（智能体 / Work 任务也会消耗）。普通聊天不计入此处。"
+ },
+ "credits": {
+  "message": "额度"
+ },
+ "creditsShort": {
+  "message": "额度"
+ },
+ "on": {
+  "message": "开"
+ },
+ "onCap": {
+  "message": "已开启"
+ },
+ "unlimited": {
+  "message": "无限"
+ },
+ "tipCredits": {
+  "message": "此账号的额度（套餐上限用完后使用）。"
+ },
+ "tipFeatureLeft": {
+  "message": "$1：剩余 $2"
+ },
+ "tipAllQuotas": {
+  "message": "所有功能配额都在工具栏弹窗中。"
+ },
+ "tipCapUsed": {
+  "message": "$1：最近 $4 已用 $2 / $3 条消息"
+ },
+ "tipNextFrees": {
+  "message": "下一条消息可用还需 $1"
+ },
+ "tipCountedHere": {
+  "message": "根据此浏览器发送的消息统计。"
+ },
+ "tipLimitReported": {
+  "message": "ChatGPT 报告已达到用量上限。"
+ },
+ "limitHit": {
+  "message": "已达上限"
+ },
+ "limitShort": {
+  "message": "上限"
+ },
+ "limitReached": {
+  "message": "已达到上限"
+ },
+ "tipTokens1": {
+  "message": "此对话约 $1 个 token——大致是 ChatGPT 每发一条新消息都要重新读取的量。"
+ },
+ "tipTokens2": {
+  "message": "你 $1 · ChatGPT $2 · 工具 $3 · 图片 $4"
+ },
+ "tipTokensCtx": {
+  "message": "自定义指令 $1"
+ },
+ "tipTokens3": {
+  "message": "估算值。不包括搜索读取的文件、记忆和系统提示词。"
+ },
+ "tipTokens4": {
+  "message": "对话太长？开一个新对话是最省用量的做法。"
+ },
+ "chat": {
+  "message": "对话"
+ },
+ "tokensWord": {
+  "message": "token"
+ },
+ "tipThisChat": {
+  "message": "此对话：约 $1 个 token"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking：剩余 $1"
+ },
+ "errFetch": {
+  "message": "无法获取用量。"
+ },
+ "tipRetrying": {
+  "message": "将自动重试。打开工具栏弹窗可立即刷新。"
+ },
+ "usageUnavailable": {
+  "message": "用量不可用"
+ },
+ "tipNoWindows": {
+  "message": "ChatGPT 目前没有报告此账号的用量窗口。功能配额、你设置的上限和触顶记录仍会继续统计。"
+ },
+ "noLimits": {
+  "message": "未报告上限"
+ },
+ "tipLogo": {
+  "message": "$1 — 由 SelectorsHub 提供\n点击查看更多免费工具"
+ },
+ "bySelectorsHub": {
+  "message": "by SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "趁这段时间，试试 $1 →"
+ },
+ "tryTool": {
+  "message": "试试 $1 →"
+ },
+ "hideUntilReset": {
+  "message": "隐藏到下次重置"
+ },
+ "rateTip": {
+  "message": "请给我们评分，评价后此按钮将永久消失。"
+ },
+ "rateAria": {
+  "message": "为 $1 评分"
+ },
+ "rateUs": {
+  "message": "给我们评分"
+ },
+ "tipGear": {
+  "message": "选择条中显示的内容"
+ },
+ "stripSettings": {
+  "message": "显示条设置"
+ },
+ "expand": {
+  "message": "展开"
+ },
+ "collapse": {
+  "message": "收起"
+ },
+ "tipHide": {
+  "message": "隐藏12小时（可在工具栏弹窗中重新开启）"
+ },
+ "hide": {
+  "message": "隐藏"
+ },
+ "notNow": {
+  "message": "以后再说"
+ },
+ "nudgeTitle": {
+  "message": "$1 对你有帮助吗？"
+ },
+ "leaveFiveStar": {
+  "message": "留下五星好评"
+ },
+ "nudgeBody": {
+  "message": "请给我们评分，评价后此按钮将永久消失。🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "谢谢 ~ 作者 $1"
+ },
+ "writeReview": {
+  "message": "写评价"
+ },
+ "maybeLater": {
+  "message": "以后再说"
+ },
+ "showInStrip": {
+  "message": "在显示条中显示"
+ },
+ "fThinking": {
+  "message": "Thinking 剩余"
+ },
+ "fThinkingNote": {
+  "message": "聊天上限"
+ },
+ "fPrimary": {
+  "message": "Codex 用量"
+ },
+ "fPrimaryNote": {
+  "message": "5小时 / 每月"
+ },
+ "fResetPrimary": {
+  "message": "重置时间"
+ },
+ "fSecondary": {
+  "message": "Codex 每周用量"
+ },
+ "fSecondaryNote": {
+  "message": "付费套餐"
+ },
+ "fResetSecondary": {
+  "message": "每周重置时间"
+ },
+ "fForecast": {
+  "message": "上限预测"
+ },
+ "fForecastNote": {
+  "message": "快用完时显示"
+ },
+ "fBars": {
+  "message": "用量条"
+ },
+ "fExtra": {
+  "message": "其他上限"
+ },
+ "fExtraNote": {
+  "message": "按功能计算的窗口"
+ },
+ "fFeatures": {
+  "message": "功能配额"
+ },
+ "fFeaturesNote": {
+  "message": "深度研究、图片…"
+ },
+ "fModelCaps": {
+  "message": "我的模型上限"
+ },
+ "fModelCapsNote": {
+  "message": "在设置中添加"
+ },
+ "fChatTokens": {
+  "message": "对话 token 数"
+ },
+ "desktopNotifications": {
+  "message": "桌面通知"
+ },
+ "allSettings": {
+  "message": "所有设置…"
+ },
+ "offeredBy": {
+  "message": "由 SelectorsHub 提供 · 更多免费工具"
+ },
+ "seeAllTools": {
+  "message": "查看全部 15+ 款免费工具 →"
+ },
+ "aboutName": {
+  "message": "关于 $1"
+ },
+ "notAffiliated": {
+  "message": "与 OpenAI 无关联。"
+ },
+ "notAffiliatedShort": {
+  "message": "与 OpenAI 无关联"
+ },
+ "refresh": {
+  "message": "刷新"
+ },
+ "refreshNow": {
+  "message": "立即刷新"
+ },
+ "settings": {
+  "message": "设置"
+ },
+ "showStripLabel": {
+  "message": "在聊天上方显示用量条"
+ },
+ "creditsSub": {
+  "message": "套餐上限用完后使用。"
+ },
+ "reportedByChatGPT": {
+  "message": "由 ChatGPT 报告"
+ },
+ "countedInBrowser": {
+  "message": "在此浏览器中统计"
+ },
+ "msgsSent": {
+  "message": "从此浏览器发送的消息"
+ },
+ "rng5h": {
+  "message": "5小时"
+ },
+ "rng24h": {
+  "message": "24小时"
+ },
+ "rng7d": {
+  "message": "7天"
+ },
+ "setCap": {
+  "message": "+ 为模型设置上限"
+ },
+ "moreTools": {
+  "message": "SelectorsHub 的更多免费工具"
+ },
+ "resetsInAt": {
+  "message": "$1后重置 · $2"
+ },
+ "resetNotReported": {
+  "message": "未报告重置时间"
+ },
+ "forecastPopup": {
+  "message": "按这个速度，约 $1 后会达到上限"
+ },
+ "hiddenUntil": {
+  "message": "隐藏至 $1"
+ },
+ "shownOn": {
+  "message": "在 chatgpt.com 上显示"
+ },
+ "off": {
+  "message": "关闭"
+ },
+ "errBlockedPopup": {
+  "message": "chatgpt.com 没有直接响应扩展程序。请打开一个 chatgpt.com 标签页，然后点击刷新。"
+ },
+ "thinkingMessages": {
+  "message": "Thinking 消息"
+ },
+ "tipNextSlot": {
+  "message": "下一个名额 $1后释放"
+ },
+ "noneYet": {
+  "message": "暂无——从安装扩展程序时开始统计发送数。"
+ },
+ "signInHint": {
+  "message": "请在此浏览器配置文件中登录 $1，然后点击刷新。"
+ },
+ "noWindowsTitle": {
+  "message": "ChatGPT 没有报告此账号的用量窗口。"
+ },
+ "noWindowsBody": {
+  "message": "这在某些套餐中是正常的。功能配额、触顶记录和你设置的上限仍会继续统计。"
+ },
+ "updatedJustNow": {
+  "message": "刚刚更新"
+ },
+ "updatedAgo": {
+  "message": "$1前更新"
+ },
+ "settingsBy": {
+  "message": "设置 · 提供者"
+ },
+ "saved": {
+  "message": "已保存"
+ },
+ "cleared": {
+  "message": "已清除"
+ },
+ "polling": {
+  "message": "刷新频率"
+ },
+ "checkEvery": {
+  "message": "检查用量的间隔"
+ },
+ "min1": {
+  "message": "1分钟"
+ },
+ "minN": {
+  "message": "$1分钟"
+ },
+ "pollNote": {
+  "message": "每次回复后几秒钟、以及每次打开工具栏弹窗时，也会刷新用量。"
+ },
+ "alerts": {
+  "message": "提醒"
+ },
+ "alertCrosses": {
+  "message": "用量超过以下值时提醒"
+ },
+ "badgeLabel": {
+  "message": "在工具栏图标上显示5小时用量 %"
+ },
+ "usageStrip": {
+  "message": "用量条"
+ },
+ "showStripOpt": {
+  "message": "在 ChatGPT 输入框上方显示用量条"
+ },
+ "startCollapsed": {
+  "message": "默认收起"
+ },
+ "capsNote": {
+  "message": "ChatGPT 并不会报告每个模型的剩余次数。如果你的套餐有固定上限（例如 Pro 模型的每周上限），请在这里添加，扩展会统计你在此浏览器中发给该模型的消息并与上限对比。请使用准确的模型标识（会列出你用过的模型），或在末尾加 $1 来匹配整个系列（例如 $2）。"
+ },
+ "thModel": {
+  "message": "模型"
+ },
+ "thLimit": {
+  "message": "上限"
+ },
+ "thPer": {
+  "message": "周期"
+ },
+ "addCap": {
+  "message": "+ 添加上限"
+ },
+ "egModel": {
+  "message": "例如 $1"
+ },
+ "remove": {
+  "message": "删除"
+ },
+ "data": {
+  "message": "数据"
+ },
+ "dataNote": {
+  "message": "所有数据都保存在此浏览器中。用量通过你自己的登录会话从 chatgpt.com 读取，不会发送到任何其他地方。"
+ },
+ "clearCounts": {
+  "message": "清除消息计数"
+ },
+ "unhideStrip": {
+  "message": "重新显示用量条"
+ },
+ "footerDisc": {
+  "message": "与 OpenAI 无关联，也未获其认可。ChatGPT 是 OpenAI 的商标。"
+ },
+ "errNetwork": {
+  "message": "无法连接 chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "chatgpt.com 未返回会话数据"
+ },
+ "errSignedOut": {
+  "message": "未登录 chatgpt.com"
+ },
+ "errHttp": {
+  "message": "用量请求失败（$1）"
+ },
+ "noResponse": {
+  "message": "无响应"
+ },
+ "resetsInSentence": {
+  "message": "$1后重置。"
+ },
+ "notifLimitReached": {
+  "message": "已达到 $1 上限"
+ },
+ "notifUsageAt": {
+  "message": "$1 用量已达 $2%"
+ },
+ "notifBody": {
+  "message": "ChatGPT $1 用量已达 $2%。"
+ },
+ "notifCapTitle": {
+  "message": "$1：已用 $2 / $3"
+ },
+ "notifCapBody": {
+  "message": "在最近 $4 内，你已发送 $1 / $2 条 $3 消息（在此浏览器中统计）。"
+ },
+ "notifHitTitle": {
+  "message": "已达到 ChatGPT 上限"
+ },
+ "featDeepResearch": {
+  "message": "深度研究"
+ },
+ "featImageGen": {
+  "message": "图片生成"
+ },
+ "featFileUploads": {
+  "message": "文件上传"
+ },
+ "featAgent": {
+  "message": "智能体"
+ },
+ "featVideo": {
+  "message": "视频"
+ },
+ "featVoice": {
+  "message": "语音"
+ },
+ "featCanvas": {
+  "message": "画布"
+ },
+ "featTasks": {
+  "message": "任务"
+ },
+ "featConnectors": {
+  "message": "连接器"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "代码审查"
+ },
+ "featResearch": {
+  "message": "研究"
+ },
+ "featPasteToFile": {
+  "message": "粘贴为文件"
+ },
+ "tool_screenshot_with_url": {
+  "message": "带地址栏的截图"
+ },
+ "tool_testcase_studio": {
+  "message": "边操作边记录测试步骤"
+ },
+ "tool_check_my_links": {
+  "message": "一键查找失效链接"
+ },
+ "tool_page_load_timer": {
+  "message": "自动测量页面加载时间"
+ },
+ "tool_selectorshub": {
+  "message": "XPath 和 Playwright 定位器"
+ },
+ "tool_cssviewer": {
+  "message": "悬停即可查看元素 CSS"
+ },
+ "tool_clearcache": {
+  "message": "一键清除缓存"
+ },
+ "tool_auto_data_filler": {
+  "message": "一键填写表单"
+ },
+ "tool_modify_header": {
+  "message": "编辑请求和响应头"
+ },
+ "tool_anyformat": {
+  "message": "以任意格式保存图片"
+ },
+ "tool_bookmarks_finder": {
+  "message": "输入即可查找书签"
+ },
+ "tool_testing_daily": {
+  "message": "每日测试资讯"
+ }
+}

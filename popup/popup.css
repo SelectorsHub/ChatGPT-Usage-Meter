@@ -78,8 +78,8 @@ main { padding: 10px 12px 6px; display: flex; flex-direction: column; gap: 8px; 
 .list-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px 9px; }
 .list-head { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--text-dim); font-size: 12px; margin-bottom: 4px; }
 .list-note { font-weight: 400; color: var(--text-mute); font-size: 11px; }
-.seg-ctl { margin-left: auto; display: inline-flex; background: var(--bg-elev-2); border-radius: 7px; padding: 2px; }
-.seg-ctl button { all: unset; font-size: 11px; padding: 1px 7px; border-radius: 5px; cursor: pointer; color: var(--text-mute); }
+.seg-ctl { margin-left: auto; flex-shrink: 0; display: inline-flex; background: var(--bg-elev-2); border-radius: 7px; padding: 2px; }
+.seg-ctl button { all: unset; white-space: nowrap; font-size: 11px; padding: 1px 7px; border-radius: 5px; cursor: pointer; color: var(--text-mute); }
 .seg-ctl button.on { background: var(--bg); color: var(--text); font-weight: 600; }
 .li { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-top: 1px solid var(--line); font-size: 12.5px; }
 .li:first-child { border-top: none; }

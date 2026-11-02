@@ -16,7 +16,7 @@ var CUM_CONFIG = {
   // TODO(Sanjay): paste the store review URLs after publishing.
   STORE_URLS: {
     chrome: "https://chromewebstore.google.com/detail/chatgpt-usage-meter/kfpajilghdinlikficodoffkbdmlbmab/reviews",
-    edge: "",
+    edge: "https://microsoftedge.microsoft.com/addons/detail/chatgpt-usage-meter/ncppokankpoenlikfbbjdehjbgoppboe/",
     firefox: ""
   },
   // Landing pages; "" opens nothing. The uninstall page gets ?v=&b=&d= appended.
@@ -71,14 +71,155 @@ var CUM_CONFIG = {
     modelCaps: []
   },
 
+  // label is a getter so it follows the browser language (see cumT below).
   WINDOWS: {
-    "3h":   { label: "3 hours",  ms: 3 * 3600e3 },
-    "5h":   { label: "5 hours",  ms: 5 * 3600e3 },
-    "day":  { label: "24 hours", ms: 24 * 3600e3 },
-    "week": { label: "7 days",   ms: 7 * 86400e3 },
-    "month":{ label: "30 days",  ms: 30 * 86400e3 }
+    "3h":   { get label() { return cumT("capWin3h"); },    ms: 3 * 3600e3 },
+    "5h":   { get label() { return cumT("capWin5h"); },    ms: 5 * 3600e3 },
+    "day":  { get label() { return cumT("capWinDay"); },   ms: 24 * 3600e3 },
+    "week": { get label() { return cumT("capWinWeek"); },  ms: 7 * 86400e3 },
+    "month":{ get label() { return cumT("capWinMonth"); }, ms: 30 * 86400e3 }
   }
 };
+
+// Tool descriptions are translated; names are product names and stay as is.
+for (const t of CUM_CONFIG.TOOLS) {
+  const key = "tool_" + t.icon.replace(/-/g, "_");
+  Object.defineProperty(t, "desc", { get() { return cumT(key); }, enumerable: true });
+}
+
+// ---------------------------------------------------------------- i18n
+// All UI text lives in _locales/<lang>/messages.json. chrome.i18n picks the
+// language the user has set for the BROWSER (falls back to English), in every
+// context: service worker, content script, popup and options page.
+
+// Language choice. The extension follows the language the user picked in
+// ChatGPT (Settings → General → Language). The content script reads it from
+// chatgpt.com's <html lang> and saves the matching _locales folder name in
+// storage as "uiLang"; every context then loads that messages.json. With no
+// ChatGPT language known (or one we don't ship), chrome.i18n's browser
+// language is used.
+const CUM_LANGS = ["en", "zh_CN", "zh_TW", "ja", "ko", "es", "fr", "de", "pt_BR", "pt_PT", "ru", "it", "tr", "id", "vi", "hi"];
+var __cumLang = null, __cumMsgs = null;
+
+// "ja-JP" -> "ja", "zh-Hant-TW" -> "zh_TW", "pt-PT" -> "pt_PT", "ar" -> null
+function cumNormLang(tag) {
+  const t = String(tag || "").trim().toLowerCase().replace(/_/g, "-");
+  if (!t) return null;
+  const base = t.split("-")[0];
+  if (base === "zh") return /-(tw|hk|mo|hant)\b/.test(t) ? "zh_TW" : "zh_CN";
+  if (base === "pt") return /-pt\b/.test(t) ? "pt_PT" : "pt_BR";
+  return CUM_LANGS.includes(base) ? base : null;
+}
+
+// Load (or clear, with a falsy lang) the messages for a language. Pages and
+// the service worker read the file themselves; the content script asks the
+// service worker, since chatgpt.com can't load extension files.
+async function cumUseLang(lang) {
+  if (!lang || !CUM_LANGS.includes(lang)) { __cumLang = null; __cumMsgs = null; return false; }
+  if (lang === __cumLang && __cumMsgs) return true;
+  let msgs = null;
+  try {
+    if (typeof location !== "undefined" && /^https?:/.test(location.protocol)) {
+      msgs = await chrome.runtime.sendMessage({ type: "cumMessages", lang });
+    } else {
+      msgs = await (await fetch(chrome.runtime.getURL(`_locales/${lang}/messages.json`))).json();
+    }
+  } catch (_) {}
+  if (!msgs || typeof msgs !== "object") return false;
+  __cumLang = lang; __cumMsgs = msgs;
+  return true;
+}
+
+// Popup / options / service worker: use the saved ChatGPT language, if any.
+async function cumInitLang() {
+  try { const { uiLang } = await chrome.storage.local.get("uiLang"); await cumUseLang(uiLang); } catch (_) {}
+}
+
+// feature id -> message key (names are translated, see _locales)
+var CUM_FEATURE_KEYS = {
+  deep_research: "featDeepResearch",
+  image_gen: "featImageGen",
+  image_generation: "featImageGen",
+  file_upload: "featFileUploads",
+  file_uploads: "featFileUploads",
+  odyssey: "featAgent",
+  agent: "featAgent",
+  agent_mode: "featAgent",
+  operator: "featAgent",
+  sora: "featVideo",
+  video_gen: "featVideo",
+  voice: "featVoice",
+  advanced_voice: "featVoice",
+  canvas: "featCanvas",
+  tasks: "featTasks",
+  connector_search: "featConnectors",
+  codex: "featCodex",
+  code_review: "featCodeReview",
+  research: "featResearch",
+  reason: "thinking",
+  reasoning: "thinking",
+  paste_text_to_file: "featPasteToFile"
+};
+
+// Display name of a feature quota or extra limit, translated at render time
+// (the snapshot may have been built in another language).
+function cumFeatureName(x) {
+  const key = CUM_FEATURE_KEYS[String((x && x.id) || "").toLowerCase()];
+  return key ? cumT(key) : (x && x.name) || "";
+}
+
+// BCP-47 tag of the language in use, for dates and <html lang>.
+function cumLangTag() {
+  if (__cumLang) return __cumLang.replace("_", "-");
+  try { return chrome.i18n.getUILanguage(); } catch (_) { return "en"; }
+}
+
+// cumT("nLeft", [7]) -> "7 left" / "残り 7"
+function cumT(key, subs) {
+  const list = subs == null ? [] : [].concat(subs).map(String);
+  const e = __cumMsgs && __cumMsgs[key];
+  if (e && typeof e.message === "string") {
+    return e.message.replace(/\$(\$|\d)/g, (_, d) => (d === "$" ? "$" : list[+d - 1] != null ? list[+d - 1] : ""));
+  }
+  let m = "";
+  try { m = chrome.i18n.getMessage(key, list.length ? list : undefined); } catch (_) {}
+  return m || key;
+}
+
+// Like cumT, but substitutions may be DOM nodes: returns an array of strings
+// and nodes in the right order for the language. cumTN("resetIn", <b>2h</b>)
+function cumTN(key, ...parts) {
+  const marks = parts.map((_, i) => "\u0001" + i + "\u0002");
+  const s = cumT(key, marks);
+  const out = [];
+  const re = /\u0001(\d+)\u0002/g;
+  let last = 0, m;
+  while ((m = re.exec(s))) {
+    if (m.index > last) out.push(s.slice(last, m.index));
+    out.push(parts[+m[1]]);
+    last = re.lastIndex;
+  }
+  if (last < s.length) out.push(s.slice(last));
+  return out;
+}
+
+// Lower-case a label for use mid-sentence ("Codex weekly"), except in
+// languages where that breaks grammar (German capitalises nouns).
+function cumLower(s) {
+  return /^de/i.test(cumLangTag()) ? String(s) : String(s).toLowerCase();
+}
+
+// Pages (popup, options): fill [data-i18n] text and [data-i18n-title|aria|placeholder].
+function cumI18nPage(root) {
+  root = root || document;
+  document.documentElement.lang = cumLangTag();
+  const dir = cumT("@@bidi_dir");
+  if (dir === "rtl") document.documentElement.dir = "rtl";
+  for (const el of root.querySelectorAll("[data-i18n]")) el.textContent = cumT(el.getAttribute("data-i18n"));
+  for (const el of root.querySelectorAll("[data-i18n-title]")) el.title = cumT(el.getAttribute("data-i18n-title"));
+  for (const el of root.querySelectorAll("[data-i18n-aria]")) el.setAttribute("aria-label", cumT(el.getAttribute("data-i18n-aria")));
+  for (const el of root.querySelectorAll("[data-i18n-placeholder]")) el.placeholder = cumT(el.getAttribute("data-i18n-placeholder"));
+}
 
 function cumUtm(url, medium, campaign) {
   if (!url) return url;
@@ -99,25 +240,25 @@ function cumStoreUrl() {
 // "2h 05m", "4d 3h", "12m", "<1m"
 function cumFmtDuration(ms) {
   if (ms == null || !isFinite(ms)) return "";
-  if (ms <= 0) return "now";
+  if (ms <= 0) return cumT("durNow");
   const m = Math.floor(ms / 60000);
-  if (m < 1) return "<1m";
+  if (m < 1) return cumT("durLt1");
   const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
-  if (d >= 1) return h ? `${d}d ${h}h` : `${d}d`;
-  if (h >= 1) return `${h}h ${String(mm).padStart(2, "0")}m`;
-  return `${mm}m`;
+  if (d >= 1) return h ? cumT("durDH", [d, h]) : cumT("durD", [d]);
+  if (h >= 1) return cumT("durHM", [h, String(mm).padStart(2, "0")]);
+  return cumT("durM", [mm]);
 }
 
 function cumWindowLabel(sec, short) {
-  if (!sec) return short ? "Limit" : "Usage";
-  if (sec === 18000) return short ? "5h" : "5-hour";
-  if (sec === 10800) return short ? "3h" : "3-hour";
-  if (sec === 86400) return short ? "Day" : "Daily";
-  if (sec === 604800) return short ? "Week" : "Weekly";
-  if (sec >= 2419200 && sec <= 2678400) return short ? "Month" : "Monthly";
-  if (sec % 86400 === 0) return `${sec / 86400}-day`;
-  if (sec % 3600 === 0) return `${sec / 3600}-hour`;
-  return `${Math.round(sec / 60)}-min`;
+  if (!sec) return cumT(short ? "lblLimit" : "winUsage");
+  if (sec === 18000) return cumT(short ? "win5hShort" : "win5h");
+  if (sec === 10800) return cumT(short ? "win3hShort" : "win3h");
+  if (sec === 86400) return cumT(short ? "winDayShort" : "winDay");
+  if (sec === 604800) return cumT(short ? "winWeekShort" : "winWeek");
+  if (sec >= 2419200 && sec <= 2678400) return cumT(short ? "winMonthShort" : "winMonth");
+  if (sec % 86400 === 0) return cumT("winNDay", [sec / 86400]);
+  if (sec % 3600 === 0) return cumT("winNHour", [sec / 3600]);
+  return cumT("winNMin", [Math.round(sec / 60)]);
 }
 
 function cumLevel(pct) {

@@ -1,0 +1,647 @@
+{
+ "extDesc": {
+  "message": "Limites do ChatGPT, horário de reinício e tamanho do chat ao vivo, acima da caixa de texto. Alerta antes de acabar."
+ },
+ "durNow": {
+  "message": "agora"
+ },
+ "durLt1": {
+  "message": "<1 min"
+ },
+ "durM": {
+  "message": "$1 min"
+ },
+ "durHM": {
+  "message": "$1 h $2 min"
+ },
+ "durD": {
+  "message": "$1 d"
+ },
+ "durDH": {
+  "message": "$1 d $2 h"
+ },
+ "winUsage": {
+  "message": "Uso"
+ },
+ "lblLimit": {
+  "message": "Limite"
+ },
+ "win5h": {
+  "message": "5 horas"
+ },
+ "win5hShort": {
+  "message": "5 h"
+ },
+ "win3h": {
+  "message": "3 horas"
+ },
+ "win3hShort": {
+  "message": "3 h"
+ },
+ "winDay": {
+  "message": "Diário"
+ },
+ "winDayShort": {
+  "message": "Dia"
+ },
+ "winWeek": {
+  "message": "Semanal"
+ },
+ "winWeekShort": {
+  "message": "Semana"
+ },
+ "winWeekLetter": {
+  "message": "S"
+ },
+ "winMonth": {
+  "message": "Mensal"
+ },
+ "winMonthShort": {
+  "message": "Mês"
+ },
+ "winNDay": {
+  "message": "$1 dias"
+ },
+ "winNHour": {
+  "message": "$1 horas"
+ },
+ "winNMin": {
+  "message": "$1 min"
+ },
+ "capWin3h": {
+  "message": "3 horas"
+ },
+ "capWin5h": {
+  "message": "5 horas"
+ },
+ "capWinDay": {
+  "message": "24 horas"
+ },
+ "capWinWeek": {
+  "message": "7 dias"
+ },
+ "capWinMonth": {
+  "message": "30 dias"
+ },
+ "codexWindow": {
+  "message": "Codex $1"
+ },
+ "thinking": {
+  "message": "Thinking"
+ },
+ "thinkShort": {
+  "message": "Think"
+ },
+ "nLeft": {
+  "message": "restam $1"
+ },
+ "nOfMaxLeft": {
+  "message": "restam $1/$2"
+ },
+ "leftApprox": {
+  "message": "~$1 restantes"
+ },
+ "resetIn": {
+  "message": "Reinicia em $1"
+ },
+ "resetsInLower": {
+  "message": "reinicia em $1"
+ },
+ "resetsShort": {
+  "message": "reinicia em $1"
+ },
+ "tipUsage": {
+  "message": "Uso $1: $2"
+ },
+ "tipResetsAt": {
+  "message": "Reinicia em $1 ($2)"
+ },
+ "tipResetsIn": {
+  "message": "Reinicia em $1"
+ },
+ "tipForecast": {
+  "message": "No seu ritmo atual, você vai atingir este limite em cerca de $1, antes de ele reiniciar."
+ },
+ "tipSignIn": {
+  "message": "Entre no chatgpt.com neste perfil do navegador."
+ },
+ "signInToSee": {
+  "message": "Entre para ver o uso"
+ },
+ "tipFetching": {
+  "message": "Buscando seu uso…"
+ },
+ "loading": {
+  "message": "Carregando…"
+ },
+ "tipThinkingLeft": {
+  "message": "Mensagens de Thinking restantes: $1"
+ },
+ "tipReportedByChatGPT": {
+  "message": "Informado pelo ChatGPT para o seu plano."
+ },
+ "tipCodexNote": {
+  "message": "Uso do Codex informado pelo ChatGPT para o seu plano (também consumido por tarefas do agente / Work). O chat comum não conta aqui."
+ },
+ "credits": {
+  "message": "Créditos"
+ },
+ "creditsShort": {
+  "message": "Cr"
+ },
+ "on": {
+  "message": "sim"
+ },
+ "onCap": {
+  "message": "Ativado"
+ },
+ "unlimited": {
+  "message": "Ilimitado"
+ },
+ "tipCredits": {
+  "message": "Créditos desta conta (usados quando os limites do plano acabam)."
+ },
+ "tipFeatureLeft": {
+  "message": "$1: restam $2"
+ },
+ "tipAllQuotas": {
+  "message": "Todas as cotas de recursos estão no pop-up da barra de ferramentas."
+ },
+ "tipCapUsed": {
+  "message": "$1: $2 de $3 mensagens nas últimas $4"
+ },
+ "tipNextFrees": {
+  "message": "A próxima mensagem libera em $1"
+ },
+ "tipCountedHere": {
+  "message": "Contado a partir das mensagens enviadas neste navegador."
+ },
+ "tipLimitReported": {
+  "message": "O ChatGPT informou que um limite de uso foi atingido."
+ },
+ "limitHit": {
+  "message": "Limite atingido"
+ },
+ "limitShort": {
+  "message": "Limite"
+ },
+ "limitReached": {
+  "message": "Limite atingido"
+ },
+ "tipTokens1": {
+  "message": "Este chat tem cerca de $1 tokens, mais ou menos o que o ChatGPT relê a cada nova mensagem."
+ },
+ "tipTokens2": {
+  "message": "Você $1 · ChatGPT $2 · Ferramentas $3 · Imagens $4"
+ },
+ "tipTokensCtx": {
+  "message": "Instruções personalizadas $1"
+ },
+ "tipTokens3": {
+  "message": "Estimativa. Arquivos lidos pela busca, memória e prompt do sistema não estão incluídos."
+ },
+ "tipTokens4": {
+  "message": "Chat longo? Começar um novo é a mensagem mais barata que você pode enviar."
+ },
+ "chat": {
+  "message": "Chat"
+ },
+ "tokensWord": {
+  "message": "tokens"
+ },
+ "tipThisChat": {
+  "message": "Este chat: ~$1 tokens"
+ },
+ "tipThinkingMini": {
+  "message": "Thinking: restam $1"
+ },
+ "errFetch": {
+  "message": "Não foi possível obter o uso."
+ },
+ "tipRetrying": {
+  "message": "Tentando de novo automaticamente. Abra o pop-up da barra de ferramentas para atualizar agora."
+ },
+ "usageUnavailable": {
+  "message": "Uso indisponível"
+ },
+ "tipNoWindows": {
+  "message": "O ChatGPT não está informando janelas de uso para esta conta agora. Cotas de recursos, limites definidos por você e limites atingidos continuam sendo registrados."
+ },
+ "noLimits": {
+  "message": "Nenhum limite informado"
+ },
+ "tipLogo": {
+  "message": "$1 — oferecido pela SelectorsHub\nClique para mais ferramentas grátis"
+ },
+ "bySelectorsHub": {
+  "message": "da SelectorsHub"
+ },
+ "meanwhileTry": {
+  "message": "Enquanto isso, experimente $1 →"
+ },
+ "tryTool": {
+  "message": "Experimente $1 →"
+ },
+ "hideUntilReset": {
+  "message": "Ocultar até o próximo reinício"
+ },
+ "rateTip": {
+  "message": "Avalie a gente: este botão some para sempre depois da sua avaliação."
+ },
+ "rateAria": {
+  "message": "Avaliar $1"
+ },
+ "rateUs": {
+  "message": "Avalie"
+ },
+ "tipGear": {
+  "message": "Escolha o que a barra mostra"
+ },
+ "stripSettings": {
+  "message": "Configurações da barra"
+ },
+ "expand": {
+  "message": "Expandir"
+ },
+ "collapse": {
+  "message": "Recolher"
+ },
+ "tipHide": {
+  "message": "Ocultar por 12 horas (reative pelo pop-up da barra de ferramentas)"
+ },
+ "hide": {
+  "message": "Ocultar"
+ },
+ "notNow": {
+  "message": "Agora não"
+ },
+ "nudgeTitle": {
+  "message": "O $1 está ajudando você?"
+ },
+ "leaveFiveStar": {
+  "message": "Deixar uma avaliação 5 estrelas"
+ },
+ "nudgeBody": {
+  "message": "Avalie a gente: este botão some para sempre depois da sua avaliação. 🙏🏻"
+ },
+ "nudgeBy": {
+  "message": "Obrigado ~ $1, criador"
+ },
+ "writeReview": {
+  "message": "Escrever avaliação"
+ },
+ "maybeLater": {
+  "message": "Talvez depois"
+ },
+ "showInStrip": {
+  "message": "Mostrar na barra"
+ },
+ "fThinking": {
+  "message": "Thinking restantes"
+ },
+ "fThinkingNote": {
+  "message": "limite do chat"
+ },
+ "fPrimary": {
+  "message": "Uso do Codex"
+ },
+ "fPrimaryNote": {
+  "message": "5 horas / mensal"
+ },
+ "fResetPrimary": {
+  "message": "Horários de reinício"
+ },
+ "fSecondary": {
+  "message": "Uso semanal do Codex"
+ },
+ "fSecondaryNote": {
+  "message": "planos pagos"
+ },
+ "fResetSecondary": {
+  "message": "Reinício semanal"
+ },
+ "fForecast": {
+  "message": "Previsão de limite"
+ },
+ "fForecastNote": {
+  "message": "quando for acabar"
+ },
+ "fBars": {
+  "message": "Barras de uso"
+ },
+ "fExtra": {
+  "message": "Outros limites"
+ },
+ "fExtraNote": {
+  "message": "janelas por recurso"
+ },
+ "fFeatures": {
+  "message": "Cotas de recursos"
+ },
+ "fFeaturesNote": {
+  "message": "pesquisa, imagens…"
+ },
+ "fModelCaps": {
+  "message": "Meus limites por modelo"
+ },
+ "fModelCapsNote": {
+  "message": "defina nas configurações"
+ },
+ "fChatTokens": {
+  "message": "Tokens do chat"
+ },
+ "desktopNotifications": {
+  "message": "Notificações na área de trabalho"
+ },
+ "allSettings": {
+  "message": "Todas as configurações…"
+ },
+ "offeredBy": {
+  "message": "Oferecido pela SelectorsHub · mais ferramentas grátis"
+ },
+ "seeAllTools": {
+  "message": "Ver todas as 15+ ferramentas grátis →"
+ },
+ "aboutName": {
+  "message": "Sobre o $1"
+ },
+ "notAffiliated": {
+  "message": "Sem vínculo com a OpenAI."
+ },
+ "notAffiliatedShort": {
+  "message": "Sem vínculo com a OpenAI"
+ },
+ "refresh": {
+  "message": "Atualizar"
+ },
+ "refreshNow": {
+  "message": "Atualizar agora"
+ },
+ "settings": {
+  "message": "Configurações"
+ },
+ "showStripLabel": {
+  "message": "Mostrar a barra de uso acima do chat"
+ },
+ "creditsSub": {
+  "message": "Usados quando os limites do plano acabam."
+ },
+ "reportedByChatGPT": {
+  "message": "informado pelo ChatGPT"
+ },
+ "countedInBrowser": {
+  "message": "contado neste navegador"
+ },
+ "msgsSent": {
+  "message": "Mensagens enviadas deste navegador"
+ },
+ "rng5h": {
+  "message": "5 h"
+ },
+ "rng24h": {
+  "message": "24 h"
+ },
+ "rng7d": {
+  "message": "7 d"
+ },
+ "setCap": {
+  "message": "+ Definir um limite para um modelo"
+ },
+ "moreTools": {
+  "message": "Mais ferramentas grátis da SelectorsHub"
+ },
+ "resetsInAt": {
+  "message": "Reinicia em $1 · $2"
+ },
+ "resetNotReported": {
+  "message": "Horário de reinício não informado"
+ },
+ "forecastPopup": {
+  "message": "Neste ritmo, você atinge o limite em ~$1"
+ },
+ "hiddenUntil": {
+  "message": "Oculta até $1"
+ },
+ "shownOn": {
+  "message": "Visível no chatgpt.com"
+ },
+ "off": {
+  "message": "Desativada"
+ },
+ "errBlockedPopup": {
+  "message": "O chatgpt.com não respondeu diretamente à extensão. Abra uma aba do chatgpt.com e clique em atualizar."
+ },
+ "thinkingMessages": {
+  "message": "Mensagens de Thinking"
+ },
+ "tipNextSlot": {
+  "message": "A próxima vaga libera em $1"
+ },
+ "noneYet": {
+  "message": "Nada ainda: os envios são contados desde a instalação da extensão."
+ },
+ "signInHint": {
+  "message": "Entre no $1 neste perfil do navegador e clique em atualizar."
+ },
+ "noWindowsTitle": {
+  "message": "O ChatGPT não está informando janelas de uso para esta conta."
+ },
+ "noWindowsBody": {
+  "message": "Isso é normal em alguns planos. Cotas de recursos, limites atingidos e limites que você definir continuam sendo registrados."
+ },
+ "updatedJustNow": {
+  "message": "Atualizado agora"
+ },
+ "updatedAgo": {
+  "message": "Atualizado há $1"
+ },
+ "settingsBy": {
+  "message": "Configurações · por"
+ },
+ "saved": {
+  "message": "Salvo"
+ },
+ "cleared": {
+  "message": "Apagado"
+ },
+ "polling": {
+  "message": "Frequência"
+ },
+ "checkEvery": {
+  "message": "Verificar o uso a cada"
+ },
+ "min1": {
+  "message": "1 minuto"
+ },
+ "minN": {
+  "message": "$1 minutos"
+ },
+ "pollNote": {
+  "message": "O uso também é atualizado alguns segundos após cada resposta e sempre que você abre o pop-up da barra de ferramentas."
+ },
+ "alerts": {
+  "message": "Alertas"
+ },
+ "alertCrosses": {
+  "message": "Avisar quando o uso passar de"
+ },
+ "badgeLabel": {
+  "message": "Mostrar o % de 5 horas no ícone da barra de ferramentas"
+ },
+ "usageStrip": {
+  "message": "Barra de uso"
+ },
+ "showStripOpt": {
+  "message": "Mostrar a barra acima da caixa de texto do ChatGPT"
+ },
+ "startCollapsed": {
+  "message": "Começar recolhida"
+ },
+ "capsNote": {
+  "message": "O ChatGPT não informa quantas mensagens restam para cada modelo. Se o seu plano tem um limite fixo (por exemplo, um limite semanal em um modelo Pro), adicione-o aqui e a extensão conta suas mensagens para esse modelo neste navegador. Use o identificador exato do modelo (os que você já usou são sugeridos) ou termine com $1 para abranger uma família (ex.: $2)."
+ },
+ "thModel": {
+  "message": "Modelo"
+ },
+ "thLimit": {
+  "message": "Limite"
+ },
+ "thPer": {
+  "message": "A cada"
+ },
+ "addCap": {
+  "message": "+ Adicionar limite"
+ },
+ "egModel": {
+  "message": "ex.: $1"
+ },
+ "remove": {
+  "message": "Remover"
+ },
+ "data": {
+  "message": "Dados"
+ },
+ "dataNote": {
+  "message": "Tudo fica neste navegador. O uso é lido do chatgpt.com com a sua própria sessão; nada é enviado para nenhum outro lugar."
+ },
+ "clearCounts": {
+  "message": "Zerar contagem de mensagens"
+ },
+ "unhideStrip": {
+  "message": "Mostrar a barra de novo"
+ },
+ "footerDisc": {
+  "message": "Sem vínculo com a OpenAI e não endossado por ela. ChatGPT é uma marca da OpenAI."
+ },
+ "errNetwork": {
+  "message": "Não foi possível acessar o chatgpt.com"
+ },
+ "errBlocked": {
+  "message": "O chatgpt.com não retornou dados da sessão"
+ },
+ "errSignedOut": {
+  "message": "Você não entrou no chatgpt.com"
+ },
+ "errHttp": {
+  "message": "Falha na solicitação de uso ($1)"
+ },
+ "noResponse": {
+  "message": "sem resposta"
+ },
+ "resetsInSentence": {
+  "message": "Reinicia em $1."
+ },
+ "notifLimitReached": {
+  "message": "Limite $1 atingido"
+ },
+ "notifUsageAt": {
+  "message": "Uso $1 em $2%"
+ },
+ "notifBody": {
+  "message": "O uso $1 do ChatGPT está em $2%."
+ },
+ "notifCapTitle": {
+  "message": "$1: $2 de $3 usados"
+ },
+ "notifCapBody": {
+  "message": "Você enviou $1 de $2 mensagens do $3 nas últimas $4 (contado neste navegador)."
+ },
+ "notifHitTitle": {
+  "message": "Limite do ChatGPT atingido"
+ },
+ "featDeepResearch": {
+  "message": "Pesquisa aprofundada"
+ },
+ "featImageGen": {
+  "message": "Geração de imagens"
+ },
+ "featFileUploads": {
+  "message": "Envio de arquivos"
+ },
+ "featAgent": {
+  "message": "Agente"
+ },
+ "featVideo": {
+  "message": "Vídeo"
+ },
+ "featVoice": {
+  "message": "Voz"
+ },
+ "featCanvas": {
+  "message": "Canvas"
+ },
+ "featTasks": {
+  "message": "Tarefas"
+ },
+ "featConnectors": {
+  "message": "Conectores"
+ },
+ "featCodex": {
+  "message": "Codex"
+ },
+ "featCodeReview": {
+  "message": "Revisão de código"
+ },
+ "featResearch": {
+  "message": "Pesquisa"
+ },
+ "featPasteToFile": {
+  "message": "Colar como arquivo"
+ },
+ "tool_screenshot_with_url": {
+  "message": "Capturas de tela com a barra de endereço"
+ },
+ "tool_testcase_studio": {
+  "message": "Grave os passos de teste enquanto testa"
+ },
+ "tool_check_my_links": {
+  "message": "Encontre links quebrados em 1 clique"
+ },
+ "tool_page_load_timer": {
+  "message": "Tempo de carregamento, automático"
+ },
+ "tool_selectorshub": {
+  "message": "Localizadores XPath e Playwright"
+ },
+ "tool_cssviewer": {
+  "message": "Veja o CSS de qualquer elemento ao passar o mouse"
+ },
+ "tool_clearcache": {
+  "message": "Limpe o cache em um clique"
+ },
+ "tool_auto_data_filler": {
+  "message": "Preencha formulários em um clique"
+ },
+ "tool_modify_header": {
+  "message": "Edite cabeçalhos de requisição e resposta"
+ },
+ "tool_anyformat": {
+  "message": "Salve imagens em qualquer formato"
+ },
+ "tool_bookmarks_finder": {
+  "message": "Encontre favoritos digitando"
+ },
+ "tool_testing_daily": {
+  "message": "Notícias diárias sobre testes"
+ }
+}
