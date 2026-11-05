@@ -221,6 +221,51 @@ function cumI18nPage(root) {
   for (const el of root.querySelectorAll("[data-i18n-placeholder]")) el.placeholder = cumT(el.getAttribute("data-i18n-placeholder"));
 }
 
+// ---- identity helpers (v1.0.5) -------------------------------------------
+// Shared by the service worker and the content script. They answer "which
+// ChatGPT account is this browsing context signed in to?", so usage, history,
+// thresholds and message counts can be kept per account instead of in one
+// global bucket (a private window may be signed in to a different account).
+
+// Payload of a JWT, or null. Used only to read ids/expiry, never verified.
+function cumJwtClaims(token) {
+  try { return JSON.parse(atob(String(token).split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))); }
+  catch (_) { return null; }
+}
+
+// Stable id of the signed-in user from the /api/auth/session JSON.
+function cumUserId(j) {
+  if (!j || typeof j !== "object") return null;
+  const u = j.user || {};
+  if (u.id) return String(u.id);
+  const c = cumJwtClaims(j.accessToken) || {};
+  const a = c["https://api.openai.com/auth"] || {};
+  const v = a.chatgpt_user_id || a.user_id || c.sub;
+  if (v) return String(v);
+  return u.email ? String(u.email).toLowerCase() : null;
+}
+
+// What a tab reports about its own session (never the access token).
+// null = signed out (no access token in the session).
+function cumIdentity(j, cookieAccountId) {
+  if (!j || typeof j !== "object" || !j.accessToken) return null;
+  const c = cumJwtClaims(j.accessToken) || {};
+  const a = c["https://api.openai.com/auth"] || {};
+  return {
+    userId: cumUserId(j),
+    accountId: cookieAccountId || (j.account && j.account.id) || a.chatgpt_account_id || null,
+    plan: (j.account && (j.account.planType || j.account.plan_type)) || null
+  };
+}
+
+// Storage-key part for one account: the user AND the workspace (a person can
+// have a personal and a Team workspace, each with its own limits). null when
+// the user cannot be told apart.
+function cumAcctKey(id) {
+  if (!id || !id.userId) return null;
+  return (String(id.userId) + "~" + String(id.accountId || "-")).replace(/[^A-Za-z0-9_.~-]/g, "_").slice(0, 160);
+}
+
 function cumUtm(url, medium, campaign) {
   if (!url) return url;
   const sep = url.indexOf("?") === -1 ? "?" : "&";

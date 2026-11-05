@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com uzantıya doğrudan yanıt vermedi. Bir chatgpt.com sekmesi açıp yenile'ye tıklayın."
  },
+ "errNoTab": {
+  "message": "Bu pencerede açık bir chatgpt.com sekmesi yok. Bir tane açıp (gizli pencere için de ayrı bir sekme gerekir) Yenile’ye tıklayın."
+ },
+ "errOpenTab": {
+  "message": "Hesabı görmek için bu pencerede bir chatgpt.com sekmesi açın."
+ },
  "thinkingMessages": {
   "message": "Thinking mesajları"
  },

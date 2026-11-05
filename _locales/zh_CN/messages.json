@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com 没有直接响应扩展程序。请打开一个 chatgpt.com 标签页，然后点击刷新。"
  },
+ "errNoTab": {
+  "message": "此窗口中没有打开 chatgpt.com 标签页。请打开一个（无痕窗口需要单独打开标签页），然后点击“刷新”。"
+ },
+ "errOpenTab": {
+  "message": "请在此窗口中打开 chatgpt.com 标签页，以查看对应的账户。"
+ },
  "thinkingMessages": {
   "message": "Thinking 消息"
  },

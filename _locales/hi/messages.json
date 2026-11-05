@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com ने एक्सटेंशन को सीधे जवाब नहीं दिया। chatgpt.com का एक टैब खोलें और रीफ़्रेश पर क्लिक करें।"
  },
+ "errNoTab": {
+  "message": "इस विंडो में chatgpt.com का कोई टैब खुला नहीं है। एक टैब खोलें (निजी विंडो में अलग से टैब खोलना होगा) और रीफ़्रेश पर क्लिक करें।"
+ },
+ "errOpenTab": {
+  "message": "इस विंडो में chatgpt.com टैब खोलें, ताकि उसका खाता देखा जा सके।"
+ },
  "thinkingMessages": {
   "message": "Thinking मैसेज"
  },

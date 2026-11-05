@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com tidak merespons ekstensi secara langsung. Buka tab chatgpt.com lalu klik segarkan."
  },
+ "errNoTab": {
+  "message": "Tidak ada tab chatgpt.com yang terbuka di jendela ini. Buka satu tab (jendela privat memerlukan tabnya sendiri), lalu klik segarkan."
+ },
+ "errOpenTab": {
+  "message": "Buka tab chatgpt.com di jendela ini untuk melihat akunnya."
+ },
  "thinkingMessages": {
   "message": "Pesan Thinking"
  },

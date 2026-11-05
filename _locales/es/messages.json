@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com no respondió directamente a la extensión. Abre una pestaña de chatgpt.com y pulsa actualizar."
  },
+ "errNoTab": {
+  "message": "No hay ninguna pestaña de chatgpt.com abierta en esta ventana. Abre una (en una ventana privada, tendrás que abrir una allí) y haz clic en actualizar."
+ },
+ "errOpenTab": {
+  "message": "Abre una pestaña de chatgpt.com en esta ventana para ver su cuenta."
+ },
  "thinkingMessages": {
   "message": "Mensajes de Thinking"
  },

@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com didn't answer the extension directly. Open a chatgpt.com tab and click refresh."
  },
+ "errNoTab": {
+  "message": "No chatgpt.com tab is open in this window. Open one (a private window needs its own) and click refresh."
+ },
+ "errOpenTab": {
+  "message": "Open a chatgpt.com tab in this window to see its account."
+ },
  "thinkingMessages": {
   "message": "Thinking messages"
  },

@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "O chatgpt.com não respondeu diretamente à extensão. Abra uma aba do chatgpt.com e clique em atualizar."
  },
+ "errNoTab": {
+  "message": "Não há nenhuma aba do chatgpt.com aberta nesta janela. Abra uma (em uma janela privativa, é preciso abrir uma aba própria) e clique em aualizar."
+ },
+ "errOpenTab": {
+  "message": "Abra uma aba do chatgpt.com nesta janela para ver a conta correspondente."
+ },
  "thinkingMessages": {
   "message": "Mensagens de Thinking"
  },

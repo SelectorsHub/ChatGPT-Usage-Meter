@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com non ha risposto direttamente all'estensione. Apri una scheda di chatgpt.com e fai clic su aggiorna."
  },
+ "errNoTab": {
+  "message": "In questa finestra non è aperta nessuna scheda di chatgpt.com. Aprine una (in una finestra privata ne serve una dedicata) e fai clic su aggiorna."
+ },
+ "errOpenTab": {
+  "message": "Apri una scheda di chatgpt.com in questa finestra per vedere il relativo account."
+ },
  "thinkingMessages": {
   "message": "Messaggi Thinking"
  },
