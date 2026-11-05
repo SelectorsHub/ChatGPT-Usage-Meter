@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com không phản hồi trực tiếp cho tiện ích. Hãy mở một thẻ chatgpt.com rồi nhấp làm mới."
  },
+ "errNoTab": {
+  "message": "Không có tab chatgpt.com nào đang mở trong cửa sổ này. Hãy mở một tab (cửa sổ riêng tư cần có tab riêng), rồi nhấp vào làm mới."
+ },
+ "errOpenTab": {
+  "message": "Hãy mở tab chatgpt.com trong cửa sổ này để xem tài khoản tương ứng."
+ },
  "thinkingMessages": {
   "message": "Tin nhắn Thinking"
  },

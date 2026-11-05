@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com が拡張機能に直接応答しませんでした。chatgpt.com のタブを開いて更新をクリックしてください。"
  },
+ "errNoTab": {
+  "message": "このウィンドウでは chatgpt.com のタブが開いていません。タブを開き（シークレットウィンドウでは別途開く必要があります）、［更新］をクリックしてください。"
+ },
+ "errOpenTab": {
+  "message": "このウィンドウで chatgpt.com のタブを開くと、そのアカウントを確認できます。"
+ },
  "thinkingMessages": {
   "message": "Thinking メッセージ"
  },

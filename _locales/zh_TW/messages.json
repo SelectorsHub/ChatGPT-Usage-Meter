@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com 沒有直接回應擴充功能。請開啟一個 chatgpt.com 分頁，然後點選重新整理。"
  },
+ "errNoTab": {
+  "message": "此視窗中沒有開啟 chatgpt.com 分頁。請開啟一個（無痕視窗需要另外開啟分頁），然後點擊「重新整理」。"
+ },
+ "errOpenTab": {
+  "message": "請在此視窗中開啟 chatgpt.com 分頁，以查看對應的帳戶。"
+ },
  "thinkingMessages": {
   "message": "Thinking 訊息"
  },

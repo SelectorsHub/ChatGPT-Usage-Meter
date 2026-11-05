@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com n'a pas répondu directement à l'extension. Ouvrez un onglet chatgpt.com et cliquez sur actualiser."
  },
+ "errNoTab": {
+  "message": "Aucun onglet chatgpt.com n’est ouvert dans cette fenêtre. Ouvrez-en un (une fenêtre privée nécessite son propre onglet), puis cliquez sur actualiser."
+ },
+ "errOpenTab": {
+  "message": "Ouvrez un onglet chatgpt.com dans cette fenêtre pour voir le compte associé."
+ },
  "thinkingMessages": {
   "message": "Messages Thinking"
  },

@@ -3,7 +3,7 @@
   const C = CUM_CONFIG;
   const t = cumT, tn = cumTN;   // translated text (ChatGPT language, else browser)
   const $ = (id) => document.getElementById(id);
-  let state = { settings: null, snapshot: null, capHits: {}, msgLog: [], hiddenUntil: 0 };
+  let state = { settings: null, snapshot: null, capHits: {}, msgLog: [], hiddenUntil: 0, ctx: null, prefix: null };
   let msgRange = 86400e3;
 
   function h(tag, attrs, ...kids) {
@@ -25,12 +25,28 @@
       { modelCaps: Array.isArray(s.modelCaps) ? s.modelCaps : [] });
   }
 
+  // v1.0.5: tell the background which window the popup was opened in, so it
+  // answers for that window's ChatGPT account (normal vs private / container).
+  async function myTabId() {
+    try {
+      const [t] = await chrome.tabs.query({ active: true, currentWindow: true });
+      return t ? t.id : undefined;
+    } catch (_) { return undefined; }
+  }
+  async function scope() {
+    try {
+      const r = await chrome.runtime.sendMessage({ type: "whoami", tabId: await myTabId() });
+      if (r && r.prefix) { state.ctx = r.ctx; state.prefix = r.prefix; }
+    } catch (_) {}
+  }
+
   async function load() {
-    const s = await chrome.storage.local.get(["settings", "snapshot", "capHits", "msgLog", "stripHiddenUntil"]);
+    const p = state.prefix;
+    const s = await chrome.storage.local.get(["settings", "stripHiddenUntil"].concat(p ? [p + "snapshot", p + "capHits", p + "msgLog"] : []));
     state.settings = mergeSettings(s.settings);
-    state.snapshot = s.snapshot || null;
-    state.capHits = s.capHits || {};
-    state.msgLog = s.msgLog || [];
+    state.snapshot = (p && s[p + "snapshot"]) || null;
+    state.capHits = (p && s[p + "capHits"]) || {};
+    state.msgLog = (p && s[p + "msgLog"]) || [];
     state.hiddenUntil = s.stripHiddenUntil || 0;
   }
 
@@ -67,6 +83,8 @@
     if (err && err.code !== "signed_out") {
       eb.textContent = err.code === "blocked"
         ? t("errBlockedPopup")
+        : err.code === "no_tab"
+		? t("errNoTab")
         : err.message || t("errFetch");
       eb.classList.remove("hidden");
     } else eb.classList.add("hidden");
@@ -158,7 +176,8 @@
   async function doRefresh(force) {
     $("brand-logo").classList.add("pulsing");
     $("refresh-btn").classList.add("spin");
-    try { await chrome.runtime.sendMessage({ type: "refresh", force }); } catch (_) {}
+    try { await chrome.runtime.sendMessage({ type: "refresh", force, tabId: await myTabId() }); } catch (_) {}
+    await scope();   // the account may have changed
     await load();
     render();
     $("brand-logo").classList.remove("pulsing");
@@ -219,12 +238,15 @@
 
   chrome.storage.onChanged.addListener((ch, area) => {
     if (area !== "local") return;
-    if (ch.settings || ch.snapshot || ch.capHits || ch.msgLog || ch.stripHiddenUntil) load().then(render);
+    const p = state.prefix;
+    if (state.ctx && ch["ptr:" + state.ctx]) { scope().then(load).then(render); return; }
+    if (ch.settings || ch.stripHiddenUntil || (p && (ch[p + "snapshot"] || ch[p + "capHits"] || ch[p + "msgLog"]))) load().then(render);
   });
 
   (async () => {
     await cumInitLang();
     cumI18nPage();
+    await scope();
     await load();
     render();
     const { popupToolsOpen } = await chrome.storage.local.get("popupToolsOpen");

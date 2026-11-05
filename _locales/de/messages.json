@@ -431,6 +431,12 @@
  "errBlockedPopup": {
   "message": "chatgpt.com hat der Erweiterung nicht direkt geantwortet. Öffne einen chatgpt.com-Tab und klicke auf Aktualisieren."
  },
+ "errNoTab": {
+  "message": "In diesem Fenster ist kein chatgpt.com-Tab geöffnet. Öffne einen (in einem privaten Fenster musst du einen eigenen öffnen) und klicke auf Aktualisieren."
+ },
+ "errOpenTab": {
+  "message": "Öffne in diesem Fenster einen chatgpt.com-Tab, um das zugehörige Konto anzuzeigen."
+ },
  "thinkingMessages": {
   "message": "Thinking-Nachrichten"
  },
